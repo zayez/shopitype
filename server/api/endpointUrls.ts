@@ -1,0 +1,91 @@
+const BASE_URL = ''
+
+const POST_SIGN_IN = `${BASE_URL}/signin`
+const POST_SIGN_UP = `${BASE_URL}/signup`
+const GET_SIGN_OUT = `${BASE_URL}/signout`
+const GET_ROOT = `${BASE_URL}/`
+const GET_USER_LOGGED = `${BASE_URL}/user`
+
+// Products
+const PRODUCTS = `${BASE_URL}/products`
+const POST_PRODUCT = `${PRODUCTS}`
+const POST_PRODUCT_COLLECTION = `${PRODUCTS}/collections`
+const PATCH_PRODUCT = `${PRODUCTS}/:id`
+const DELETE_PRODUCT = `${PRODUCTS}/:id`
+const GET_PRODUCT = `${PRODUCTS}/:id`
+const GET_PRODUCTS = `${PRODUCTS}`
+
+const PRODUCT_STATUSES = `${BASE_URL}/productStatuses`
+const GET_PRODUCT_STATUSES = `${PRODUCT_STATUSES}`
+
+// Categories
+const CATEGORIES = `${BASE_URL}/categories`
+const POST_CATEGORY = `${CATEGORIES}`
+const PATCH_CATEGORY = `${CATEGORIES}/:id`
+const DELETE_CATEGORY = `${CATEGORIES}/:id`
+const GET_CATEGORY = `${CATEGORIES}/:id`
+const GET_CATEGORIES = `${CATEGORIES}`
+
+// Users
+const USERS = `${BASE_URL}/users`
+const POST_USER = `${USERS}`
+const PATCH_USER = `${USERS}/:id`
+const DELETE_USER = `${USERS}/:id`
+const GET_USER = `${USERS}/:id`
+const GET_USERS = `${USERS}`
+
+const ORDERS = `${BASE_URL}/orders`
+const POST_ORDER = `${ORDERS}`
+const GET_ORDER = `${ORDERS}/:id`
+const GET_ORDERS = `${ORDERS}`
+
+const PATCH_ORDER_MARK_SHIPPING_STATUS = `${ORDERS}/mark-shipping-status/:id`
+
+const STRIPE_CHECKOUT = `${BASE_URL}/stripe-checkout`
+const POST_STRIPE_CHECKOUT = `${STRIPE_CHECKOUT}`
+const GET_STRIPE_CHECKOUT = `${STRIPE_CHECKOUT}`
+
+const POST_STRIPE_WEBHOOK = `${BASE_URL}/webhook`
+
+// GET USER ORDERS
+const GET_USER_ORDERS = `${USERS}/:userId/orders`
+const GET_USER_ORDER = `${USERS}/:userId/orders/:orderId`
+
+export {
+  POST_SIGN_IN,
+  POST_SIGN_UP,
+  GET_SIGN_OUT,
+  GET_ROOT,
+  GET_USER_LOGGED,
+  PRODUCTS,
+  CATEGORIES,
+  USERS,
+  ORDERS,
+  POST_PRODUCT,
+  POST_PRODUCT_COLLECTION,
+  PATCH_PRODUCT,
+  DELETE_PRODUCT,
+  GET_PRODUCT,
+  GET_PRODUCTS,
+  PRODUCT_STATUSES,
+  GET_PRODUCT_STATUSES,
+  POST_CATEGORY,
+  PATCH_CATEGORY,
+  DELETE_CATEGORY,
+  GET_CATEGORY,
+  GET_CATEGORIES,
+  POST_USER,
+  PATCH_USER,
+  DELETE_USER,
+  GET_USER,
+  GET_USERS,
+  POST_ORDER,
+  GET_ORDERS,
+  GET_ORDER,
+  GET_USER_ORDERS,
+  GET_USER_ORDER,
+  PATCH_ORDER_MARK_SHIPPING_STATUS,
+  POST_STRIPE_CHECKOUT,
+  GET_STRIPE_CHECKOUT,
+  POST_STRIPE_WEBHOOK,
+}
