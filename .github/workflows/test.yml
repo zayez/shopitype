@@ -5,9 +5,9 @@ name: Test
 
 on:
   push:
-    branches: [master]
+    branches: [develop]
   pull_request:
-    branches: [master]
+    branches: [develop]
 
 defaults:
   run:
@@ -19,7 +19,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [23.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
