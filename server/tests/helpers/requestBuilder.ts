@@ -1,0 +1,143 @@
+import request from 'supertest'
+import server from '../../server'
+import { StatusCodeType } from '../../types/StatusCode'
+import TestAgent from 'supertest/lib/agent'
+import { debugStatus, setHeaders } from './requestHelpers'
+
+// You can replace these with your actual types
+type Entity = any
+type Response = any
+
+export interface RequestOptions {
+  token?: string
+  status: StatusCodeType
+}
+
+export interface RequestBuilder {
+  server: typeof server
+  agent: TestAgent
+  create: (entity: Entity, opts: RequestOptions) => Promise<Response>
+  createAll(entities: any, opts: RequestOptions): Promise<Response>
+  update: (
+    id: number,
+    entity: object,
+    opts: RequestOptions,
+  ) => Promise<Response>
+  destroy: (id: number, opts: RequestOptions) => Promise<Response>
+  getOne: (id: number | string, opts: RequestOptions) => Promise<Response>
+  get: (query: string, opts: RequestOptions) => Promise<Response>
+  getAll: (opts: RequestOptions) => Promise<Response>
+}
+
+const agent = request.agent(server)
+
+const requestBuilder = (endpoint: string): RequestBuilder => {
+  const url = `${endpoint}`
+
+  const create = async (
+    entity: Entity,
+    { token, status }: RequestOptions,
+  ): Promise<Response> => {
+    const headers = setHeaders(token)
+    return await agent
+      .post(`${url}`)
+      .send(entity)
+      .set(headers)
+      .expect('Content-Type', /json/)
+      .expect((res: any) => debugStatus(res, status))
+      .expect(status)
+      .then((res) => res)
+  }
+
+  const createAll = async <T>(
+    entities: any,
+    { token, status }: RequestOptions,
+  ): Promise<Response> => {
+    const headers = setHeaders(token)
+    return await agent
+      .post(`${url}/collections`)
+      .send(entities)
+      .set(headers)
+      .expect('Content-Type', /json/)
+      .expect((res: any) => debugStatus(res, status))
+      .expect(status)
+      .then((res) => res)
+  }
+
+  const update = async (
+    id: number,
+    entity: object,
+    { token, status }: RequestOptions,
+  ): Promise<Response> => {
+    const headers = setHeaders(token)
+    return await agent
+      .patch(`${url}/${id}`)
+      .send(entity)
+      .set(headers)
+      .set('Authorization', token)
+      .expect('Content-Type', /json/)
+      .expect((res: any) => debugStatus(res, status))
+      .expect(status)
+      .then((res) => res)
+  }
+
+  const destroy = async (
+    id: number,
+    { token, status }: RequestOptions,
+  ): Promise<Response> => {
+    const headers = setHeaders(token)
+    return await agent
+      .delete(`${url}/${id}`)
+      .set(headers)
+      .expect('Content-Type', /json/)
+      .expect((res: any) => debugStatus(res, status))
+      .expect(status)
+      .then((res) => res)
+  }
+
+  const getOne = async (
+    id: number | string,
+    { token, status }: RequestOptions,
+  ): Promise<Response> => {
+    const headers = setHeaders(token)
+    return await agent
+      .get(`${url}/${id}`)
+      .set(headers)
+      .expect('Content-Type', /json/)
+      .expect((res: any) => debugStatus(res, status))
+      .expect(status)
+      .then((res) => res)
+  }
+
+  const get = async (
+    query = '',
+    { token, status }: RequestOptions,
+  ): Promise<Response> => {
+    const headers = setHeaders(token)
+    return await agent
+      .get(`${url}${query}`)
+      .set(headers)
+      .expect('Content-Type', /json/)
+      .expect((res: any) => debugStatus(res, status))
+      .expect(status)
+      .then((res) => res)
+  }
+
+  const getAll = async (opts: RequestOptions): Promise<Response> => {
+    return await get('', opts)
+  }
+
+  return {
+    server,
+    agent,
+    create,
+    createAll,
+    update,
+    destroy,
+    getOne,
+    get,
+    getAll,
+  }
+}
+
+export default requestBuilder
