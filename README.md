@@ -1,6 +1,6 @@
-# Storefly
+# Shopitype
 
-![Build Status](https://github.com/zayez/storefly/workflows/Test/badge.svg)
+![Build Status](https://github.com/zayez/shopitype/workflows/Test/badge.svg)
 
 ## Requirements
 
@@ -46,4 +46,4 @@ npm run start:dev
 
 ## License
 
-[MIT](LICENSE).  
+[MIT](LICENSE).
