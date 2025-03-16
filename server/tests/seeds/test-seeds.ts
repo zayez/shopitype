@@ -4,6 +4,8 @@ const roles = rolesJson.roles
 import productStatusesJson from '../../db/seeds/data/productStatuses.json' with {type: 'json'}
 const productStatuses = productStatusesJson.productStatuses
 
+import paymentStatusJson from '../../db/seeds/data/paymentStatus.json' with { type: "json" };
+
 import  shippingAddressesJson from '../fixtures/shippingAddresses.json' with {type: 'json'}
 const shippingAddresses = shippingAddressesJson
 
@@ -47,6 +49,10 @@ export async function seed(knex: Knex): Promise<void> {
   await knex('productStatus').insert(productStatuses[0])
   await knex('productStatus').insert(productStatuses[1])
 
+  await knex('paymentStatus').del()
+  await knex('paymentStatus').insert(paymentStatusJson[0])
+  await knex('paymentStatus').insert(paymentStatusJson[1])
+
   await Product.destroyAll()
 
   for (const product of products) {
@@ -59,6 +65,7 @@ export async function seed(knex: Knex): Promise<void> {
   await knex('shippingAddresses').del()
 
   for (const order of orders) {
+
     const addr = shippingAddresses.find((i) => i.id === order.shippingAddressId)
     order.shippingAddress = mapShippingAddress(addr)
     order.paymentStatus = PAYMENT_PAID

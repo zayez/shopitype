@@ -13,6 +13,7 @@ const shippingAddresses = shippingAddressesJson
 import { server, placeOrder, getByUser, getOneByUser } from '../requests/orders'
 
 test('setup', async (t) => {
+  await knex.migrate.latest()
   await knex.seed.run({ directory: 'tests/seeds' })
   t.end()
 })

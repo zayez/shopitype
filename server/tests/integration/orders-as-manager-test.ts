@@ -14,6 +14,7 @@ import usersJson from '../fixtures/users.json'
 const editors = usersJson.editors
 
 test('setup', async (t) => {
+  await knex.migrate.latest()
   await knex.seed.run({ directory: 'tests/seeds' })
   t.end()
 })

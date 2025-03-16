@@ -16,6 +16,7 @@ import customersjson from '../fixtures/users.json' with { type: "json" }
 const customers = customersjson.customers
 
 test('setup', async (t) => {
+  await knex.migrate.latest();
   await knex.seed.run({ directory: 'tests/seeds' })
   t.end()
 })
