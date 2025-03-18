@@ -30,6 +30,9 @@
   "devDependencies": {
     "@faker-js/faker": "^7.4.0",
     "@types/node": "^22.13.10",
+    "@types/passport-anonymous": "^1.0.5",
+    "@types/passport-jwt": "^4.0.1",
+    "@types/passport-local": "^1.0.38",
     "@types/supertest": "^6.0.2",
     "dotenv": "^16.0.1",
     "nodemon": "^2.0.19",
