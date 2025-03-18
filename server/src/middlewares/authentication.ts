@@ -1,4 +1,4 @@
-import passport from 'passport'
+import passport from 'koa-passport'
 
 const authenticate = passport.authenticate('jwt', {
   session: false,
