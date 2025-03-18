@@ -1,46 +1,55 @@
-import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt'
+import {
+  Strategy as JwtStrategy,
+  ExtractJwt,
+  StrategyOptionsWithSecret,
+} from 'passport-jwt'
 import { Strategy as LocalStrategy } from 'passport-local'
 import { Strategy as AnonymousStrategy } from 'passport-anonymous'
 import config from './config'
 import UserRepository from '../repositories/user-repository'
+import { JwtPayload } from 'jsonwebtoken'
 
-const { fromExtractors, fromHeader } = ExtractJwt
-const { SECRET } = config.jwt
-
-const cookieExtractor = (req) => {
+const cookieExtractor = (
+  req: { header?: { cookie?: string } } | undefined,
+): string | null => {
   let token = null
-  if (req && req.header.cookie) {
+  if (req && req.header?.cookie) {
     token = req.header.cookie.replace('token=', '')
   }
   return token
 }
 
-interface PassportOptions {
-  jwtFromRequest?: string
-  secretOrKey?: string
+interface KoaPassport {
+  use(strategy: any): void
 }
 
-const opts: PassportOptions = {}
-opts.jwtFromRequest = fromExtractors([
-  cookieExtractor,
-  fromHeader('authorization'),
-])
-opts.secretOrKey = SECRET
-
-function passportConfig(passport) {
+const opts: StrategyOptionsWithSecret = {
+  jwtFromRequest: ExtractJwt.fromExtractors([
+    cookieExtractor,
+    ExtractJwt.fromHeader('authorization'),
+  ]),
+  secretOrKey: config.jwt.SECRET,
+}
+function passportConfig(passport: KoaPassport) {
   // JWT passport
   passport.use(
-    new JwtStrategy(opts, async (payload, done) => {
-      try {
-        const user = await UserRepository.findById(payload.sub)
-        if (!user) {
-          return done(null, false)
+    new JwtStrategy(
+      opts,
+      async (
+        payload: JwtPayload,
+        done: (error: any, user?: unknown, info?: any) => void,
+      ) => {
+        try {
+          const user = await UserRepository.findById(Number(payload.sub))
+          if (!user) {
+            return done(null, false, undefined)
+          }
+          done(null, user)
+        } catch (err) {
+          done(err, false)
         }
-        done(null, user)
-      } catch (err) {
-        done(err, false)
-      }
-    }),
+      },
+    ),
   )
 
   // Local passport
