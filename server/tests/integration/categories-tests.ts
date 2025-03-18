@@ -1,5 +1,5 @@
 import test from 'tape'
-import knex from '../../db'
+import knex from '../../src/db/db'
 
 import categoriesJson from '../fixtures/categories.json' with {type: 'json'}
 const categories = categoriesJson.categories
@@ -7,7 +7,7 @@ const categories = categoriesJson.categories
 import users from '../fixtures/users.json' with {type: 'json'}
 const admins = users.admins
 
-import STATUS from '../../types/StatusCode'
+import STATUS from '../../src/types/status-code'
 import { login } from '../infrastructure/login'
 import {
   server,
@@ -17,7 +17,7 @@ import {
   getOne,
   get,
   getAll,
-} from '../requests/categories'
+} from '../requests/categories-request'
 
 test('setup', async (t) => {
   t.end()

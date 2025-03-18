@@ -1,5 +1,5 @@
 import test from 'tape'
-import knex from '../../db'
+import knex from '../../src/db/db'
 import { faker } from '@faker-js/faker'
 import {
   server,
@@ -7,9 +7,9 @@ import {
   signIn,
   signUp,
   getUser,
-} from '../requests/application'
+} from '../requests/application-request'
 import  { login, decodeToken } from '../infrastructure/login'
-import STATUS from '../../types/StatusCode'
+import STATUS from '../../src/types/status-code'
 
 import customersjson from '../fixtures/users.json' with { type: "json" }
 

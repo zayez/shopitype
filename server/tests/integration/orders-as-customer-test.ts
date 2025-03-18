@@ -1,16 +1,21 @@
 import test from 'tape'
-import knex from '../../db'
+import knex from '../../src/db/db'
 
-import STATUS from '../../types/StatusCode'
+import STATUS from '../../src/types/status-code'
 import { login, decodeToken } from '../infrastructure/login'
 
 import usersJson from '../fixtures/users.json'
 const customers = usersJson.customers
 
-import shippingAddressesJson from '../fixtures/shippingAddresses.json'
+import shippingAddressesJson from '../fixtures/shipping-addresses.json'
 const shippingAddresses = shippingAddressesJson
 
-import { server, placeOrder, getByUser, getOneByUser } from '../requests/orders'
+import {
+  server,
+  placeOrder,
+  getByUser,
+  getOneByUser,
+} from '../requests/orders-request'
 
 test('setup', async (t) => {
   await knex.migrate.latest()

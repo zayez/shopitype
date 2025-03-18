@@ -1,7 +1,7 @@
 import test from 'tape'
-import knex from '../../db'
-import STATUS from '../../types/StatusCode'
-import { server, create, getOne, getAll } from '../requests/products'
+import knex from '../../src/db/db'
+import STATUS from '../../src/types/status-code'
+import { server, create, getOne, getAll } from '../requests/products-request'
 import productsJson from '../fixtures/products.json'
 const products = productsJson.products
 
