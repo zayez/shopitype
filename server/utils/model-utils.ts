@@ -1,31 +1,40 @@
-import Category, { CategoryModel } from '../models/category'
-import { MinimalModel, Model } from '../models/model'
-import Order, { OrderCreateParams, OrderModel } from '../models/order'
-import Product, { ProductModel } from '../models/product'
-import ProductStatus, { ProductStatusModel } from '../models/productStatus'
-import User, { UserCreateParams, UserModel } from '../models/user'
+import { MinimalRepository, Repository } from '../repositories/repository'
+import { Category } from '../models/category'
+import { Order } from '../models/order'
+import { Product } from '../models/product'
+import { ProductStatus } from '../models/product-status'
+import { User } from '../models/user'
+import OrderRepository, {
+  OrderCreateParams,
+} from '../repositories/order-repository'
+import UserRepository, {
+  UserCreateParams,
+} from '../repositories/user-repository'
+import CategoryRepository from '../repositories/category-repository'
+import ProductRepository from '../repositories/product-repository'
+import ProductStatusRepository from '../repositories/product-status-repository'
 
 type AllModels =
-  | Model<CategoryModel>
-  | Model<OrderModel>
-  | Model<ProductModel>
-  | Model<ProductStatusModel>
-  | Model<UserModel>
+  | Repository<Category>
+  | Repository<Order>
+  | Repository<Product>
+  | Repository<ProductStatus>
+  | Repository<User>
 
 interface ModelMap {
-  category: Model<CategoryModel>
-  order: Model<OrderModel, OrderCreateParams>
-  product: Model<ProductModel>
-  productstatus: MinimalModel<ProductStatusModel>
-  user: Model<UserModel, UserCreateParams>
+  category: Repository<Category>
+  order: Repository<Order, OrderCreateParams>
+  product: Repository<Product>
+  productstatus: MinimalRepository<ProductStatus>
+  user: Repository<User, UserCreateParams>
 }
 
 const modelMap: ModelMap = {
-  category: Category,
-  order: Order,
-  product: Product,
-  productstatus: ProductStatus,
-  user: User,
+  category: CategoryRepository,
+  order: OrderRepository,
+  product: ProductRepository,
+  productstatus: ProductStatusRepository,
+  user: UserRepository,
 }
 
 export { modelMap }

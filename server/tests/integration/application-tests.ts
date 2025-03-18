@@ -7,9 +7,9 @@ import {
   signIn,
   signUp,
   getUser,
-} from '../requests/application'
+} from '../requests/application-request'
 import  { login, decodeToken } from '../infrastructure/login'
-import STATUS from '../../types/StatusCode'
+import STATUS from '../../types/status-code'
 
 import customersjson from '../fixtures/users.json' with { type: "json" }
 

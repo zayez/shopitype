@@ -9,18 +9,18 @@ import passport from 'koa-passport'
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
 
-import indexRoutes from './routes/index'
-import usersRoutes from './routes/users'
-import categoriesRoutes from './routes/categories'
-import productsRoutes from './routes/products'
-import productStatusesRoutes from './routes/productStatuses'
-import ordersRoutes from './routes/orders'
-import stripeCheckoutRoutes from './routes/stripeCheckout'
-import stripeWebhookRoutes from './routes/stripeWebhook'
-import passportConfig from './config/passportConfig'
+import applicationRoutes from './routes/application-route'
+import usersRoutes from './routes/users-route'
+import categoriesRoutes from './routes/categories-route'
+import productsRoutes from './routes/products-route'
+import productStatusesRoutes from './routes/product-statuses-route'
+import ordersRoutes from './routes/orders-route'
+import stripeCheckoutRoutes from './routes/stripe-checkout-route'
+import stripeWebhookRoutes from './routes/stripe-webhook-route'
+import passportConfig from './config/passport-config'
 import { authenticateOptional } from './middlewares/authentication'
 
-import config from './config'
+import config from './config/config'
 
 const { isProd, isDev } = config
 const { PORT } = config.app
@@ -35,7 +35,6 @@ const accessLogStream = fs.createWriteStream(__dirname + '/access.log', {
 })
 
 const corsOpts = {
-  // origin: '*',
   credentials: true,
 }
 
@@ -44,7 +43,6 @@ app
   .use(morgan('combined', { stream: accessLogStream }))
   .use(mount('/uploads', uploads))
   .use(bodyParser())
-  // .use(koaBody({ multipart: true }))
   .use(cors(corsOpts))
   .use(passport.initialize())
 
@@ -52,7 +50,7 @@ passportConfig(passport)
 
 app
   .use(authenticateOptional)
-  .use(indexRoutes.routes())
+  .use(applicationRoutes.routes())
   .use(usersRoutes.routes())
   .use(categoriesRoutes.routes())
   .use(productsRoutes.routes())

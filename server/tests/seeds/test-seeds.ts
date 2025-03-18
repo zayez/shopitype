@@ -1,12 +1,12 @@
 import rolesJson from '../../db/seeds/data/roles.json' with {type: 'json'}
 const roles = rolesJson.roles
 
-import productStatusesJson from '../../db/seeds/data/productStatuses.json' with {type: 'json'}
+import productStatusesJson from '../../db/seeds/data/product-statuses.json' with {type: 'json'}
 const productStatuses = productStatusesJson.productStatuses
 
-import paymentStatusJson from '../../db/seeds/data/paymentStatus.json' with { type: "json" };
+import paymentStatusJson from '../../db/seeds/data/payment-status.json' with { type: "json" };
 
-import  shippingAddressesJson from '../fixtures/shippingAddresses.json' with {type: 'json'}
+import  shippingAddressesJson from '../fixtures/shipping-addresses.json' with {type: 'json'}
 const shippingAddresses = shippingAddressesJson
 
 import usersJson from '../fixtures/users.json' with {type: 'json'}
@@ -24,12 +24,13 @@ const products = productsJson.products
 
 import ordersJson from '../fixtures/orders.json' with {type: 'json'}
 import { type Knex } from 'knex'
-import Order, { OrderModel } from '../../models/order'
-import { PAYMENT_PAID } from '../../types/PaymentStatus'
-import User from '../../models/user'
-import Category from '../../models/category'
-import Product from '../../models/product'
-const orders = ordersJson.orders as OrderModel[]
+import { PAYMENT_PAID } from '../../types/payment-status'
+import { Order } from '../../models/order';
+import UserRepository from '../../repositories/user-repository';
+import CategoryRepository from '../../repositories/category-repository';
+import ProductRepository from '../../repositories/product-repository';
+import OrderRepository from '../../repositories/order-repository';
+const orders = ordersJson.orders as Order[]
 
 export async function seed(knex: Knex): Promise<void> {
   await knex('roles').del()
@@ -37,13 +38,13 @@ export async function seed(knex: Knex): Promise<void> {
   await knex('users').del()
   await knex('userRoles').del()
 
-  for (const admin of admins) await User.create({user: admin, roles: ['admin']})
-  for (const editor of editors) await User.create({user: editor, roles: ['editor']})
-  for (const customer of customers) await User.create({user: customer, roles: ['customer']})
+  for (const admin of admins) await UserRepository.create({user: admin, roles: ['admin']})
+  for (const editor of editors) await UserRepository.create({user: editor, roles: ['editor']})
+  for (const customer of customers) await UserRepository.create({user: customer, roles: ['customer']})
 
   await knex('categories').del()
   for (const category of categories) {
-    await Category.create(category)
+    await CategoryRepository.create(category)
   }
   await knex('productStatus').del()
   await knex('productStatus').insert(productStatuses[0])
@@ -53,10 +54,10 @@ export async function seed(knex: Knex): Promise<void> {
   await knex('paymentStatus').insert(paymentStatusJson[0])
   await knex('paymentStatus').insert(paymentStatusJson[1])
 
-  await Product.destroyAll()
+  await ProductRepository.destroyAll()
 
   for (const product of products) {
-    await Product.create(product)
+    await ProductRepository.create(product)
   }
 
   await knex('orderItem').del()
@@ -69,7 +70,7 @@ export async function seed(knex: Knex): Promise<void> {
     const addr = shippingAddresses.find((i) => i.id === order.shippingAddressId)
     order.shippingAddress = mapShippingAddress(addr)
     order.paymentStatus = PAYMENT_PAID
-    await Order.create({
+    await OrderRepository.create({
       order,
       userId: order.userId,
     })

@@ -1,6 +1,6 @@
 import { type Knex } from 'knex'
-import paymentStatusjson from './data/paymentStatus.json' with { type: "json" };
-import shipmentStatusjson from './data/shippingStatus.json' with { type: "json" };
+import paymentStatusjson from './data/payment-status.json' with { type: "json" };
+import shipmentStatusjson from './data/shipping-status.json' with { type: "json" };
 
 const paymentStatus = paymentStatusjson
 const shippingStatus = shipmentStatusjson

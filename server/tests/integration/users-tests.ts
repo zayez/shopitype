@@ -1,7 +1,7 @@
 import test from 'tape'
 import jwt from 'jsonwebtoken'
 import knex from '../../db'
-import STATUS from '../../types/StatusCode'
+import STATUS from '../../types/status-code'
 import { login } from '../infrastructure/login'
 import {
   server,
@@ -10,12 +10,12 @@ import {
   destroy,
   getOne,
   getAll,
-} from '../requests/users'
-import config from '../../config'
+} from '../requests/users-request'
+import config from '../../config/config'
 const { SECRET } = config.jwt
 
 import usersJson from '../fixtures/users.json'
-import User from '../../models/user'
+import UserRepository from '../../repositories/user-repository'
 
 const customers = usersJson.customers
 const editors = usersJson.editors
@@ -93,7 +93,7 @@ test('As a customer I should:', (t) => {
 
   t.test('NOT be able to update another user', async (assert) => {
     const name = 'Bean'
-    const users = await User.find({ lastName: 'Doe' })
+    const users = await UserRepository.find({ lastName: 'Doe' })
     const res = await update(
       users[0].id,
       { firstName: name },
@@ -111,8 +111,8 @@ test('As a customer I should:', (t) => {
       { password: newPassword },
       { token, status: STATUS.Ok },
     )
-    const updatedUser = await User.findById(userId)
-    const isMatch = await User.comparePassword(
+    const updatedUser = await UserRepository.findById(userId)
+    const isMatch = await UserRepository.comparePassword(
       newPassword,
       updatedUser.password,
     )
@@ -122,7 +122,7 @@ test('As a customer I should:', (t) => {
     assert.end()
   })
   t.test('be able to get my data', async (assert) => {
-    const persistedUser = await User.findById(userId)
+    const persistedUser = await UserRepository.findById(userId)
     const res = await getOne(userId, { token, status: STATUS.Ok })
     const retrievedUser = res.body
 
@@ -133,7 +133,7 @@ test('As a customer I should:', (t) => {
 
   t.test('be able to delete my account', async (assert) => {
     const res = await destroy(userId, { token, status: STATUS.Ok })
-    const deletedUser = await User.findById(userId)
+    const deletedUser = await UserRepository.findById(userId)
 
     assert.equal(res.status, STATUS.Ok)
     assert.equal(deletedUser, null)
@@ -171,7 +171,7 @@ test('As an editor I should:', (t) => {
   t.test('be able to get all users', async (assert) => {
     const res = await getAll({ token, status: STATUS.Ok })
     const retrivedUsers = res.body
-    const storedUsers = await User.findAll()
+    const storedUsers = await UserRepository.findAll()
 
     assert.equal(res.status, STATUS.Ok)
     assert.equal(retrivedUsers.length, storedUsers.length)
@@ -179,7 +179,9 @@ test('As an editor I should:', (t) => {
   })
 
   t.test('be able to get a specific user', async (assert) => {
-    const customer = await User.findOne({ firstName: customers[1].firstName })
+    const customer = await UserRepository.findOne({
+      firstName: customers[1].firstName,
+    })
     const res = await getOne(customer.id, { token, status: STATUS.Ok })
     const retrievedUser = res.body
 

@@ -1,7 +1,7 @@
 import test from 'tape'
 import { faker } from '@faker-js/faker'
 import knex from '../../db'
-import STATUS from '../../types/StatusCode'
+import STATUS from '../../types/status-code'
 import { login } from '../infrastructure/login'
 import {
   server,
@@ -10,7 +10,7 @@ import {
   destroy,
   getOne,
   getAll,
-} from '../requests/products'
+} from '../requests/products-request'
 import productsJson from '../fixtures/products.json'
 import usersJson from '../fixtures/users.json'
 

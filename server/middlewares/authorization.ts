@@ -1,6 +1,6 @@
-import { setResponse } from '../helpers/middlewareHelpers'
-import User from '../models/user'
-import ActionStatus from '../types/ActionStatus'
+import { setResponse } from '../helpers/middleware-helpers'
+import UserRepository from '../repositories/user-repository'
+import ActionStatus from '../types/action-status'
 
 const authorizeRoles = (roles = []) => {
   return async (ctx, next) => {
@@ -12,7 +12,7 @@ const authorizeRoles = (roles = []) => {
         return
       }
 
-      if (!(await User.hasRole(user, roles))) {
+      if (!(await UserRepository.hasRole(user, roles))) {
         setResponse(ctx, { action: ActionStatus.Forbidden })
       }
       await next()

@@ -1,6 +1,6 @@
 import test from 'tape'
 import knex from '../../db'
-import STATUS from '../../types/StatusCode'
+import STATUS from '../../types/status-code'
 import { login, decodeToken } from '../infrastructure/login'
 import {
   server,
@@ -8,7 +8,7 @@ import {
   getOneByUser,
   getAll,
   getOne,
-} from '../requests/orders'
+} from '../requests/orders-request'
 import usersJson from '../fixtures/users.json'
 
 const editors = usersJson.editors

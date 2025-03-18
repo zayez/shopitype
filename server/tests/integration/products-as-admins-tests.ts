@@ -3,9 +3,9 @@ import { promises as fs } from 'fs';
 import  test from 'tape'
 import  { faker } from '@faker-js/faker'
 import  knex from '../../db'
-import  STATUS  from '../../types/StatusCode'
+import  STATUS  from '../../types/status-code'
 import  { login } from '../infrastructure/login'
-import  { existsFile } from '../../helpers/fsHelper'
+import  { existsFile } from '../../helpers/fs-helper'
 
 import productsJson from '../fixtures/products.json' with {type: 'json'}
 import usersJson from '../fixtures/users.json' with {type: 'json'}
@@ -27,10 +27,10 @@ import {
   updateUpload,
   getOne,
   getAll,
-} from '../requests/products'
+} from '../requests/products-request'
 
-import StatusCode from '../../types/StatusCode'
-import { ProductModel } from '../../models/product';
+import StatusCode from '../../types/status-code'
+import { Product } from '../../models/product';
 
 test('setup', async (t) => {
   t.end()
@@ -115,7 +115,7 @@ test('As admin I should:', (t) => {
   })
 
   t.test('be able to create a collection of products', async (assert) => {
-    const newProducts = [{ ...products[0] }, { ...products[1] }] as ProductModel[]
+    const newProducts = [{ ...products[0] }, { ...products[1] }] as Product[]
     delete newProducts[0].id
     delete newProducts[1].id
     const image0 = `${faker.system.directoryPath()}/image0.jpg`

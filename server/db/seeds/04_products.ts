@@ -1,5 +1,5 @@
 import { type Knex } from 'knex'
-import productStasesjson from './data/productStatuses.json' with { type: "json" };
+import productStasesjson from './data/product-statuses.json' with { type: "json" };
 
 const productStatuses = productStasesjson.productStatuses
 
