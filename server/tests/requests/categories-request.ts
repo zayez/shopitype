@@ -1,5 +1,5 @@
 import requestBuilder from '../helpers/request-builder'
-const { CATEGORIES } = require('../../api/endpoint-urls')
+const { CATEGORIES } = require('../../src/api/endpoint-urls')
 const {
   server,
   agent,

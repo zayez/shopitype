@@ -1,6 +1,6 @@
+import ActionStatus from '../types/action-status'
 import controllerHelper from '../helpers/controller-helper'
 import mapper from '../helpers/props-mapper-output'
-import ActionStatus from '../types/action-status'
 import UserRepository from '../repositories/user-repository'
 
 const controllerName = 'users'

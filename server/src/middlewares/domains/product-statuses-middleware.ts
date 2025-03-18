@@ -1,7 +1,7 @@
+import ActionStatus from '../../types/action-status'
 import ProductStatusesController from '../../controllers/product-statuses-controller'
 import { setResponse } from '../../helpers/middleware-helpers'
 import { isManager } from '../../helpers/user-helpers'
-import ActionStatus from '../../types/action-status'
 
 const getAll = async (ctx) => {
   try {

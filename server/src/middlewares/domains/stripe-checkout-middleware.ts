@@ -1,6 +1,6 @@
+import ActionStatus from '../../types/action-status'
 import StripeCheckoutController from '../../controllers/stripe-checkout-controller'
 import { setResponse } from '../../helpers/middleware-helpers'
-import ActionStatus from '../../types/action-status'
 
 const create = async (ctx) => {
   try {

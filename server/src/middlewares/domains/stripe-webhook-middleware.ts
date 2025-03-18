@@ -1,9 +1,9 @@
 import Stripe from 'stripe'
 import config from '../../config/config'
-import { PAYMENT_PAID, PAYMENT_UNPAID } from '../../types/payment-status'
 import OrdersController from '../../controllers/orders-controller'
-import { ORDER_STRIPE } from '../../types/order-type'
 import { setResponse } from '../../helpers/middleware-helpers'
+import { PAYMENT_PAID, PAYMENT_UNPAID } from '../../types/payment-status'
+import { ORDER_STRIPE } from '../../types/order-type'
 import ActionStatus from '../../types/action-status'
 
 const STRIPE_KEY = config.stripe.KEY

@@ -1,6 +1,6 @@
 import request from 'supertest'
-import server from '../../server'
-import { StatusCodeType } from '../../types/status-code'
+import server from '../../src/server'
+import { StatusCodeType } from '../../src/types/status-code'
 import TestAgent from 'supertest/lib/agent'
 import { debugStatus, setHeaders } from './request-helpers'
 

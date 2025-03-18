@@ -4,7 +4,7 @@ https://github.com/robmclarty/cred-server/blob/main/server/helpers/query_helper.
 
 */
 
-import knex from '../../db'
+import knex from '../../db/db'
 // import '../../models';
 import { app } from '../../config/config'
 

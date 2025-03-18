@@ -1,7 +1,7 @@
 import request from 'supertest'
-import server from '../../server'
+import server from '../../src/server'
 import jwt from 'jsonwebtoken'
-import config from '../../config/config'
+import config from '../../src/config/config'
 
 const { SECRET } = config.jwt
 const agent = request.agent(server)

@@ -1,6 +1,6 @@
+import ActionStatus from '../types/action-status'
 import { signToken } from '../helpers/jwt-helpers'
 import UserRepository from '../repositories/user-repository'
-import ActionStatus from '../types/action-status'
 
 const getRoot = async () => {
   return {

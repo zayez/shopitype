@@ -6,7 +6,6 @@ import {
   PATCH_USER,
   POST_USER,
 } from '../api/endpoint-urls'
-import UsersPipeline from '../middlewares/users'
 import compose from 'koa-compose'
 import { authorizeAdmin, authorizeManagers } from '../middlewares/authorization'
 import {

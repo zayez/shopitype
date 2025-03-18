@@ -1,4 +1,4 @@
-import { ORDERS, POST_ORDER, USERS } from '../../api/endpoint-urls'
+import { ORDERS, POST_ORDER, USERS } from '../../src/api/endpoint-urls'
 import requestBuilder from '../helpers/request-builder'
 import { debugStatus, setHeaders } from '../helpers/request-helpers'
 const { server, agent, getAll, getOne } = requestBuilder(ORDERS)

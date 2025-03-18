@@ -9,8 +9,8 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
 const dbName: string = 'storefly-db'
-const dbDev: string = path.join(__dirname, 'data', `${dbName}-dev.db`)
-const dbTest: string = path.join(__dirname, 'data', `${dbName}-test.db`)
+const dbDev: string = path.join(__dirname, '../data', `${dbName}-dev.db`)
+const dbTest: string = path.join(__dirname, '../data', `${dbName}-test.db`)
 
 const BASE_PATH: string = path.join(__dirname, 'db')
 

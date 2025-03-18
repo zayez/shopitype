@@ -2,10 +2,10 @@ import path from 'path'
 import controllerHelper from '../helpers/controller-helper'
 import mapper from '../helpers/props-mapper-output'
 import { deleteFile } from '../helpers/fs-helper'
-import ActionStatus from '../types/action-status'
 import { fileURLToPath } from 'url'
 import { Product } from '../models/product'
 import ProductRepository from '../repositories/product-repository'
+import ActionStatus from '../types/action-status'
 
 const __filename = fileURLToPath(import.meta.url)
 const controllerName = 'products'

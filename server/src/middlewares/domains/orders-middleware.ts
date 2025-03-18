@@ -1,7 +1,7 @@
+import ActionStatus from '../../types/action-status'
 import OrdersController from '../../controllers/orders-controller'
 import { setResponse } from '../../helpers/middleware-helpers'
 import mapper from '../../helpers/props-mapper-input'
-import ActionStatus from '../../types/action-status'
 
 const get = async (ctx) => {
   try {

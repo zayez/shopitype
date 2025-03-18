@@ -1,7 +1,7 @@
 import test from 'tape'
-import  knex from '../../db'
+import  knex from '../../src/db/db'
 import usersJson from '../fixtures/users.json' with {type: 'json'}
-import UserRepository from '../../repositories/user-repository'
+import UserRepository from '../../src/repositories/user-repository'
 const admin = usersJson.admins[0]
 
 test('setup', async (t) => {

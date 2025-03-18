@@ -1,7 +1,7 @@
 import test from 'tape'
 import jwt from 'jsonwebtoken'
-import knex from '../../db'
-import STATUS from '../../types/status-code'
+import knex from '../../src/db/db'
+import STATUS from '../../src/types/status-code'
 import { login } from '../infrastructure/login'
 import {
   server,
@@ -11,11 +11,11 @@ import {
   getOne,
   getAll,
 } from '../requests/users-request'
-import config from '../../config/config'
+import config from '../../src/config/config'
 const { SECRET } = config.jwt
 
 import usersJson from '../fixtures/users.json'
-import UserRepository from '../../repositories/user-repository'
+import UserRepository from '../../src/repositories/user-repository'
 
 const customers = usersJson.customers
 const editors = usersJson.editors

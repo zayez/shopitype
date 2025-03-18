@@ -1,4 +1,4 @@
-import { USERS } from '../../api/endpoint-urls'
+import { USERS } from '../../src/api/endpoint-urls'
 import requestBuilder from '../helpers/request-builder'
 const {
   server,

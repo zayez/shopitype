@@ -1,8 +1,8 @@
+import ActionStatus from '../../types/action-status'
 import ProductsController from '../../controllers/products-controller'
 import { setResponse } from '../../helpers/middleware-helpers'
 import mapper from '../../helpers/props-mapper-input'
 import { isManager } from '../../helpers/user-helpers'
-import ActionStatus from '../../types/action-status'
 
 const create = async (ctx) => {
   try {

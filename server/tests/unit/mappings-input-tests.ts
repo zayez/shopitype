@@ -1,5 +1,5 @@
 import test from 'tape'
-import mapper from '../../helpers/props-mapper-input'
+import mapper from '../../src/helpers/props-mapper-input'
 
 test('setup', async (t) => {
   t.end()

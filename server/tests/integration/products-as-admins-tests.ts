@@ -2,10 +2,10 @@ import path from 'path'
 import { promises as fs } from 'fs';
 import  test from 'tape'
 import  { faker } from '@faker-js/faker'
-import  knex from '../../db'
-import  STATUS  from '../../types/status-code'
+import  knex from '../../src/db/db'
+import  STATUS  from '../../src/types/status-code'
 import  { login } from '../infrastructure/login'
-import  { existsFile } from '../../helpers/fs-helper'
+import  { existsFile } from '../../src/helpers/fs-helper'
 
 import productsJson from '../fixtures/products.json' with {type: 'json'}
 import usersJson from '../fixtures/users.json' with {type: 'json'}
@@ -29,8 +29,8 @@ import {
   getAll,
 } from '../requests/products-request'
 
-import StatusCode from '../../types/status-code'
-import { Product } from '../../models/product';
+import StatusCode from '../../src/types/status-code'
+import { Product } from '../../src/models/product';
 
 test('setup', async (t) => {
   t.end()

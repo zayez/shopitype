@@ -1,8 +1,8 @@
 import path from 'path'
 import requestBuilder from '../helpers/request-builder'
-import { POST_PRODUCT, PRODUCTS } from '../../api/endpoint-urls'
+import { POST_PRODUCT, PRODUCTS } from '../../src/api/endpoint-urls'
 import { debugStatus } from '../helpers/request-helpers'
-import { StatusCodeType } from '../../types/status-code'
+import { StatusCodeType } from '../../src/types/status-code'
 const {
   agent,
   server,

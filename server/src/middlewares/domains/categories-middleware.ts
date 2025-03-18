@@ -1,7 +1,7 @@
+import ActionStatus from '../../types/action-status'
 import CategoriesController from '../../controllers/categories-controller'
 import { setResponse } from '../../helpers/middleware-helpers'
 import mapper from '../../helpers/props-mapper-input'
-import ActionStatus from '../../types/action-status'
 
 const create = async (ctx) => {
   try {

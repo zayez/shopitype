@@ -1,7 +1,7 @@
 import { setResponse } from '../helpers/middleware-helpers'
 import { formatValidations } from '../helpers/response-helpers'
-import ActionStatus from '../types/action-status'
 import { modelMap } from '../utils/model-utils'
+import ActionStatus from '../types/action-status'
 
 const optsJoi = {
   abortEarly: false,

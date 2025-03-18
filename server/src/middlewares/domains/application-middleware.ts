@@ -1,6 +1,6 @@
+import ActionStatus from '../../types/action-status'
 import ApplicationController from '../../controllers/application-controller'
 import { setResponse } from '../../helpers/middleware-helpers'
-import ActionStatus from '../../types/action-status'
 
 import mapper from '../../helpers/props-mapper-input'
 import outputMapper from '../../helpers/props-mapper-output'

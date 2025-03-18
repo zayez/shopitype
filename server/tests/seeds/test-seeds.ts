@@ -1,10 +1,10 @@
-import rolesJson from '../../db/seeds/data/roles.json' with {type: 'json'}
+import rolesJson from '../../src/db/seeds/data/roles.json' with {type: 'json'}
 const roles = rolesJson.roles
 
-import productStatusesJson from '../../db/seeds/data/product-statuses.json' with {type: 'json'}
+import productStatusesJson from '../../src/db/seeds/data/product-statuses.json' with {type: 'json'}
 const productStatuses = productStatusesJson.productStatuses
 
-import paymentStatusJson from '../../db/seeds/data/payment-status.json' with { type: "json" };
+import paymentStatusJson from '../../src/db/seeds/data/payment-status.json' with { type: "json" };
 
 import  shippingAddressesJson from '../fixtures/shipping-addresses.json' with {type: 'json'}
 const shippingAddresses = shippingAddressesJson
@@ -24,12 +24,12 @@ const products = productsJson.products
 
 import ordersJson from '../fixtures/orders.json' with {type: 'json'}
 import { type Knex } from 'knex'
-import { PAYMENT_PAID } from '../../types/payment-status'
-import { Order } from '../../models/order';
-import UserRepository from '../../repositories/user-repository';
-import CategoryRepository from '../../repositories/category-repository';
-import ProductRepository from '../../repositories/product-repository';
-import OrderRepository from '../../repositories/order-repository';
+import { PAYMENT_PAID } from '../../src/types/payment-status'
+import { Order } from '../../src/models/order';
+import UserRepository from '../../src/repositories/user-repository';
+import CategoryRepository from '../../src/repositories/category-repository';
+import ProductRepository from '../../src/repositories/product-repository';
+import OrderRepository from '../../src/repositories/order-repository';
 const orders = ordersJson.orders as Order[]
 
 export async function seed(knex: Knex): Promise<void> {

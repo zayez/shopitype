@@ -1,8 +1,8 @@
-import knex from '../db'
+import knex from '../db/db'
 import bcrypt from 'bcrypt'
-import queryBuilder from '../lib/query-builder/query-builder'
 import { Repository } from '../repositories/repository'
 import { User } from '../models/user'
+import queryBuilder from '../lib/query-builder/query-builder'
 
 const TABLE_NAME = 'users'
 const SELECTABLE_FIELDS = [

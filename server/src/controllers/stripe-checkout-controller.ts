@@ -1,9 +1,9 @@
-import ActionStatus from '../types/action-status'
 import isEqual from 'lodash/isEqual'
 import Stripe from 'stripe'
 
 import config from '../config/config'
 import ProductRepository from '../repositories/product-repository'
+import ActionStatus from '../types/action-status'
 
 const CLIENT_URL = config.CLIENT_URL
 const STRIPE_KEY = config.stripe.KEY

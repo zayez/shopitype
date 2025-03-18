@@ -1,7 +1,11 @@
 import request from 'supertest'
-import server from '../../server'
+import server from '../../src/server'
 import { debugStatus, setHeaders } from '../helpers/request-helpers'
-import { GET_ROOT, POST_SIGN_IN, POST_SIGN_UP } from '../../api/endpoint-urls'
+import {
+  GET_ROOT,
+  POST_SIGN_IN,
+  POST_SIGN_UP,
+} from '../../src/api/endpoint-urls'
 
 const agent = request.agent(server)
 

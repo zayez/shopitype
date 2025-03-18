@@ -1,8 +1,8 @@
-import knex from '../db'
-import queryBuilder from '../lib/query-builder/query-builder'
-import { PROD_ACTIVE } from '../types/product-status'
+import knex from '../db/db'
 import { Repository } from '../repositories/repository'
 import { Product } from '../models/product'
+import { PROD_ACTIVE } from '../types/product-status'
+import queryBuilder from '../lib/query-builder/query-builder'
 
 const TABLE_NAME = 'products'
 const SELECTABLE_FIELDS = [

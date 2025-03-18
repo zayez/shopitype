@@ -1,9 +1,9 @@
-import knex from '../db'
+import knex from '../db/db'
 import { app } from '../config/config'
-import { SHIPPING_UNSHIPPED } from '../types/shipping-status'
-import queryBuilder from '../lib/query-builder/query-builder'
 import { Repository } from '../repositories/repository'
 import { Order } from '../models/order'
+import queryBuilder from '../lib/query-builder/query-builder'
+import { SHIPPING_UNSHIPPED } from '../types/shipping-status'
 
 const TABLE_NAME = 'orders'
 const SELECTABLE_FIELDS = ['id']

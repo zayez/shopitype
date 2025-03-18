@@ -1,7 +1,7 @@
 import test from 'tape'
 import { faker } from '@faker-js/faker'
-import knex from '../../db'
-import STATUS from '../../types/status-code'
+import knex from '../../src/db/db'
+import STATUS from '../../src/types/status-code'
 import { login } from '../infrastructure/login'
 import {
   server,

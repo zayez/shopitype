@@ -1,6 +1,6 @@
 import test from 'tape'
-import knex from '../../db'
-import STATUS from '../../types/status-code'
+import knex from '../../src/db/db'
+import STATUS from '../../src/types/status-code'
 import { login, decodeToken } from '../infrastructure/login'
 import {
   server,
