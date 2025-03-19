@@ -6,4 +6,4 @@ export const EntityEnum = {
   Order: 'order',
 } as const
 
-type EntityType = (typeof EntityEnum)[keyof typeof EntityEnum]
+export type EntityType = (typeof EntityEnum)[keyof typeof EntityEnum]
