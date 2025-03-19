@@ -6,7 +6,7 @@ export const ShippingStatusEnum = {
   UNSHIPPED: SHIPPING_UNSHIPPED,
   SHIPPED: SHIPPING_SHIPPED,
   DELIVERED: SHIPPING_DELIVERED,
-}
+} as const
 
 export type ShippingStatusType =
   (typeof ShippingStatusEnum)[keyof typeof ShippingStatusEnum]

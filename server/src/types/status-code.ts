@@ -12,7 +12,7 @@ const StatusCode = {
   SignUpError_CreateUserFailed: 500,
   SignUpError_CleanupUserFailed: 500,
   SignUpError_CleanupUserSucceded: 500,
-}
+} as const
 
 export type StatusCodeType = (typeof StatusCode)[keyof typeof StatusCode]
 

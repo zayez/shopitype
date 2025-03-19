@@ -10,7 +10,7 @@ const ActionStatus = {
   Error: 'error', // 500
   CreateError: 'Create_Error', // 400 (generic error)
   SignUpError_CreateUserFailed: 'SignUpError_CreateUserFailed', // 500
-}
+} as const
 
 type ActionStatusType = (typeof ActionStatus)[keyof typeof ActionStatus]
 
