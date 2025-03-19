@@ -12,10 +12,10 @@ const mapCategory = ({
   createdAt,
   updatedAt,
 }: {
-  id: number
-  title: string
-  createdAt: Date
-  updatedAt: Date
+  id?: number
+  title?: string
+  createdAt?: Date
+  updatedAt?: Date
 }) => {
   const category: Category = {}
   if (id) category.id = id
@@ -72,10 +72,10 @@ const mapProductStatus = ({
   createdAt,
   updatedAt,
 }: {
-  id: number
-  name: string
-  createdAt: Date
-  updatedAt: Date
+  id?: number
+  name?: string
+  createdAt?: Date
+  updatedAt?: Date
 }) => {
   const status: ProductStatus = {}
   if (id) status.id = id
@@ -87,7 +87,7 @@ const mapProductStatus = ({
 }
 
 interface mapUserProps {
-  id: number
+  id?: number
   firstName?: string
   lastName?: string
   email?: string
@@ -105,7 +105,7 @@ const mapUser = ({
   updatedAt,
   roles,
 }: mapUserProps) => {
-  const user: User = { id }
+  const user: User = id ? { id } : {}
   if (id) user.id = id
   if (firstName) user.firstName = firstName
   if (lastName) user.lastName = lastName
