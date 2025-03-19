@@ -22,7 +22,7 @@ interface KnexConfig {
     filename?: string
     timezone: string
     host?: string
-    port?: string
+    port?: number
     database?: string
     user?: string
     password?: string
@@ -85,7 +85,7 @@ const config: KnexConfigs = {
     useNullAsDefault: true,
     connection: {
       host: process.env.DB_HOST || 'localhost',
-      port: process.env.DB_PORT || '4002',
+      port: process.env.DB_PORT ? Number(process.env.DB_PORT) : 4002,
       database: process.env.DB_NAME || dbName,
       user: process.env.DB_USER || 'root',
       password: process.env.DB_PASS || 'root',
