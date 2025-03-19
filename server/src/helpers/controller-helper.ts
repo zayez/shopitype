@@ -73,7 +73,7 @@ export default (controllerName: string): ControllerFunctions => {
   const update = async (id: number, model: UpdateEntityType) => {
     try {
       if (modelName !== EntityEnum.Category && modelName !== EntityEnum.User) {
-        throw new Error(`Create operation is not supported for ${modelName}`)
+        throw new Error(`Update operation is not supported for ${modelName}`)
       }
 
       const updatableModel = Model as Repository<Category | User>
@@ -97,7 +97,7 @@ export default (controllerName: string): ControllerFunctions => {
   const destroy = async (id: number) => {
     try {
       if (modelName === EntityEnum.ProductStatus) {
-        throw new Error(`Create operation is not supported for ${modelName}`)
+        throw new Error(`Destroy operation is not supported for ${modelName}`)
       }
 
       const destroyableModel = Model as Repository<Category | User | Product>
