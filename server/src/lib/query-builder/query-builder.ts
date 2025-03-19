@@ -16,9 +16,9 @@ export interface PaginationOptions {
 }
 
 export interface QueryBuilder<T> {
-  find: (filters: Partial<T>, opts?: PaginationOptions) => Promise<T[]>
+  find: (filters?: Partial<T>, opts?: PaginationOptions) => Promise<T[]>
   findAll: (paginationOpts?: PaginationOptions) => Promise<T[]>
-  findOne: (filters: Partial<T>) => Promise<T | undefined>
+  findOne: (filters?: Partial<T>) => Promise<T | undefined>
   findById: (id: number) => Promise<T | undefined>
   create: (entity: T | T[]) => Promise<T | undefined>
   update: (id: number, props: Partial<T>) => Promise<T | undefined>
@@ -35,15 +35,19 @@ export default function queryBuilder<T = any>(
    * Finds with filters.
    */
   const find = async (
-    filters: Partial<T>,
+    filters?: Partial<T>,
     { page = 1, perPage = ITEMS_PER_PAGE }: PaginationOptions = {},
   ): Promise<any[]> => {
-    const items = await knex
-      .select(selectableFields)
-      .from(tableName)
-      .where(filters)
-      // Assuming you have a pagination plugin for knex.
-      .paginate({ perPage: perPage, currentPage: page })
+    const items = filters
+      ? await knex
+          .select(selectableFields)
+          .from(tableName)
+          .where(filters ?? undefined)
+          .paginate({ perPage: perPage, currentPage: page })
+      : await knex
+          .select(selectableFields)
+          .from(tableName)
+          .paginate({ perPage: perPage, currentPage: page })
 
     return items.data
   }
@@ -58,8 +62,10 @@ export default function queryBuilder<T = any>(
   /**
    * Finds first match.
    */
-  const findOne = async (filters: Partial<T>): Promise<T | undefined> => {
-    return await knex.first(selectableFields).from(tableName).where(filters)
+  const findOne = async (filters?: Partial<T>): Promise<T | undefined> => {
+    return filters
+      ? await knex.first(selectableFields).from(tableName).where(filters)
+      : await knex.first(selectableFields).from(tableName)
   }
 
   /**

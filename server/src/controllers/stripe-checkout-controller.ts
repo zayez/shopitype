@@ -4,12 +4,19 @@ import Stripe from 'stripe'
 import config from '../config/config'
 import ProductRepository from '../repositories/product-repository'
 import ActionStatus from '../types/action-status'
+import { OrderItem } from '../models/order'
 
 const CLIENT_URL = config.CLIENT_URL
 const STRIPE_KEY = config.stripe.KEY
 const stripe = new Stripe(STRIPE_KEY, { apiVersion: '2022-11-15' })
 
-const create = async ({ items, userId }) => {
+const create = async ({
+  items,
+  userId,
+}: {
+  items: OrderItem[]
+  userId: number
+}) => {
   try {
     const customer = await stripe.customers.create({
       metadata: {
@@ -17,21 +24,29 @@ const create = async ({ items, userId }) => {
       },
     })
 
-    const products = await ProductRepository.findAllIn(items.map((i) => i.id))
+    const itemsIds = items
+      .map((i) => i.id)
+      .filter((id): id is number => id !== undefined)
+    const products = await ProductRepository.findAllIn(itemsIds)
     const productsIds = products.map((i) => i.id)
-    const itemsIds = items.map((i) => i.id)
 
     if (!isEqual(productsIds.sort(), itemsIds.sort())) {
       return { action: ActionStatus.BadRequest }
     }
 
     const line_items = items.map((item) => {
+      if (item.id === undefined || item.quantity === undefined) {
+        return { action: ActionStatus.BadRequest, payload: null }
+      }
       const product = products.find((p) => p.id === item.id)
+      if (!product) {
+        return { action: ActionStatus.BadRequest, payload: null }
+      }
       return {
         price_data: {
           currency: 'usd',
           product_data: {
-            name: product.title,
+            name: product.title ?? 'Unknown Product',
             metadata: {
               productId: item.id,
             },
@@ -78,7 +93,7 @@ const create = async ({ items, userId }) => {
   }
 }
 
-const get = async (id) => {
+const get = async (id: string) => {
   try {
     const session = await stripe.checkout.sessions.retrieve(id, {
       expand: ['line_items'],

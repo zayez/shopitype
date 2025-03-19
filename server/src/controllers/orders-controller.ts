@@ -3,11 +3,16 @@ import { ORDER_APP, ORDER_STRIPE } from '../types/order-type'
 import controllerHelper from '../helpers/controller-helper'
 import mapper from '../helpers/props-mapper-output'
 import OrderRepository from '../repositories/order-repository'
+import { Order } from '../models/order'
+import { ShippingStatusType } from '../types/shipping-status'
 
 const controllerName = 'orders'
 const { getAll, getOne } = controllerHelper(controllerName)
 
-const placeOrder = async ({ order, userId }, orderType = ORDER_APP) => {
+const placeOrder = async (
+  { order, userId }: { order: Order; userId: number },
+  orderType = ORDER_APP,
+) => {
   try {
     const savedOrder =
       orderType === ORDER_STRIPE
@@ -31,7 +36,7 @@ const placeOrder = async ({ order, userId }, orderType = ORDER_APP) => {
   }
 }
 
-const getAllByUser = async (id) => {
+const getAllByUser = async (id: number) => {
   try {
     const orders = await OrderRepository.find({ userId: id })
     if (orders) {
@@ -48,7 +53,13 @@ const getAllByUser = async (id) => {
   }
 }
 
-const getOneByUser = async ({ orderId, userId }) => {
+const getOneByUser = async ({
+  orderId,
+  userId,
+}: {
+  orderId: number
+  userId: number
+}) => {
   try {
     const order = await OrderRepository.findOneByUser({ orderId, userId })
     if (order) {
@@ -65,7 +76,10 @@ const getOneByUser = async ({ orderId, userId }) => {
   }
 }
 
-const markShippingStatus = async (orderId, status) => {
+const markShippingStatus = async (
+  orderId: number,
+  status: ShippingStatusType,
+) => {
   try {
     const order = await OrderRepository.markShippingStatus(orderId, status)
     if (order) {

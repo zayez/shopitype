@@ -3,8 +3,20 @@ import { OrderItem, Order, ShippingAddress } from '../models/order'
 import { Product } from '../models/product'
 import { ProductStatus } from '../models/product-status'
 import { User } from '../models/user'
+import { PaymentStatusType } from '../types/payment-status'
+import { ShippingStatusType } from '../types/shipping-status'
 
-const mapCategory = ({ id, title, createdAt, updatedAt }) => {
+const mapCategory = ({
+  id,
+  title,
+  createdAt,
+  updatedAt,
+}: {
+  id: number
+  title: string
+  createdAt: Date
+  updatedAt: Date
+}) => {
   const category: Category = {}
   if (id) category.id = id
   if (title) category.title = title
@@ -54,7 +66,17 @@ const mapProduct = ({
   return product
 }
 
-const mapProductStatus = ({ id, name, createdAt, updatedAt }) => {
+const mapProductStatus = ({
+  id,
+  name,
+  createdAt,
+  updatedAt,
+}: {
+  id: number
+  name: string
+  createdAt: Date
+  updatedAt: Date
+}) => {
   const status: ProductStatus = {}
   if (id) status.id = id
   if (name) status.name = name
@@ -65,7 +87,7 @@ const mapProductStatus = ({ id, name, createdAt, updatedAt }) => {
 }
 
 interface mapUserProps {
-  id?: number
+  id: number
   firstName?: string
   lastName?: string
   email?: string
@@ -83,7 +105,7 @@ const mapUser = ({
   updatedAt,
   roles,
 }: mapUserProps) => {
-  const user: User = {}
+  const user: User = { id }
   if (id) user.id = id
   if (firstName) user.firstName = firstName
   if (lastName) user.lastName = lastName
@@ -103,6 +125,14 @@ const mapOrderItem = ({
   subtotal,
   price,
   quantity,
+}: {
+  id?: number
+  title?: string
+  image?: string
+  total?: number
+  subtotal?: number
+  price?: number
+  quantity?: number
 }) => {
   const item: OrderItem = {}
   if (id) item.id = id
@@ -125,6 +155,16 @@ const mapOrder = ({
   paymentStatus,
   shippingStatus,
   shippingAddress,
+}: {
+  id?: number
+  total?: number
+  subtotal?: number
+  items?: OrderItem[]
+  dateOrder?: Date
+  customer?: any
+  paymentStatus?: PaymentStatusType
+  shippingStatus?: ShippingStatusType
+  shippingAddress?: any
 }) => {
   const order: Order = {}
   if (id) order.id = id
@@ -149,6 +189,13 @@ const mapShippingAddress = ({
   country,
   state,
   postalCode,
+}: {
+  addressLine1: string
+  addressLine2: string
+  city: string
+  country: string
+  state: string
+  postalCode: any
 }) => {
   const addr: ShippingAddress = {}
   if (addressLine1) addr.addressLine1 = addressLine1

@@ -2,7 +2,7 @@ export interface Order {
   userId?: number
   id?: number
   customer?: any
-  items?: OrderItem
+  items?: OrderItem[]
   total?: number
   subtotal?: number
   paymentStatus?: string

@@ -1,21 +1,25 @@
-import path from 'path'
 import controllerHelper from '../helpers/controller-helper'
 import mapper from '../helpers/props-mapper-output'
 import { deleteFile } from '../helpers/fs-helper'
-import { fileURLToPath } from 'url'
 import { Product } from '../models/product'
 import ProductRepository from '../repositories/product-repository'
 import ActionStatus from '../types/action-status'
+import { OrderItem } from '../models/order'
 
-const __filename = fileURLToPath(import.meta.url)
 const controllerName = 'products'
 
 const { create, destroy, getOne, getAll } = controllerHelper(controllerName)
 
-const update = async (id, props: Product = {}) => {
+const update = async (id: number, props: Product) => {
   try {
     if (props.image) {
       const product = await ProductRepository.findById(id)
+      if (!product) {
+        return {
+          action: ActionStatus.BadRequest,
+          payload: null,
+        }
+      }
       await deleteFile(product.image)
     }
     const updatedProduct = await ProductRepository.update(id, props)
@@ -35,7 +39,7 @@ const update = async (id, props: Product = {}) => {
   }
 }
 
-const createCollection = async (products) => {
+const createCollection = async (products: Product[]) => {
   try {
     // lastProduct is the last item created (for now)
     const lastProduct = await ProductRepository.create(products)
@@ -54,9 +58,9 @@ const createCollection = async (products) => {
   }
 }
 
-const getAllActive = async (pagination) => {
+const getAllActive = async ({ page }: { page: number }) => {
   try {
-    const productsFound = await ProductRepository.findAllActive(pagination)
+    const productsFound = await ProductRepository.findAllActive(page)
     if (productsFound) {
       return {
         action: ActionStatus.Ok,
@@ -72,7 +76,7 @@ const getAllActive = async (pagination) => {
   }
 }
 
-const getOneActive = async (id) => {
+const getOneActive = async (id: number) => {
   try {
     const productFound = await ProductRepository.findOneActive(id)
     if (productFound) {
@@ -91,7 +95,7 @@ const getOneActive = async (id) => {
   }
 }
 
-const validateItems = async (items) => {
+const validateItems = async (items: OrderItem[]) => {
   try {
     const values = items.map((i) => i.productId)
     const foundItems = await ProductRepository.includesAll('id', values)

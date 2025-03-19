@@ -1,6 +1,7 @@
 import ActionStatus from '../types/action-status'
 import { signToken } from '../helpers/jwt-helpers'
 import UserRepository from '../repositories/user-repository'
+import { User } from '../models/user'
 
 const getRoot = async () => {
   return {
@@ -9,12 +10,12 @@ const getRoot = async () => {
   }
 }
 
-async function signUp(user) {
+async function signUp(user: User) {
   const roles = ['customer']
   try {
     const savedUser = await UserRepository.create({ user, roles })
 
-    if (savedUser) {
+    if (savedUser.id) {
       const token = signToken(savedUser.id)
       return {
         action: ActionStatus.Created,
@@ -29,7 +30,7 @@ async function signUp(user) {
   }
 }
 
-async function signIn(user) {
+async function signIn(user: User) {
   const token = signToken(user.id)
   return { action: ActionStatus.Ok, payload: { token } }
 }

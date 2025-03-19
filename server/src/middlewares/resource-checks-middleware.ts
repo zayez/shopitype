@@ -3,8 +3,9 @@ import UserRepository from '../repositories/user-repository'
 import ActionStatus from '../types/action-status'
 import { modelMap } from '../utils/model-utils'
 import pluralize from 'pluralize'
+import Koa from 'koa'
 
-async function userExists(ctx, next) {
+async function userExists(ctx: Koa.Context, next: Koa.Next) {
   try {
     const { email } = ctx.request.body
     const foundUser = await UserRepository.findOne({ email })

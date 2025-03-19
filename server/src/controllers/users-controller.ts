@@ -2,12 +2,13 @@ import ActionStatus from '../types/action-status'
 import controllerHelper from '../helpers/controller-helper'
 import mapper from '../helpers/props-mapper-output'
 import UserRepository from '../repositories/user-repository'
+import { User } from '../models/user'
 
 const controllerName = 'users'
 
 const { update, destroy, getOne, getAll } = controllerHelper(controllerName)
 
-const create = async (user, roles) => {
+const create = async (user: User, roles: string[]) => {
   try {
     const savedUser = await UserRepository.create({ user, roles })
 
@@ -25,7 +26,7 @@ const create = async (user, roles) => {
   }
 }
 
-const getAllByRoles = async (role) => {
+const getAllByRoles = async (role: string) => {
   try {
     const users = await UserRepository.findAllByRoles(role)
     if (users) {
