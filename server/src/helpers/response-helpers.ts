@@ -16,10 +16,4 @@ const formatValidations = (errorsDetails) => {
   return errors
 }
 
-const formatPayload = (payload) => {
-  return {
-    ...payload,
-  }
-}
-
-export { formatValidations, formatPayload }
+export { formatValidations }
