@@ -1,9 +1,11 @@
 import { setResponse } from '../helpers/middleware-helpers'
 import UserRepository from '../repositories/user-repository'
 import ActionStatus from '../types/action-status'
+import Koa from 'koa'
+import { RoleType } from '../types/role-type'
 
-const authorizeRoles = (roles = []) => {
-  return async (ctx, next) => {
+const authorizeRoles = (roles: RoleType[] = []) => {
+  return async (ctx: Koa.Context, next: Koa.Next) => {
     try {
       const user = ctx.state.user
       if (!user) {

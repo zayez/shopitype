@@ -1,3 +1,4 @@
+import { RoleType } from '../types/role-type'
 import { Role } from './role'
 
 export interface User {
@@ -6,7 +7,7 @@ export interface User {
   firstName?: string
   lastName?: string
   password?: string
-  roles?: string[]
+  roles?: RoleType[]
   createdAt?: any
   updatedAt?: any
 }
