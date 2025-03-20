@@ -3,8 +3,9 @@ import ProductsController from '../../controllers/products-controller'
 import { setResponse } from '../../helpers/middleware-helpers'
 import mapper from '../../helpers/props-mapper-input'
 import { isManager } from '../../helpers/user-helpers'
+import Koa from 'koa'
 
-const create = async (ctx) => {
+const create = async (ctx: Koa.Context) => {
   try {
     const product = mapper.mapProduct(ctx.request.body)
     if (ctx.request.file) {
@@ -20,7 +21,7 @@ const create = async (ctx) => {
   }
 }
 
-const createCollection = async (ctx) => {
+const createCollection = async (ctx: Koa.Context) => {
   try {
     const products = ctx.request.body.products.map(mapper.mapProduct)
     const { action, payload } = await ProductsController.createCollection(
@@ -32,7 +33,7 @@ const createCollection = async (ctx) => {
   }
 }
 
-const update = async (ctx) => {
+const update = async (ctx: Koa.Context) => {
   try {
     const { id } = ctx.params
     const props = mapper.mapProduct(ctx.request.body)
@@ -52,7 +53,7 @@ const update = async (ctx) => {
   }
 }
 
-const destroy = async (ctx) => {
+const destroy = async (ctx: Koa.Context) => {
   try {
     const { id } = ctx.params
     const { action, payload } = await ProductsController.destroy(id)
@@ -62,7 +63,7 @@ const destroy = async (ctx) => {
   }
 }
 
-const get = async (ctx) => {
+const get = async (ctx: Koa.Context) => {
   try {
     const { id } = ctx.params
     const get = isManager(ctx.state.user)
@@ -76,13 +77,16 @@ const get = async (ctx) => {
   }
 }
 
-const getAll = async (ctx) => {
+const getAll = async (ctx: Koa.Context) => {
   try {
     const { page } = ctx.request.query
+    const pageNum = Number(page)
     const get = isManager(ctx.state.user)
       ? ProductsController.getAll
       : ProductsController.getAllActive
-    const { action, payload } = await get({ page })
+    const { action, payload } = await get({
+      page: pageNum ? pageNum : undefined,
+    })
     setResponse(ctx, { action, payload })
   } catch (err) {
     setResponse(ctx, { action: ActionStatus.Error })

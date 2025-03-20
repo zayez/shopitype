@@ -2,8 +2,9 @@ import ActionStatus from '../../types/action-status'
 import OrdersController from '../../controllers/orders-controller'
 import { setResponse } from '../../helpers/middleware-helpers'
 import mapper from '../../helpers/props-mapper-input'
+import Koa from 'koa'
 
-const get = async (ctx) => {
+const get = async (ctx: Koa.Context) => {
   try {
     const { id } = ctx.params
     const { action, payload } = await OrdersController.getOne(id)
@@ -13,7 +14,7 @@ const get = async (ctx) => {
   }
 }
 
-const getAll = async (ctx) => {
+const getAll = async (ctx: Koa.Context) => {
   try {
     const { page } = ctx.request.query
     const { action, payload } = await OrdersController.getAll({ page })
@@ -23,7 +24,7 @@ const getAll = async (ctx) => {
   }
 }
 
-const placeOrder = async (ctx) => {
+const placeOrder = async (ctx: Koa.Context) => {
   try {
     const userId = ctx.state.user.id
     const order = mapper.mapOrder(ctx.request.body)
@@ -38,7 +39,7 @@ const placeOrder = async (ctx) => {
   }
 }
 
-const getAllByUser = async (ctx) => {
+const getAllByUser = async (ctx: Koa.Context) => {
   try {
     const { userId } = ctx.params
     const { action, payload } = await OrdersController.getAllByUser(userId)
@@ -48,7 +49,7 @@ const getAllByUser = async (ctx) => {
   }
 }
 
-const getOneByUser = async (ctx) => {
+const getOneByUser = async (ctx: Koa.Context) => {
   try {
     const { orderId, userId } = ctx.params
     const { action, payload } = await OrdersController.getOneByUser({
@@ -61,7 +62,7 @@ const getOneByUser = async (ctx) => {
   }
 }
 
-const markShippingStatus = async (ctx) => {
+const markShippingStatus = async (ctx: Koa.Context) => {
   try {
     const { status } = ctx.request.body
     const { id } = ctx.params
