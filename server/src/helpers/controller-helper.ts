@@ -22,7 +22,7 @@ interface ControllerFunctions {
   update: (id: any, model: any) => Promise<ActionResult>
   destroy: (id: any) => Promise<ActionResult>
   getOne: (id: any) => Promise<ActionResult>
-  getAll: (pagination?: any) => Promise<ActionResult>
+  getAll: (pagination?: PaginationOptions) => Promise<ActionResult>
 }
 
 const mapperMap = {
@@ -137,7 +137,7 @@ export default (controllerName: string): ControllerFunctions => {
     }
   }
 
-  const getAll = async (pagination: PaginationOptions) => {
+  const getAll = async (pagination?: PaginationOptions) => {
     try {
       const models = await Model.findAll(pagination)
       if (models) {

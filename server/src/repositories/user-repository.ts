@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt'
 import { Repository } from '../repositories/repository'
 import { User } from '../models/user'
 import queryBuilder from '../lib/query-builder/query-builder'
+import { RoleType } from '../types/role-type'
 
 const TABLE_NAME = 'users'
 const SELECTABLE_FIELDS = [
@@ -122,7 +123,7 @@ const findById = async (id) => {
   return user
 }
 
-const findAllByRoles = async (roles) => {
+const findAllByRoles = async (roles: RoleType[]) => {
   const selectedRoles = await knex('roles').select('id').whereIn('name', roles)
   if (!selectedRoles) return []
 

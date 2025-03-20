@@ -20,7 +20,7 @@ const update = async (id: number, props: Product) => {
           payload: null,
         }
       }
-      await deleteFile(product.image)
+      await deleteFile(product.image ?? '')
     }
     const updatedProduct = await ProductRepository.update(id, props)
     if (updatedProduct) {
@@ -58,7 +58,7 @@ const createCollection = async (products: Product[]) => {
   }
 }
 
-const getAllActive = async ({ page }: { page: number }) => {
+const getAllActive = async ({ page }: { page?: number }) => {
   try {
     const productsFound = await ProductRepository.findAllActive(page)
     if (productsFound) {

@@ -3,6 +3,7 @@ import controllerHelper from '../helpers/controller-helper'
 import mapper from '../helpers/props-mapper-output'
 import UserRepository from '../repositories/user-repository'
 import { User } from '../models/user'
+import { RoleType } from '../types/role-type'
 
 const controllerName = 'users'
 
@@ -26,9 +27,9 @@ const create = async (user: User, roles: string[]) => {
   }
 }
 
-const getAllByRoles = async (role: string) => {
+const getAllByRoles = async (roles: RoleType[]) => {
   try {
-    const users = await UserRepository.findAllByRoles(role)
+    const users = await UserRepository.findAllByRoles(roles)
     if (users) {
       return {
         action: ActionStatus.Ok,
