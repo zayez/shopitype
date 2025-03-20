@@ -1,5 +1,4 @@
 import { RoleType } from '../types/role-type'
-import { Role } from './role'
 
 export interface User {
   id?: number
