@@ -6,7 +6,7 @@ export interface User {
   firstName?: string
   lastName?: string
   password?: string
-  roles?: Role[]
+  roles?: string[]
   createdAt?: any
   updatedAt?: any
 }
