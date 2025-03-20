@@ -2,6 +2,7 @@ import { Category } from '../models/category'
 import { OrderItem, Order, ShippingAddress } from '../models/order'
 import { Product } from '../models/product'
 import { User } from '../models/user'
+import { PaymentStatusType } from '../types/payment-status'
 
 const mapCategory = ({ title }: { title?: string }) => {
   const category: Category = {}
@@ -59,7 +60,19 @@ const mapUser = ({
   return user
 }
 
-const mapOrderItem = ({ productId, price, total, subtotal, quantity }) => {
+const mapOrderItem = ({
+  productId,
+  price,
+  total,
+  subtotal,
+  quantity,
+}: {
+  productId?: number
+  price?: number
+  total?: number
+  subtotal?: number
+  quantity?: number
+}) => {
   const item: OrderItem = {}
   item.productId = productId
   if (price) item.price = price
@@ -77,6 +90,14 @@ const mapOrder = ({
   paymentStatusId,
   shippingAddress,
   dateOrder,
+}: {
+  items?: OrderItem[]
+  total?: number
+  subtotal?: number
+  paymentStatus?: PaymentStatusType
+  paymentStatusId?: number
+  shippingAddress?: string
+  dateOrder?: Date
 }) => {
   const order: Order = {}
   if (items) order.items = items.map(mapOrderItem)
@@ -96,6 +117,13 @@ const mapShippingAddress = ({
   country,
   state,
   postalCode,
+}: {
+  addressLine1?: string
+  addressLine2?: string
+  city?: string
+  country?: string
+  state?: string
+  postalCode?: any
 }) => {
   const addr: ShippingAddress = {}
   if (addressLine1) addr.addressLine1 = addressLine1
