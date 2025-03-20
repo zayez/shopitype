@@ -3,7 +3,10 @@ import { app } from '../config/config'
 import { Repository } from '../repositories/repository'
 import { Order } from '../models/order'
 import queryBuilder from '../lib/query-builder/query-builder'
-import { SHIPPING_UNSHIPPED } from '../types/shipping-status'
+import {
+  SHIPPING_UNSHIPPED,
+  ShippingStatusType,
+} from '../types/shipping-status'
 
 const TABLE_NAME = 'orders'
 const SELECTABLE_FIELDS = ['id']
@@ -20,9 +23,20 @@ const { findOne, update, destroy, destroyAll, includesAny } = queryBuilder(
  * @param {int} userId order's user
  * @returns
  */
-const createForStripe = async ({ order, userId }) => {
+const createForStripe = async ({
+  order,
+  userId,
+}: {
+  order: Order
+  userId: number
+}) => {
   const { dateOrder, subtotal, total, items, paymentStatus, shippingAddress } =
     order
+
+  // TODO: Create an order shouldn't always use the unpaid option?
+  if (!paymentStatus) {
+    throw new Error('No payment status.')
+  }
 
   const paymentStatusSelected = await knex('paymentStatus')
     .select('id')
@@ -71,16 +85,20 @@ const createForStripe = async ({ order, userId }) => {
 
   if (!id) return null
 
+  if (!items) {
+    throw new Error('No items selected')
+  }
+
   for (const item of items) {
     const orderItem = await knex('orderItem').insert({ ...item, orderId: id })
     if (!orderItem) return null
   }
-  const createdOrder = await findById(id)
+  const createdOrder = await findById(id[0])
   return createdOrder
 }
 
 export interface OrderCreateParams {
-  order: any
+  order: Order
   userId: number
 }
 
@@ -92,6 +110,11 @@ export interface OrderCreateParams {
  */
 const create = async ({ order, userId }: OrderCreateParams) => {
   const { dateOrder, items, paymentStatus, shippingAddress } = order
+
+  // TODO: Create an order shouldn't always use the unpaid option?
+  if (!paymentStatus) {
+    throw new Error('No payment status selected')
+  }
 
   const paymentStatusSelected = await knex('paymentStatus')
     .select('id')
@@ -127,6 +150,10 @@ const create = async ({ order, userId }: OrderCreateParams) => {
   // const date = dateOrder ? dateOrder : format(new Date(), dateFormat)
   const date = dateOrder ? dateOrder : new Date()
 
+  if (!items) {
+    throw new Error('No item selected')
+  }
+
   const itemsAcc = await Promise.all(
     items.map(async (i) => {
       const product = await knex('products')
@@ -135,12 +162,15 @@ const create = async ({ order, userId }: OrderCreateParams) => {
         .first()
       if (!product) return null
 
-      const total = i.quantity * product.price
+      const total = i.quantity ?? 0 * product.price
       return { ...i, price: product.price, total, subtotal: total }
     }),
   )
 
-  const total = itemsAcc.reduce((acc, cur) => acc + cur.price * cur.quantity, 0)
+  const total = itemsAcc.reduce(
+    (acc, cur) => acc + cur?.price * (cur?.quantity ?? 0),
+    0,
+  )
   const subtotal = total
 
   const newOrder = {
@@ -198,7 +228,7 @@ const queryOrderItems = knex('products as p')
     'i.total as total',
   )
 
-const findById = async (id) => {
+const findById = async (id: number) => {
   const order = await queryOrders.clone().where('o.id', id).first()
 
   if (!order) return null
@@ -224,20 +254,25 @@ const findById = async (id) => {
   return order
 }
 
-const findItems = async (orderId) => {
+const findItems = async (orderId: number) => {
   const products = await queryOrderItems.clone().where(`o.id`, orderId)
   return products
 }
 
-const find = async (filters, { page = 1, perPage = ITEMS_PER_PAGE } = {}) => {
-  const ordersPaginated = await queryOrders
-    .clone()
-    .where(filters)
-    .paginate({ perPage, currentPage: page })
+const find = async (
+  filters?: Partial<Order>,
+  { page = 1, perPage = ITEMS_PER_PAGE } = {},
+): Promise<Order[]> => {
+  const ordersPaginated = filters
+    ? await queryOrders
+        .clone()
+        .where(filters)
+        .paginate({ perPage, currentPage: page })
+    : await queryOrders.clone().paginate({ perPage, currentPage: page })
 
   const orders = ordersPaginated.data
 
-  if (!orders) return null
+  if (!orders) return []
 
   for (const order of orders) {
     order.customer = {
@@ -247,12 +282,18 @@ const find = async (filters, { page = 1, perPage = ITEMS_PER_PAGE } = {}) => {
     order.items = await findItems(order.id)
   }
 
-  return orders
+  return orders as Order[]
 }
 
 const findAll = async (pagination = {}) => await find({}, pagination)
 
-const findOneByUser = async ({ orderId, userId }) => {
+const findOneByUser = async ({
+  orderId,
+  userId,
+}: {
+  orderId: number
+  userId: number
+}) => {
   const order = await queryOrders
     .clone()
     .where('o.id', '=', orderId)
@@ -265,7 +306,10 @@ const findOneByUser = async ({ orderId, userId }) => {
   return order
 }
 
-const markShippingStatus = async (orderId, status) => {
+const markShippingStatus = async (
+  orderId: number,
+  status: ShippingStatusType,
+) => {
   const resSelect = await knex('shippingStatus').where({ name: status }).first()
   const shippingStatusId = resSelect.id
   if (!shippingStatusId) return null
