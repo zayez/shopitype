@@ -20,8 +20,9 @@ import {
 import ProductsMiddleware from '../middlewares/domains/products-middleware'
 import { isValidId } from '../middlewares/validations/application-validation'
 import { disallowDuplicates } from '../middlewares/resource-checks-middleware'
+import Koa from 'koa'
 
-const router = new Router()
+const router = new Router<Koa.DefaultState, Koa.DefaultContext>()
 
 const create = compose([
   authorizeManagers,

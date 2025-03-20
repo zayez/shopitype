@@ -19,7 +19,9 @@ import {
   isValidUpdate,
 } from '../middlewares/validations/categories-validations'
 import { isValidId } from '../middlewares/validations/application-validation'
-const router = new Router()
+import Koa from 'koa'
+
+const router = new Router<Koa.DefaultState, Koa.DefaultContext>()
 
 const create = compose([
   authorizeAdmin,

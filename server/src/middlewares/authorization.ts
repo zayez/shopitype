@@ -3,6 +3,8 @@ import UserRepository from '../repositories/user-repository'
 import ActionStatus from '../types/action-status'
 import Koa from 'koa'
 import { RoleType } from '../types/role-type'
+import { isCustomer, isManager } from '../helpers/user-helpers'
+import { matchUserId } from './request-validators'
 
 const authorizeRoles = (roles: RoleType[] = []) => {
   return async (ctx: Koa.Context, next: Koa.Next) => {
@@ -24,6 +26,16 @@ const authorizeRoles = (roles: RoleType[] = []) => {
   }
 }
 
+const authorizeUserAndManagers = async (ctx: Koa.Context, next: Koa.Next) => {
+  const user = ctx.state.user
+  if (isCustomer(user)) {
+    await matchUserId()(ctx, next)
+  }
+  if (isManager(user)) {
+    await next()
+  }
+}
+
 const authorizeAdmin = authorizeRoles(['admin'])
 const authorizeEditor = authorizeRoles(['editor'])
 const authorizeCustomer = authorizeRoles(['customer'])
@@ -35,4 +47,5 @@ export {
   authorizeEditor,
   authorizeCustomer,
   authorizeManagers,
+  authorizeUserAndManagers,
 }
