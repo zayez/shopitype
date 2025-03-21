@@ -13,7 +13,7 @@ const create = async (ctx: Koa.Context) => {
     const { action, payload } = await UsersController.create(user, roles)
 
     setResponse(ctx, { action, payload })
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
