@@ -4,6 +4,7 @@ import { Product } from '../models/product'
 import { ProductStatus } from '../models/product-status'
 import { User } from '../models/user'
 import { PaymentStatusType } from '../types/payment-status'
+import { RoleType } from '../types/role-type'
 import { ShippingStatusType } from '../types/shipping-status'
 
 const mapCategory = ({
@@ -35,8 +36,8 @@ interface mapProductProps {
   inventory?: number
   statusId?: number
   categoryId?: number
-  createdAt?: any
-  updatedAt?: any
+  createdAt?: Date
+  updatedAt?: Date
 }
 
 const mapProduct = ({
@@ -91,9 +92,9 @@ interface mapUserProps {
   firstName?: string
   lastName?: string
   email?: string
-  createdAt?: any
-  updatedAt?: any
-  roles?: any
+  createdAt?: Date
+  updatedAt?: Date
+  roles?: RoleType[]
 }
 
 const mapUser = ({
@@ -105,7 +106,7 @@ const mapUser = ({
   updatedAt,
   roles,
 }: mapUserProps) => {
-  const user: User = id ? { id } : {}
+  const user: Partial<User> = id ? { id } : {}
   if (id) user.id = id
   if (firstName) user.firstName = firstName
   if (lastName) user.lastName = lastName
@@ -161,10 +162,10 @@ const mapOrder = ({
   subtotal?: number
   items?: OrderItem[]
   dateOrder?: Date
-  customer?: any
+  customer?: User
   paymentStatus?: PaymentStatusType
   shippingStatus?: ShippingStatusType
-  shippingAddress?: any
+  shippingAddress?: ShippingAddress
 }) => {
   const order: Order = {}
   if (id) order.id = id
@@ -190,12 +191,12 @@ const mapShippingAddress = ({
   state,
   postalCode,
 }: {
-  addressLine1: string
-  addressLine2: string
-  city: string
-  country: string
-  state: string
-  postalCode: any
+  addressLine1?: string
+  addressLine2?: string
+  city?: string
+  country?: string
+  state?: string
+  postalCode?: number
 }) => {
   const addr: ShippingAddress = {}
   if (addressLine1) addr.addressLine1 = addressLine1

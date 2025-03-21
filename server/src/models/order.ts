@@ -1,18 +1,22 @@
+import { PaymentStatusType } from '../types/payment-status'
+import { ShippingStatusType } from '../types/shipping-status'
+import { User } from './user'
+
 export interface Order {
   userId?: number
   id?: number
-  customer?: any
+  customer?: User
   items?: OrderItem[]
   total?: number
   subtotal?: number
-  paymentStatus?: string
+  paymentStatus?: PaymentStatusType
   paymentStatusId?: number
   shippingAddressId?: number
-  shippingAddress?: any
-  shippingStatus?: any
-  dateOrder?: any
-  createdAt?: any
-  updatedAt?: any
+  shippingAddress: ShippingAddress
+  shippingStatus?: ShippingStatusType
+  dateOrder?: Date
+  createdAt?: Date
+  updatedAt?: Date
 }
 
 export interface OrderItem {
@@ -24,8 +28,8 @@ export interface OrderItem {
   total?: number
   subtotal?: number
   quantity?: number
-  createdAt?: any
-  updatedAt?: any
+  createdAt?: Date
+  updatedAt?: Date
 }
 
 export interface ShippingAddress {
@@ -36,6 +40,6 @@ export interface ShippingAddress {
   country?: string
   state?: string
   postalCode?: number
-  createdAt?: any
-  updatedAt?: any
+  createdAt?: Date
+  updatedAt?: Date
 }

@@ -314,9 +314,7 @@ const markShippingStatus = async (
   const shippingStatusId = resSelect.id
   if (!shippingStatusId) return null
 
-  const resUpdate = await knex(TABLE_NAME)
-    .update({ shippingStatusId })
-    .where({ id: orderId })
+  await knex(TABLE_NAME).update({ shippingStatusId }).where({ id: orderId })
 
   const order = await findById(orderId)
   return order
