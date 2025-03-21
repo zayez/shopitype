@@ -60,7 +60,7 @@ const validateUpdate = async (ctx: Koa.Context, next: Koa.Next) => {
       // isUnique('title', 'products'), // TODO: Have to fix this (on update it should skip current prod.)
       itExists('product'),
     ]
-    for (let validator of validators) {
+    for (const validator of validators) {
       const action = await validator(ctx, next)
       if (!action) {
         setResponse(ctx, { action: ActionStatus.Error, payload: null })
