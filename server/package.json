@@ -39,6 +39,7 @@
     "@types/passport-jwt": "^4.0.1",
     "@types/passport-local": "^1.0.38",
     "@types/supertest": "^6.0.2",
+    "@types/tape": "^5.8.1",
     "dotenv": "^16.0.1",
     "nodemon": "^2.0.19",
     "nyc": "^15.1.0",
