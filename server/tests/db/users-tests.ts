@@ -32,6 +32,9 @@ test('find user', (t) => {
 
   t.test('should find user joe doe', async (assert) => {
     const user = await UserRepository.findOne({ email: admin.email })
+    if (!user) {
+      throw new Error('Did not find user')
+    }
     assert.equal(user.firstName, 'Joe')
   })
   t.end()
