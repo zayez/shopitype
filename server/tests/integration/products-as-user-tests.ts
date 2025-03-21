@@ -20,10 +20,9 @@ test('As a visitor I should:', (t) => {
   t.test(
     'NOT be able to create a product when unauthenticated',
     async (assert) => {
-      const product = { ...products[0] }
-      delete product.id
+      const { id, ...prod } = products[0]
 
-      const res = await await create(product, { status: STATUS.Unauthorized })
+      const res = await await create(prod, { status: STATUS.Unauthorized })
 
       assert.equal(res.status, STATUS.Unauthorized)
       assert.end()
@@ -32,7 +31,9 @@ test('As a visitor I should:', (t) => {
 
   t.test('be able to retrieve only active products', async (assert) => {
     const res = await getAll({ status: STATUS.Ok })
-    const prodsDraft = res.body.filter((p) => p.statusId == 1)
+    const prodsDraft = res.body.filter(
+      (p: { statusId: number }) => p.statusId == 1,
+    )
     const retrievedProducts = res.body
     assert.equal(res.status, STATUS.Ok)
     assert.ok(Array.isArray(retrievedProducts))

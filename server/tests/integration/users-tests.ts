@@ -28,7 +28,7 @@ test('setup', async (t) => {
 })
 
 test('As an admin I should:', (t) => {
-  let token
+  let token: string
   let admin = admins[0]
 
   t.test('setup', async (assert) => {
@@ -37,8 +37,7 @@ test('As an admin I should:', (t) => {
   })
 
   t.test('be able to create a new user', async (assert) => {
-    const user = { ...customers[0] }
-    delete user.id
+    const { id, ...user } = customers[0]
     const res = await create(user, { token, status: STATUS.Created })
     const newUser = res.body
 
@@ -94,8 +93,12 @@ test('As a customer I should:', (t) => {
   t.test('NOT be able to update another user', async (assert) => {
     const name = 'Bean'
     const users = await UserRepository.find({ lastName: 'Doe' })
+    const user = users[0]
+    if (!user.id) {
+      throw new Error('User has no id')
+    }
     const res = await update(
-      users[0].id,
+      user.id,
       { firstName: name },
       { token, status: STATUS.NotFound },
     )
@@ -112,6 +115,10 @@ test('As a customer I should:', (t) => {
       { token, status: STATUS.Ok },
     )
     const updatedUser = await UserRepository.findById(userId)
+
+    if (!updatedUser) {
+      throw new Error('Did not find user')
+    }
     const isMatch = await UserRepository.comparePassword(
       newPassword,
       updatedUser.password,
@@ -125,6 +132,10 @@ test('As a customer I should:', (t) => {
     const persistedUser = await UserRepository.findById(userId)
     const res = await getOne(userId, { token, status: STATUS.Ok })
     const retrievedUser = res.body
+
+    if (!persistedUser) {
+      throw new Error('Did not find user')
+    }
 
     assert.equal(retrievedUser.firstName, persistedUser.firstName)
     assert.equal(retrievedUser.email, persistedUser.email)
@@ -182,6 +193,11 @@ test('As an editor I should:', (t) => {
     const customer = await UserRepository.findOne({
       firstName: customers[1].firstName,
     })
+
+    if (!customer || !customer.id) {
+      throw new Error('Did not find user')
+    }
+
     const res = await getOne(customer.id, { token, status: STATUS.Ok })
     const retrievedUser = res.body
 

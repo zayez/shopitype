@@ -27,7 +27,7 @@ test('setup', async (t) => {
 })
 
 test('As editor I should:', (t) => {
-  let token
+  let token: string
   let editor = editors[0]
 
   t.test('setup', async (assert) => {
@@ -38,22 +38,20 @@ test('As editor I should:', (t) => {
   })
 
   t.test('be able to create a product', async (assert) => {
-    const product = { ...products[0] }
-    delete product.id
-    product.title = productTitle()
-    const res = await create(product, { token, status: STATUS.Created })
+    const { id, ...prod } = products[0]
+    prod.title = productTitle()
+    const res = await create(prod, { token, status: STATUS.Created })
     const createdProduct = res.body
 
     assert.equal(res.status, STATUS.Created)
-    assert.equal(createdProduct.title, product.title)
+    assert.equal(createdProduct.title, prod.title)
     assert.ok(Number.isInteger(createdProduct.id))
     assert.end()
   })
 
   t.test('be able to update a product', async (assert) => {
-    const productCreate = { ...products[1] }
+    const { id, ...productCreate } = products[1]
     productCreate.title = productTitle()
-    delete productCreate.id
     const productUpdate = {
       title: productTitle(),
     }
@@ -92,11 +90,10 @@ test('As editor I should:', (t) => {
   )
 
   t.test('be able to delete a product', async (assert) => {
-    const product = { ...products[2] }
-    product.title = productTitle()
-    delete product.id
+    const { id, ...prod } = products[2]
+    prod.title = productTitle()
 
-    const resCreate = await create(product, { token, status: STATUS.Created })
+    const resCreate = await create(prod, { token, status: STATUS.Created })
     const createdProduct = resCreate.body
     const res = await destroy(createdProduct.id, { token, status: STATUS.Ok })
     const deletedProduct = await knex('products')
@@ -111,25 +108,23 @@ test('As editor I should:', (t) => {
   })
 
   t.test('be able to retrieve a product', async (assert) => {
-    const product = { ...products[3] }
-    product.title = productTitle()
-    delete product.id
+    const { id, ...prod } = products[3]
+    prod.title = productTitle()
 
-    const resCreate = await create(product, { token, status: STATUS.Created })
+    const resCreate = await create(prod, { token, status: STATUS.Created })
     const createdProduct = resCreate.body
     const res = await getOne(createdProduct.id, { token, status: STATUS.Ok })
     const retrievedProduct = res.body
 
     assert.equal(res.status, STATUS.Ok)
-    assert.equal(retrievedProduct.title, product.title, 'equal name')
+    assert.equal(retrievedProduct.title, prod.title, 'equal name')
     assert.end()
   })
 
   t.test('NOT be able to create a product that exists', async (assert) => {
-    const product = { ...products[0] }
-    delete product.id
+    const { id, ...prod } = products[0]
 
-    const res = await create(product, { token, status: STATUS.Conflict })
+    const res = await create(prod, { token, status: STATUS.Conflict })
 
     assert.equal(res.status, STATUS.Conflict)
     assert.end()
