@@ -11,7 +11,7 @@ const getRoot = async (ctx: Koa.Context) => {
   try {
     const { action, payload } = await ApplicationController.getRoot()
     setResponse(ctx, { action, payload })
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
@@ -32,7 +32,7 @@ const signIn = async (ctx: Koa.Context) => {
       signed: false,
     }
     ctx.cookies.set('token', payload.token, cookieOpts)
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
@@ -57,7 +57,7 @@ const signUp = async (ctx: Koa.Context) => {
       signed: false,
     }
     ctx.cookies.set('token', payload.token, cookieOpts)
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
@@ -69,7 +69,7 @@ const signOut = async (ctx: Koa.Context) => {
       payload: null,
     })
     ctx.cookies.set('token', null)
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
@@ -82,7 +82,7 @@ const getUser = async (ctx: Koa.Context) => {
     }
     const user = mapUser(ctx.state.user)
     setResponse(ctx, { action: ActionStatus.Ok, payload: user })
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }

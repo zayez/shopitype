@@ -3,6 +3,10 @@ import { signToken } from '../helpers/jwt-helpers'
 import UserRepository from '../repositories/user-repository'
 import { User } from '../models/user'
 
+export interface GetRootPayload {
+  greeting: string
+}
+
 const getRoot = async () => {
   return {
     action: ActionStatus.Ok,
@@ -10,7 +14,7 @@ const getRoot = async () => {
   }
 }
 
-async function signUp(user: User) {
+async function signUp(user: Partial<User>) {
   const roles = ['customer']
   const savedUser = await UserRepository.create({ user, roles })
 

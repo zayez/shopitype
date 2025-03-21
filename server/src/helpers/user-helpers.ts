@@ -1,9 +1,9 @@
-import { Role } from '../models/role'
 import { User } from '../models/user'
+import { RoleType } from '../types/role-type'
 
-const admin = ['admin']
-const editor = ['editor']
-const customer = ['customer']
+const admin = ['admin'] as RoleType[]
+const editor = ['editor'] as RoleType[]
+const customer = ['customer'] as RoleType[]
 const manager = [...admin, ...editor]
 
 const isAdmin = (user: User) => {

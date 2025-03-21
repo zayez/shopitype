@@ -5,8 +5,8 @@ https://github.com/robmclarty/cred-server/blob/main/server/helpers/query_helper.
 */
 
 import knex from '../../db/db'
-// import '../../models';
 import { app } from '../../config/config'
+import { Entity } from '../../models/entity'
 
 const { ITEMS_PER_PAGE } = app
 
@@ -24,10 +24,10 @@ export interface QueryBuilder<T> {
   update: (id: number, props: Partial<T>) => Promise<T | undefined>
   destroy: (id: number) => Promise<number>
   destroyAll: (filters?: Partial<T>) => Promise<number>
-  includesAny: (field: keyof T, values: any[]) => Promise<boolean>
+  includesAny: (field: keyof T, values: string[]) => Promise<boolean>
 }
 
-export default function queryBuilder<T = any>(
+export default function queryBuilder<T extends Entity>(
   tableName: string,
   selectableFields: string | string[] = '*',
 ): QueryBuilder<T> {
@@ -37,7 +37,7 @@ export default function queryBuilder<T = any>(
   const find = async (
     filters?: Partial<T>,
     { page = 1, perPage = ITEMS_PER_PAGE }: PaginationOptions = {},
-  ): Promise<any[]> => {
+  ): Promise<T[]> => {
     const items = filters
       ? await knex
           .select(selectableFields)
@@ -49,7 +49,7 @@ export default function queryBuilder<T = any>(
           .from(tableName)
           .paginate({ perPage: perPage, currentPage: page })
 
-    return items.data
+    return items.data as T[]
   }
 
   /**
@@ -116,9 +116,11 @@ export default function queryBuilder<T = any>(
    */
   const includesAny = async (
     field: keyof T,
-    values: any[],
+    values: string[],
   ): Promise<boolean> => {
-    const items = await knex(tableName).select('id').whereIn(field, values)
+    const items = await knex(tableName)
+      .select('id')
+      .whereIn(field as string, values)
     return items.length > 0
   }
 

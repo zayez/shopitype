@@ -3,6 +3,10 @@ import StripeCheckoutController from '../../controllers/stripe-checkout-controll
 import { setResponse } from '../../helpers/middleware-helpers'
 import Koa from 'koa'
 
+export interface StripeCheckoutCreatePayload {
+  url: string | null
+}
+
 const create = async (ctx: Koa.Context) => {
   try {
     const { items } = ctx.request.body
@@ -28,7 +32,7 @@ const get = async (ctx: Koa.Context) => {
       const { action, payload } = await StripeCheckoutController.get(id)
       setResponse(ctx, { action, payload })
     }
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }

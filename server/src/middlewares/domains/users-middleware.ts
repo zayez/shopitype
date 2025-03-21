@@ -24,7 +24,7 @@ const update = async (ctx: Koa.Context) => {
     const user = ctx.request.body
     const { action, payload } = await UsersController.update(id, user)
     setResponse(ctx, { action, payload })
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
@@ -34,7 +34,7 @@ const destroy = async (ctx: Koa.Context) => {
     const id = ctx.state.user.id
     const { action, payload } = await UsersController.destroy(id)
     setResponse(ctx, { action, payload })
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
@@ -45,7 +45,7 @@ const get = async (ctx: Koa.Context) => {
     const id = isManager(user) ? ctx.params.id : ctx.state.user.id
     const { action, payload } = await UsersController.getOne(id)
     setResponse(ctx, { action, payload })
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
@@ -67,7 +67,7 @@ const getAll = async (ctx: Koa.Context) => {
       const { action, payload } = await UsersController.getAll()
       setResponse(ctx, { action, payload })
     }
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }

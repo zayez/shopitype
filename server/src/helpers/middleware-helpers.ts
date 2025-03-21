@@ -1,3 +1,10 @@
+import { GetRootPayload } from '../controllers/application-controller'
+import { ProductCollectionPayload } from '../controllers/products-controller'
+import { StripeCheckoutCreatePayload } from '../middlewares/domains/stripe-checkout-middleware'
+import { Category } from '../models/category'
+import { Product } from '../models/product'
+import { ProductStatus } from '../models/product-status'
+import { User } from '../models/user'
 import ActionStatus, { ActionStatusType } from '../types/action-status'
 import StatusCode from '../types/status-code'
 import Koa from 'koa'
@@ -5,17 +12,33 @@ import Koa from 'koa'
 const SuccessStatuses = [ActionStatus.Ok, ActionStatus.Created]
 const STATUS = StatusCode
 
+export interface UserPayload {
+  user: Partial<User>
+  token: string
+}
+
 interface ResponseOptions {
   action: ActionStatusType
-  payload?: any
+  payload?:
+    | Category
+    | Category[]
+    | Product
+    | Product[]
+    | ProductStatus
+    | ProductStatus[]
+    | User
+    | User[]
+    | GetRootPayload
+    | UserPayload
+    | ProductCollectionPayload
+    | StripeCheckoutCreatePayload
+    | number
+    | null
+    | undefined
 }
 
 /**
  * Sets the response based on the action with the payload.
- * @param {Koa.ParameterizedContext} ctx context
- * @param {Object} obj
- * @param {ActionStatus} obj.action action type
- * @param {Object} obj.payload payload
  */
 function setResponse(ctx: Koa.Context, { action, payload }: ResponseOptions) {
   if (SuccessStatuses.some((status) => status === action)) {
@@ -27,7 +50,10 @@ function setResponse(ctx: Koa.Context, { action, payload }: ResponseOptions) {
     ctx.response.status = status
     ctx.response.body = { status, title, detail }
     if (payload)
-      ctx.response.body = { ...(ctx.response.body as object), ...payload }
+      ctx.response.body = {
+        ...(ctx.response.body as object),
+        ...(payload as object),
+      }
   }
   const contentType = getContentType(action)
   ctx.set('Content-Type', contentType)

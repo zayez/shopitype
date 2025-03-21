@@ -19,7 +19,7 @@ type DestroyEntityType = number
 type GetOneEntityType = Category | Product | User | ProductStatus
 type GetAllEntityType = Category[] | Product[] | User[] | ProductStatus[]
 
-interface ActionResultBase {
+export interface ActionResultBase {
   action: ActionStatusType
 }
 

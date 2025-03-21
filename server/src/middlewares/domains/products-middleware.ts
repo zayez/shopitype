@@ -16,7 +16,7 @@ const create = async (ctx: Koa.Context) => {
 
     const { action, payload } = await ProductsController.create(product)
     setResponse(ctx, { action, payload })
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
@@ -28,7 +28,7 @@ const createCollection = async (ctx: Koa.Context) => {
       products,
     )
     setResponse(ctx, { action, payload })
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
@@ -48,7 +48,7 @@ const update = async (ctx: Koa.Context) => {
     }
     const { action, payload } = await ProductsController.update(id, props)
     setResponse(ctx, { action, payload })
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
@@ -58,7 +58,7 @@ const destroy = async (ctx: Koa.Context) => {
     const { id } = ctx.params
     const { action, payload } = await ProductsController.destroy(id)
     setResponse(ctx, { action, payload })
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
@@ -72,7 +72,7 @@ const get = async (ctx: Koa.Context) => {
     const { action, payload } = await get(id)
 
     setResponse(ctx, { action, payload })
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
@@ -88,7 +88,7 @@ const getAll = async (ctx: Koa.Context) => {
       page: pageNum ? pageNum : undefined,
     })
     setResponse(ctx, { action, payload })
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }

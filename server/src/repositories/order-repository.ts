@@ -98,7 +98,7 @@ const createForStripe = async ({
 }
 
 export interface OrderCreateParams {
-  order: Order
+  order: Partial<Order>
   userId: number
 }
 

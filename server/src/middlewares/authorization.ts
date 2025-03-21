@@ -20,7 +20,7 @@ const authorizeRoles = (roles: RoleType[] = []) => {
         setResponse(ctx, { action: ActionStatus.Forbidden })
       }
       await next()
-    } catch (err) {
+    } catch {
       setResponse(ctx, { action: ActionStatus.Error })
     }
   }

@@ -2,6 +2,8 @@ import multer from '@koa/multer'
 import { format } from 'date-fns'
 import fs from 'fs'
 import config from '../config/config'
+import { File } from '@koa/multer'
+import { IncomingMessage } from 'http'
 
 const { isProd, isDev } = config
 const { IMAGE_MAX_SIZE_MB } = config.app
@@ -11,15 +13,11 @@ const uploadsDir =
   isProd || isDev ? './public/uploads/' : './tests/data/uploads/'
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    try {
-      fs.mkdirSync(uploadsDir, { recursive: true })
-      cb(null, uploadsDir)
-    } catch (err) {
-      throw err
-    }
+  destination: (_, __, cb) => {
+    fs.mkdirSync(uploadsDir, { recursive: true })
+    cb(null, uploadsDir)
   },
-  filename: (req, file, cb) => {
+  filename: (_, file, cb) => {
     const f = `${format(new Date(), 'yyyy-MM-dd-hh-mm-ss')}_${
       file.originalname
     }`
@@ -27,13 +25,16 @@ const storage = multer.diskStorage({
   },
 })
 
-const fileFilter = (req, file, cb) => {
+const fileFilter = (
+  _: IncomingMessage,
+  file: File,
+  cb: (error: Error | null, acceptFile: boolean) => void,
+) => {
   if (file.mimetype !== 'image/jpeg' && file.mimetype !== 'image/png') {
-    // Reject the file
-    return cb(null, false)
+    return cb(null, false) // Reject the file
   }
-  // Accept the file
-  cb(null, true)
+
+  cb(null, true) // Accept the file
 }
 
 const upload = multer({

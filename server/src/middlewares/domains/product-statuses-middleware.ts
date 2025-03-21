@@ -12,7 +12,7 @@ const getAll = async (ctx: Koa.Context) => {
     }
     const { action, payload } = await ProductStatusesController.getAll()
     setResponse(ctx, { action, payload })
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }

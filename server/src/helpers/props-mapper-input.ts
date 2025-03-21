@@ -28,7 +28,7 @@ const mapProduct = ({
   statusId?: number
   categoryId?: number
 }) => {
-  const product: Product = {}
+  const product: Partial<Product> = {}
   if (title) product.title = title
   if (description) product.description = description
   if (image) product.image = image
@@ -51,7 +51,7 @@ const mapUser = ({
   email?: string
   password?: string
 }) => {
-  const user: User = {}
+  const user: Partial<User> = {}
   if (firstName) user.firstName = firstName
   if (lastName) user.lastName = lastName
   if (email) user.email = email
@@ -96,10 +96,10 @@ const mapOrder = ({
   subtotal?: number
   paymentStatus?: PaymentStatusType
   paymentStatusId?: number
-  shippingAddress?: string
+  shippingAddress?: ShippingAddress
   dateOrder?: Date
 }) => {
-  const order: Order = {}
+  const order: Partial<Order> = {}
   if (items) order.items = items.map(mapOrderItem)
   if (total) order.total = total
   if (subtotal) order.subtotal = subtotal
@@ -123,7 +123,7 @@ const mapShippingAddress = ({
   city?: string
   country?: string
   state?: string
-  postalCode?: any
+  postalCode?: number
 }) => {
   const addr: ShippingAddress = {}
   if (addressLine1) addr.addressLine1 = addressLine1

@@ -6,7 +6,7 @@ import config from '../config/config'
 const { isProd, isDev } = config
 
 const existsFile = async (filepath: string) =>
-  await new Promise((resolve, reject) => {
+  await new Promise((resolve) => {
     const fileExists = fsSync.existsSync(filepath)
     resolve(fileExists)
   })

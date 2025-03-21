@@ -6,6 +6,7 @@ import { PAYMENT_PAID, PAYMENT_UNPAID } from '../../types/payment-status'
 import { ORDER_STRIPE } from '../../types/order-type'
 import ActionStatus from '../../types/action-status'
 import Koa from 'koa'
+import { Order, OrderItem } from '../../models/order'
 
 const STRIPE_KEY = config.stripe.KEY
 const STRIPE_CLI_KEY = config.stripe.CLI_KEY
@@ -42,7 +43,7 @@ const create = async (ctx: Koa.Context) => {
       const { amount_total, amount_subtotal, payment_status } = session
       const paymentStatus =
         payment_status === PAYMENT_PAID ? PAYMENT_PAID : PAYMENT_UNPAID
-      const customerId = session.customer
+      // const customerId = session.customer
       const address = session.customer_details.address
       const shippingAddress = {
         addressLine1: address.line1,
@@ -63,7 +64,7 @@ const create = async (ctx: Koa.Context) => {
         throw new Error('Missing line_items in session')
       }
 
-      const items = line_items.data.map(mapLineItems)
+      const items = line_items.data.map(mapLineItems) as OrderItem[]
 
       if (typeof session.customer !== 'string') {
         throw new Error('Invalid customer ID')
@@ -79,7 +80,7 @@ const create = async (ctx: Koa.Context) => {
         shippingAddress,
         paymentStatus,
         items,
-      }
+      } as Partial<Order>
       const { action, payload } = await OrdersController.placeOrder(
         {
           order,
@@ -89,7 +90,7 @@ const create = async (ctx: Koa.Context) => {
       )
       setResponse(ctx, { action, payload })
     }
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }

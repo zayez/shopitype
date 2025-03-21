@@ -10,7 +10,7 @@ const controllerName = 'products'
 
 const { create, destroy, getOne, getAll } = controllerHelper(controllerName)
 
-const update = async (id: number, props: Product) => {
+const update = async (id: number, props: Partial<Product>) => {
   if (props.image) {
     const product = await ProductRepository.findById(id)
     if (!product) {
@@ -33,6 +33,10 @@ const update = async (id: number, props: Product) => {
     action: ActionStatus.BadRequest,
     payload: null,
   }
+}
+
+export interface ProductCollectionPayload {
+  lastProduct: Product | null
 }
 
 const createCollection = async (products: Product[]) => {

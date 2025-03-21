@@ -10,7 +10,7 @@ const controllerName = 'orders'
 const { getAll, getOne } = controllerHelper(controllerName)
 
 const placeOrder = async (
-  { order, userId }: { order: Order; userId: number },
+  { order, userId }: { order: Partial<Order>; userId: number },
   orderType = ORDER_APP,
 ) => {
   const savedOrder =

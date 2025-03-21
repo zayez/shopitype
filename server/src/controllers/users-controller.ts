@@ -9,7 +9,7 @@ const controllerName = 'users'
 
 const { update, destroy, getOne, getAll } = controllerHelper(controllerName)
 
-const create = async (user: User, roles: string[]) => {
+const create = async (user: Partial<User>, roles: string[]) => {
   const savedUser = await UserRepository.create({ user, roles })
 
   if (savedUser) {

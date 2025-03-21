@@ -39,7 +39,7 @@ export interface ShippingAddress {
   city?: string
   country?: string
   state?: string
-  postalCode?: number
+  postalCode?: string
   createdAt?: Date
   updatedAt?: Date
 }

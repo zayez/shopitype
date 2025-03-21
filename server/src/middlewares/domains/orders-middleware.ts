@@ -9,17 +9,21 @@ const get = async (ctx: Koa.Context) => {
     const { id } = ctx.params
     const { action, payload } = await OrdersController.getOne(id)
     setResponse(ctx, { action, payload })
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
 
 const getAll = async (ctx: Koa.Context) => {
   try {
-    const { page } = ctx.request.query
-    const { action, payload } = await OrdersController.getAll({ page })
+    const page = ctx.request.query.page
+      ? Number(ctx.request.query.page)
+      : undefined
+    const { action, payload } = await OrdersController.getAll({
+      page,
+    })
     setResponse(ctx, { action, payload })
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
@@ -34,7 +38,7 @@ const placeOrder = async (ctx: Koa.Context) => {
       userId,
     })
     setResponse(ctx, { action, payload })
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
@@ -44,7 +48,7 @@ const getAllByUser = async (ctx: Koa.Context) => {
     const { userId } = ctx.params
     const { action, payload } = await OrdersController.getAllByUser(userId)
     setResponse(ctx, { action, payload })
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
@@ -57,7 +61,7 @@ const getOneByUser = async (ctx: Koa.Context) => {
       userId,
     })
     setResponse(ctx, { action, payload })
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
@@ -73,7 +77,7 @@ const markShippingStatus = async (ctx: Koa.Context) => {
     )
 
     setResponse(ctx, { action, payload })
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
