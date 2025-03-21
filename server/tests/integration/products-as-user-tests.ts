@@ -20,7 +20,7 @@ test('As a visitor I should:', (t) => {
   t.test(
     'NOT be able to create a product when unauthenticated',
     async (assert) => {
-      const { id, ...prod } = products[0]
+      const { id: _id, ...prod } = products[0]
 
       const res = await await create(prod, { status: STATUS.Unauthorized })
 

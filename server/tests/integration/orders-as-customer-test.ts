@@ -17,6 +17,7 @@ import {
   getOneByUser,
 } from '../requests/orders-request'
 import { Order } from '../../src/models/order'
+import { PaymentStatusEnum } from '../../src/types/payment-status'
 
 test('setup', async (t) => {
   await knex.migrate.latest()
@@ -43,7 +44,7 @@ test('As a customer I should:', (t) => {
 
   t.test('be able to place an order', async (assert) => {
     const product = await knex('products').first()
-    const { id, ...addrWithoutId } = shippingAddresses[0]
+    const { id: _id, ...addrWithoutId } = shippingAddresses[0]
 
     const order = {
       paymentStatus: 'paid',
@@ -54,7 +55,7 @@ test('As a customer I should:', (t) => {
           quantity: 1,
         },
       ],
-    }
+    } as Partial<Order>
 
     const res = await placeOrder(order, { token, status: STATUS.Created })
     const createdOrder = res.body
@@ -71,10 +72,10 @@ test('As a customer I should:', (t) => {
   t.test(
     'NOT be able to place order with nonexistent products',
     async (assert) => {
-      const { id, ...addrWithoutId } = shippingAddresses[1]
+      const { id: _id, ...addrWithoutId } = shippingAddresses[1]
 
       const order = {
-        paymentStatus: 'paid',
+        paymentStatus: PaymentStatusEnum.PAID,
         shippingAddress: addrWithoutId,
         items: [
           { productId: 9992, quantity: 1 },
@@ -93,10 +94,10 @@ test('As a customer I should:', (t) => {
   )
 
   t.test('NOT be able to place order without items', async (assert) => {
-    const { id, ...addrWithoutId } = shippingAddresses[0]
+    const { id: _id, ...addrWithoutId } = shippingAddresses[0]
 
     const order = {
-      paymentStatus: 'paid',
+      paymentStatus: PaymentStatusEnum.PAID,
       shippingAddress: addrWithoutId,
       items: [],
     }
@@ -116,10 +117,10 @@ test('As a customer I should:', (t) => {
       const product = await knex('products').first()
       const quantity = product.inventory + 10
 
-      const { id, ...addrWithoutId } = shippingAddresses[2]
+      const { id: _id, ...addrWithoutId } = shippingAddresses[2]
 
       const order = {
-        paymentStatus: 'paid',
+        paymentStatus: PaymentStatusEnum.PAID,
         shippingAddress: addrWithoutId,
         items: [{ productId: product.id, quantity }],
       }
@@ -136,11 +137,11 @@ test('As a customer I should:', (t) => {
 
   t.test('be able to get my orders', async (assert) => {
     const products = await knex('products')
-    const { id: id1, ...addr1WithoutId } = shippingAddresses[0]
-    const { id: id2, ...addr2WithoutId } = shippingAddresses[1]
+    const { id: _id1, ...addr1WithoutId } = shippingAddresses[0]
+    const { id: _id2, ...addr2WithoutId } = shippingAddresses[1]
 
     const order1 = {
-      paymentStatus: 'paid',
+      paymentStatus: PaymentStatusEnum.PAID,
       shippingAddress: addr1WithoutId,
       items: [
         {
@@ -148,11 +149,11 @@ test('As a customer I should:', (t) => {
           quantity: 1,
         },
       ],
-      dateOrder: new Date().toISOString(),
+      dateOrder: new Date(),
     }
 
     const order2 = {
-      paymentStatus: 'paid',
+      paymentStatus: PaymentStatusEnum.PAID,
       shippingAddress: addr2WithoutId,
       items: [
         {
@@ -160,7 +161,7 @@ test('As a customer I should:', (t) => {
           quantity: 1,
         },
       ],
-      dateOrder: new Date().toISOString(),
+      dateOrder: new Date(),
     }
 
     await placeOrder(order1, { token, status: STATUS.Created })

@@ -38,7 +38,7 @@ test('As editor I should:', (t) => {
   })
 
   t.test('be able to create a product', async (assert) => {
-    const { id, ...prod } = products[0]
+    const { id: _id, ...prod } = products[0]
     prod.title = productTitle()
     const res = await create(prod, { token, status: STATUS.Created })
     const createdProduct = res.body
@@ -50,7 +50,7 @@ test('As editor I should:', (t) => {
   })
 
   t.test('be able to update a product', async (assert) => {
-    const { id, ...productCreate } = products[1]
+    const { id: _id, ...productCreate } = products[1]
     productCreate.title = productTitle()
     const productUpdate = {
       title: productTitle(),
@@ -90,7 +90,7 @@ test('As editor I should:', (t) => {
   )
 
   t.test('be able to delete a product', async (assert) => {
-    const { id, ...prod } = products[2]
+    const { id: _id, ...prod } = products[2]
     prod.title = productTitle()
 
     const resCreate = await create(prod, { token, status: STATUS.Created })
@@ -108,7 +108,7 @@ test('As editor I should:', (t) => {
   })
 
   t.test('be able to retrieve a product', async (assert) => {
-    const { id, ...prod } = products[3]
+    const { id: _id, ...prod } = products[3]
     prod.title = productTitle()
 
     const resCreate = await create(prod, { token, status: STATUS.Created })
@@ -122,7 +122,7 @@ test('As editor I should:', (t) => {
   })
 
   t.test('NOT be able to create a product that exists', async (assert) => {
-    const { id, ...prod } = products[0]
+    const { id: _id, ...prod } = products[0]
 
     const res = await create(prod, { token, status: STATUS.Conflict })
 

@@ -21,7 +21,14 @@ const {
  * Submits a POST with the product and upload image.
  */
 const createUpload = async (
-  { title, description, price, inventory, categoryId, statusId }: Product,
+  {
+    title,
+    description,
+    price,
+    inventory,
+    categoryId,
+    statusId,
+  }: Partial<Product>,
   image: any,
   { token, status }: RequestParams,
 ) => {

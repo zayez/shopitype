@@ -4,7 +4,10 @@ import requestBuilder, { RequestParams } from '../helpers/request-builder'
 import { debugStatus, setHeaders } from '../helpers/request-helpers'
 const { server, agent, getAll, getOne } = requestBuilder(ORDERS)
 
-const placeOrder = async (order: Order, { token, status }: RequestParams) => {
+const placeOrder = async (
+  order: Partial<Order>,
+  { token, status }: RequestParams,
+) => {
   const headers = setHeaders(token)
   return await agent
     .post(POST_ORDER)
