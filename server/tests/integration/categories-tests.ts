@@ -24,7 +24,7 @@ test('setup', async (t) => {
 })
 
 test('[clean db] As admin I should:', (t) => {
-  let token
+  let token: string
   let admin = admins[0]
 
   t.test('setup', async (assert) => {
@@ -137,7 +137,7 @@ test('[clean db] As admin I should:', (t) => {
 })
 
 test('[seeded db] As admin I should', (t) => {
-  let token
+  let token: string
   let admin = admins[0]
 
   t.test('setup', async (assert) => {
@@ -149,9 +149,8 @@ test('[seeded db] As admin I should', (t) => {
   })
 
   t.test('NOT be able to create a category that exists', async (assert) => {
-    const category = { ...categories[0] }
-    delete category.id
-    const res = await create(category, { token, status: STATUS.Conflict })
+    const {id, ...categoryWithoutId} = categories[0]
+    const res = await create(categoryWithoutId, { token, status: STATUS.Conflict })
 
     assert.equal(res.status, STATUS.Conflict)
     assert.end()

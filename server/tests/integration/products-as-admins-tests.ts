@@ -37,7 +37,7 @@ test('setup', async (t) => {
 })
 
 test('As admin I should:', (t) => {
-  let token
+  let token: string
   let admin = admins[0]
 
   t.test('setup', async (assert) => {
@@ -48,14 +48,13 @@ test('As admin I should:', (t) => {
   })
 
   t.test('be able to create a product', async (assert) => {
-    const product = { ...products[0] }
-    delete product.id
-    product.title = productTitle()
-    const res = await create(product, { token, status: STATUS.Created })
+    const {id, ...productWithoutId} = products[0]
+    productWithoutId.title = productTitle()
+    const res = await create(productWithoutId, { token, status: STATUS.Created })
     const createdProduct = res.body
 
     assert.equal(res.status, STATUS.Created)
-    assert.equal(createdProduct.title, product.title)
+    assert.equal(createdProduct.title, productWithoutId.title)
     assert.ok(Number.isInteger(res.body.id))
     assert.end()
   })

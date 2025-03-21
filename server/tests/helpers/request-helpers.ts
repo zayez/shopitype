@@ -1,3 +1,5 @@
+import { StatusCodeType } from '../../src/types/status-code'
+
 const setHeaders = (token?: any, headers?: any) => {
   const newHeaders = headers ? headers : {}
   if (!headers) newHeaders['Accept'] = 'application/json'
@@ -5,7 +7,7 @@ const setHeaders = (token?: any, headers?: any) => {
   return newHeaders
 }
 
-const debugStatus = async (res, expectedStatus) => {
+const debugStatus = async (res: any, expectedStatus: StatusCodeType) => {
   if (res.status !== expectedStatus) {
     console.log(JSON.stringify(res.body, null, 2))
   }

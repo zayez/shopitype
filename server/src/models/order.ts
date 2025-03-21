@@ -29,12 +29,13 @@ export interface OrderItem {
 }
 
 export interface ShippingAddress {
+  id?: number
   addressLine1?: string
   addressLine2?: string
   city?: string
   country?: string
   state?: string
-  postalCode?: string
+  postalCode?: number
   createdAt?: any
   updatedAt?: any
 }

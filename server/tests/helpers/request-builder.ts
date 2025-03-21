@@ -8,7 +8,7 @@ import { debugStatus, setHeaders } from './request-helpers'
 type Entity = any
 type Response = any
 
-export interface RequestOptions {
+export interface RequestParams {
   token?: string
   status: StatusCodeType
 }
@@ -16,17 +16,13 @@ export interface RequestOptions {
 export interface RequestBuilder {
   server: typeof server
   agent: TestAgent
-  create: (entity: Entity, opts: RequestOptions) => Promise<Response>
-  createAll(entities: any, opts: RequestOptions): Promise<Response>
-  update: (
-    id: number,
-    entity: object,
-    opts: RequestOptions,
-  ) => Promise<Response>
-  destroy: (id: number, opts: RequestOptions) => Promise<Response>
-  getOne: (id: number | string, opts: RequestOptions) => Promise<Response>
-  get: (query: string, opts: RequestOptions) => Promise<Response>
-  getAll: (opts: RequestOptions) => Promise<Response>
+  create: (entity: Entity, opts: RequestParams) => Promise<Response>
+  createAll(entities: any, opts: RequestParams): Promise<Response>
+  update: (id: number, entity: object, opts: RequestParams) => Promise<Response>
+  destroy: (id: number, opts: RequestParams) => Promise<Response>
+  getOne: (id: number | string, opts: RequestParams) => Promise<Response>
+  get: (query: string, opts: RequestParams) => Promise<Response>
+  getAll: (opts: RequestParams) => Promise<Response>
 }
 
 const agent = request.agent(server)
@@ -36,7 +32,7 @@ const requestBuilder = (endpoint: string): RequestBuilder => {
 
   const create = async (
     entity: Entity,
-    { token, status }: RequestOptions,
+    { token, status }: RequestParams,
   ): Promise<Response> => {
     const headers = setHeaders(token)
     return await agent
@@ -51,7 +47,7 @@ const requestBuilder = (endpoint: string): RequestBuilder => {
 
   const createAll = async <T>(
     entities: any,
-    { token, status }: RequestOptions,
+    { token, status }: RequestParams,
   ): Promise<Response> => {
     const headers = setHeaders(token)
     return await agent
@@ -67,14 +63,14 @@ const requestBuilder = (endpoint: string): RequestBuilder => {
   const update = async (
     id: number,
     entity: object,
-    { token, status }: RequestOptions,
+    { token, status }: RequestParams,
   ): Promise<Response> => {
     const headers = setHeaders(token)
     return await agent
       .patch(`${url}/${id}`)
       .send(entity)
       .set(headers)
-      .set('Authorization', token)
+      .set('Authorization', token ?? '')
       .expect('Content-Type', /json/)
       .expect((res: any) => debugStatus(res, status))
       .expect(status)
@@ -83,7 +79,7 @@ const requestBuilder = (endpoint: string): RequestBuilder => {
 
   const destroy = async (
     id: number,
-    { token, status }: RequestOptions,
+    { token, status }: RequestParams,
   ): Promise<Response> => {
     const headers = setHeaders(token)
     return await agent
@@ -97,7 +93,7 @@ const requestBuilder = (endpoint: string): RequestBuilder => {
 
   const getOne = async (
     id: number | string,
-    { token, status }: RequestOptions,
+    { token, status }: RequestParams,
   ): Promise<Response> => {
     const headers = setHeaders(token)
     return await agent
@@ -111,7 +107,7 @@ const requestBuilder = (endpoint: string): RequestBuilder => {
 
   const get = async (
     query = '',
-    { token, status }: RequestOptions,
+    { token, status }: RequestParams,
   ): Promise<Response> => {
     const headers = setHeaders(token)
     return await agent
@@ -123,7 +119,7 @@ const requestBuilder = (endpoint: string): RequestBuilder => {
       .then((res) => res)
   }
 
-  const getAll = async (opts: RequestOptions): Promise<Response> => {
+  const getAll = async (opts: RequestParams): Promise<Response> => {
     return await get('', opts)
   }
 

@@ -1,9 +1,10 @@
 import { ORDERS, POST_ORDER, USERS } from '../../src/api/endpoint-urls'
-import requestBuilder from '../helpers/request-builder'
+import { Order } from '../../src/models/order'
+import requestBuilder, { RequestParams } from '../helpers/request-builder'
 import { debugStatus, setHeaders } from '../helpers/request-helpers'
 const { server, agent, getAll, getOne } = requestBuilder(ORDERS)
 
-const placeOrder = async (order, { token, status }) => {
+const placeOrder = async (order: Order, { token, status }: RequestParams) => {
   const headers = setHeaders(token)
   return await agent
     .post(POST_ORDER)
@@ -15,7 +16,7 @@ const placeOrder = async (order, { token, status }) => {
     .then((res) => res)
 }
 
-const getByUser = async (userId, { token, status }) => {
+const getByUser = async (userId: number, { token, status }: RequestParams) => {
   const headers = setHeaders(token)
   return await agent
     .get(`${USERS}/${userId}/orders`)
@@ -26,7 +27,10 @@ const getByUser = async (userId, { token, status }) => {
     .then((res) => res)
 }
 
-const getOneByUser = async ({ orderId, userId }, { token, status }) => {
+const getOneByUser = async (
+  { orderId, userId }: { orderId: number; userId: number },
+  { token, status }: RequestParams,
+) => {
   const headers = setHeaders(token)
   return await agent
     .get(`${USERS}/${userId}/orders/${orderId}`)

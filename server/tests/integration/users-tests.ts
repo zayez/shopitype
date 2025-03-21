@@ -57,15 +57,15 @@ test('As an admin I should:', (t) => {
 })
 
 test('As a customer I should:', (t) => {
-  let token
-  let userId
+  let token: string
+  let userId: number
   const customer = customers[0]
 
   t.test('setup', async (assert) => {
     await knex.seed.run({ directory: 'tests/seeds' })
     token = await login(customer.email, customer.password)
     const decodedToken = jwt.verify(token, SECRET)
-    userId = decodedToken.sub
+    userId = Number(decodedToken.sub)
 
     assert.end()
   })
@@ -149,15 +149,15 @@ test('As a customer I should:', (t) => {
 })
 
 test('As an editor I should:', (t) => {
-  let token
-  let editorId = null
+  let token: string
+  let editorId: number
   const editor = editors[0]
 
   t.test('setup', async (assert) => {
     await knex.seed.run({ directory: 'tests/seeds' })
     token = await login(editor.email, editor.password)
     const decodedToken = jwt.verify(token, SECRET)
-    editorId = decodedToken.sub
+    editorId = Number(decodedToken.sub)
 
     assert.end()
   })
