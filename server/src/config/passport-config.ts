@@ -5,6 +5,7 @@ import {
 } from 'passport-jwt'
 import { Strategy as LocalStrategy } from 'passport-local'
 import { Strategy as AnonymousStrategy } from 'passport-anonymous'
+import { Strategy } from 'passport'
 import config from './config'
 import UserRepository from '../repositories/user-repository'
 import { JwtPayload } from 'jsonwebtoken'
@@ -20,7 +21,7 @@ const cookieExtractor = (
 }
 
 interface KoaPassport {
-  use(strategy: any): void
+  use(strategy: Strategy): void
 }
 
 const opts: StrategyOptionsWithSecret = {
@@ -37,7 +38,7 @@ function passportConfig(passport: KoaPassport) {
       opts,
       async (
         payload: JwtPayload,
-        done: (error: any, user?: unknown, info?: any) => void,
+        done: (error: Error | null, user?: unknown, info?: unknown) => void,
       ) => {
         try {
           const user = await UserRepository.findById(Number(payload.sub))
@@ -46,7 +47,7 @@ function passportConfig(passport: KoaPassport) {
           }
           done(null, user)
         } catch (err) {
-          done(err, false)
+          done(err as Error, false)
         }
       },
     ),
