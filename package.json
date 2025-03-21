@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "lint": "eslint . --ignore-pattern 'client/**' --fix --max-warnings 0 --report-unused-disable-directives"
+    "lint:server": "eslint . --ignore-pattern 'client/**' --fix"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
