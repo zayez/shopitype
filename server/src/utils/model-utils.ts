@@ -14,13 +14,6 @@ import CategoryRepository from '../repositories/category-repository'
 import ProductRepository from '../repositories/product-repository'
 import ProductStatusRepository from '../repositories/product-status-repository'
 
-type AllModels =
-  | Repository<Category>
-  | Repository<Order>
-  | Repository<Product>
-  | Repository<ProductStatus>
-  | Repository<User>
-
 interface ModelMap {
   category: Repository<Category>
   order: Repository<Order, OrderCreateParams>
