@@ -10,38 +10,30 @@ const controllerName = 'users'
 const { update, destroy, getOne, getAll } = controllerHelper(controllerName)
 
 const create = async (user: User, roles: string[]) => {
-  try {
-    const savedUser = await UserRepository.create({ user, roles })
+  const savedUser = await UserRepository.create({ user, roles })
 
-    if (savedUser) {
-      return {
-        action: ActionStatus.Created,
-        payload: mapper.mapUser(savedUser),
-      }
-    }
+  if (savedUser) {
     return {
-      action: ActionStatus.CreateError,
+      action: ActionStatus.Created,
+      payload: mapper.mapUser(savedUser),
     }
-  } catch (err) {
-    throw err
+  }
+  return {
+    action: ActionStatus.CreateError,
   }
 }
 
 const getAllByRoles = async (roles: RoleType[]) => {
-  try {
-    const users = await UserRepository.findAllByRoles(roles)
-    if (users) {
-      return {
-        action: ActionStatus.Ok,
-        payload: users.map(mapper.mapUser),
-      }
-    }
-
+  const users = await UserRepository.findAllByRoles(roles)
+  if (users) {
     return {
-      action: ActionStatus.Error,
+      action: ActionStatus.Ok,
+      payload: users.map(mapper.mapUser),
     }
-  } catch (err) {
-    throw err
+  }
+
+  return {
+    action: ActionStatus.Error,
   }
 }
 
