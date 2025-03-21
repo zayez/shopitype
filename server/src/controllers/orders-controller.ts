@@ -13,43 +13,35 @@ const placeOrder = async (
   { order, userId }: { order: Order; userId: number },
   orderType = ORDER_APP,
 ) => {
-  try {
-    const savedOrder =
-      orderType === ORDER_STRIPE
-        ? await OrderRepository.createForStripe({
-            order,
-            userId,
-          })
-        : await OrderRepository.create({ order, userId })
+  const savedOrder =
+    orderType === ORDER_STRIPE
+      ? await OrderRepository.createForStripe({
+          order,
+          userId,
+        })
+      : await OrderRepository.create({ order, userId })
 
-    if (savedOrder) {
-      return {
-        action: ActionStatus.Created,
-        payload: mapper.mapOrder(savedOrder),
-      }
-    }
+  if (savedOrder) {
     return {
-      action: ActionStatus.CreateError,
+      action: ActionStatus.Created,
+      payload: mapper.mapOrder(savedOrder),
     }
-  } catch (err) {
-    throw err
+  }
+  return {
+    action: ActionStatus.CreateError,
   }
 }
 
 const getAllByUser = async (id: number) => {
-  try {
-    const orders = await OrderRepository.find({ userId: id })
-    if (orders) {
-      return {
-        action: ActionStatus.Ok,
-        payload: orders.map(mapper.mapOrder),
-      }
-    }
+  const orders = await OrderRepository.find({ userId: id })
+  if (orders) {
     return {
-      action: ActionStatus.Error,
+      action: ActionStatus.Ok,
+      payload: orders.map(mapper.mapOrder),
     }
-  } catch (err) {
-    throw err
+  }
+  return {
+    action: ActionStatus.Error,
   }
 }
 
@@ -60,19 +52,15 @@ const getOneByUser = async ({
   orderId: number
   userId: number
 }) => {
-  try {
-    const order = await OrderRepository.findOneByUser({ orderId, userId })
-    if (order) {
-      return {
-        action: ActionStatus.Ok,
-        payload: mapper.mapOrder(order),
-      }
-    }
+  const order = await OrderRepository.findOneByUser({ orderId, userId })
+  if (order) {
     return {
-      action: ActionStatus.Error,
+      action: ActionStatus.Ok,
+      payload: mapper.mapOrder(order),
     }
-  } catch (err) {
-    throw err
+  }
+  return {
+    action: ActionStatus.Error,
   }
 }
 
@@ -80,19 +68,15 @@ const markShippingStatus = async (
   orderId: number,
   status: ShippingStatusType,
 ) => {
-  try {
-    const order = await OrderRepository.markShippingStatus(orderId, status)
-    if (order) {
-      return {
-        action: ActionStatus.Ok,
-        payload: mapper.mapOrder(order),
-      }
-    }
+  const order = await OrderRepository.markShippingStatus(orderId, status)
+  if (order) {
     return {
-      action: ActionStatus.Error,
+      action: ActionStatus.Ok,
+      payload: mapper.mapOrder(order),
     }
-  } catch (err) {
-    throw err
+  }
+  return {
+    action: ActionStatus.Error,
   }
 }
 

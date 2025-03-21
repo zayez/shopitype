@@ -11,113 +11,93 @@ const controllerName = 'products'
 const { create, destroy, getOne, getAll } = controllerHelper(controllerName)
 
 const update = async (id: number, props: Product) => {
-  try {
-    if (props.image) {
-      const product = await ProductRepository.findById(id)
-      if (!product) {
-        return {
-          action: ActionStatus.BadRequest,
-          payload: null,
-        }
-      }
-      await deleteFile(product.image ?? '')
-    }
-    const updatedProduct = await ProductRepository.update(id, props)
-    if (updatedProduct) {
-      const payload = mapper.mapProduct(updatedProduct)
+  if (props.image) {
+    const product = await ProductRepository.findById(id)
+    if (!product) {
       return {
-        action: ActionStatus.Ok,
-        payload,
+        action: ActionStatus.BadRequest,
+        payload: null,
       }
     }
+    await deleteFile(product.image ?? '')
+  }
+  const updatedProduct = await ProductRepository.update(id, props)
+  if (updatedProduct) {
+    const payload = mapper.mapProduct(updatedProduct)
     return {
-      action: ActionStatus.BadRequest,
-      payload: null,
+      action: ActionStatus.Ok,
+      payload,
     }
-  } catch (err) {
-    throw err
+  }
+  return {
+    action: ActionStatus.BadRequest,
+    payload: null,
   }
 }
 
 const createCollection = async (products: Product[]) => {
-  try {
-    // lastProduct is the last item created (for now)
-    const lastProduct = await ProductRepository.create(products)
-    if (lastProduct) {
-      return {
-        action: ActionStatus.Created,
-        payload: { lastProduct: mapper.mapProduct(lastProduct) },
-      }
-    }
+  // lastProduct is the last item created (for now)
+  const lastProduct = await ProductRepository.create(products)
+  if (lastProduct) {
     return {
-      action: ActionStatus.Unprocessable,
-      payload: null,
+      action: ActionStatus.Created,
+      payload: { lastProduct: mapper.mapProduct(lastProduct) },
     }
-  } catch (err) {
-    throw err
+  }
+  return {
+    action: ActionStatus.Unprocessable,
+    payload: null,
   }
 }
 
 const getAllActive = async ({ page }: { page?: number }) => {
-  try {
-    const productsFound = await ProductRepository.findAllActive(page)
-    if (productsFound) {
-      return {
-        action: ActionStatus.Ok,
-        payload: productsFound.map(mapper.mapProduct),
-      }
-    }
+  const productsFound = await ProductRepository.findAllActive(page)
+  if (productsFound) {
     return {
-      action: ActionStatus.NotFound,
-      payload: null,
+      action: ActionStatus.Ok,
+      payload: productsFound.map(mapper.mapProduct),
     }
-  } catch (err) {
-    throw err
+  }
+  return {
+    action: ActionStatus.NotFound,
+    payload: null,
   }
 }
 
 const getOneActive = async (id: number) => {
-  try {
-    const productFound = await ProductRepository.findOneActive(id)
-    if (productFound) {
-      const product = mapper.mapProduct(productFound)
-      return {
-        action: ActionStatus.Ok,
-        payload: product,
-      }
-    }
+  const productFound = await ProductRepository.findOneActive(id)
+  if (productFound) {
+    const product = mapper.mapProduct(productFound)
     return {
-      action: ActionStatus.NotFound,
-      payload: null,
+      action: ActionStatus.Ok,
+      payload: product,
     }
-  } catch (err) {
-    throw err
+  }
+  return {
+    action: ActionStatus.NotFound,
+    payload: null,
   }
 }
 
 const validateItems = async (items: OrderItem[]) => {
-  try {
-    const values = items.map((i) => i.productId)
-    const foundItems = await ProductRepository.includesAll('id', values)
-    if (!foundItems) {
-      return {
-        action: ActionStatus.Unprocessable,
-        payload: { error: 'Some of the items have not been found.' },
-      }
+  const values = items.map((i) => i.productId)
+  const foundItems = await ProductRepository.includesAll('id', values)
+  if (!foundItems) {
+    return {
+      action: ActionStatus.Unprocessable,
+      payload: { error: 'Some of the items have not been found.' },
     }
-    const hasInventory = await ProductRepository.hasInventory(items)
-    if (!hasInventory) {
-      return {
-        action: ActionStatus.Unprocessable,
-        payload: {
-          error: 'Insufficient inventory for some of the items ordered.',
-        },
-      }
-    }
-    return { action: ActionStatus.Ok }
-  } catch (err) {
-    throw err
   }
+  const hasInventory = await ProductRepository.hasInventory(items)
+  if (!hasInventory) {
+    return {
+      action: ActionStatus.Unprocessable,
+      payload: {
+        error: 'Insufficient inventory for some of the items ordered.',
+      },
+    }
+  }
+  return { action: ActionStatus.Ok }
 }
 
 const ProductsController = {

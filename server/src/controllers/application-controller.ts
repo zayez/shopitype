@@ -12,21 +12,17 @@ const getRoot = async () => {
 
 async function signUp(user: User) {
   const roles = ['customer']
-  try {
-    const savedUser = await UserRepository.create({ user, roles })
+  const savedUser = await UserRepository.create({ user, roles })
 
-    if (savedUser.id) {
-      const token = signToken(savedUser.id)
-      return {
-        action: ActionStatus.Created,
-        payload: { token, user: savedUser },
-      }
-    }
+  if (savedUser.id) {
+    const token = signToken(savedUser.id)
     return {
-      action: ActionStatus.SignUpError_CreateUserFailed,
+      action: ActionStatus.Created,
+      payload: { token, user: savedUser },
     }
-  } catch (err) {
-    throw err
+  }
+  return {
+    action: ActionStatus.SignUpError_CreateUserFailed,
   }
 }
 

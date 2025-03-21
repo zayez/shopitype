@@ -17,91 +17,83 @@ const create = async ({
   items: OrderItem[]
   userId: number
 }) => {
-  try {
-    const customer = await stripe.customers.create({
-      metadata: {
-        userId,
-      },
-    })
+  const customer = await stripe.customers.create({
+    metadata: {
+      userId,
+    },
+  })
 
-    const itemsIds = items
-      .map((i) => i.id)
-      .filter((id): id is number => id !== undefined)
-    const products = await ProductRepository.findAllIn(itemsIds)
-    const productsIds = products.map((i) => i.id)
+  const itemsIds = items
+    .map((i) => i.id)
+    .filter((id): id is number => id !== undefined)
+  const products = await ProductRepository.findAllIn(itemsIds)
+  const productsIds = products.map((i) => i.id)
 
-    if (!isEqual(productsIds.sort(), itemsIds.sort())) {
-      return { action: ActionStatus.BadRequest }
-    }
-
-    const line_items = items.map((item) => {
-      if (item.id === undefined || item.quantity === undefined) {
-        return { action: ActionStatus.BadRequest, payload: null }
-      }
-      const product = products.find((p) => p.id === item.id)
-      if (!product) {
-        return { action: ActionStatus.BadRequest, payload: null }
-      }
-      return {
-        price_data: {
-          currency: 'usd',
-          product_data: {
-            name: product.title ?? 'Unknown Product',
-            metadata: {
-              productId: item.id,
-            },
-          },
-          unit_amount: product.price * 100,
-        },
-        quantity: item.quantity,
-      }
-    })
-
-    // TODO: Configure shipping options properly
-    const shippingAddressCollection: Stripe.Checkout.SessionCreateParams.ShippingAddressCollection =
-      {
-        allowed_countries: ['US', 'BR'],
-      }
-    const shippingOptions = [
-      {
-        shipping_rate_data: {
-          type: 'fixed_amount' as const,
-          fixed_amount: { amount: 0, currency: 'usd' },
-          display_name: 'Free shipping',
-          delivery_estimate: {
-            minimum: { unit: 'business_day' as const, value: 5 },
-            maximum: { unit: 'business_day' as const, value: 7 },
-          },
-        },
-      },
-    ]
-
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      mode: 'payment',
-      customer: customer.id,
-      shipping_address_collection: shippingAddressCollection,
-      shipping_options: shippingOptions,
-      line_items,
-      success_url: `http://${CLIENT_URL}/success?id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `http://${CLIENT_URL}/cart?id={CHECKOUT_SESSION_ID}`,
-    })
-
-    return { action: ActionStatus.Ok, payload: { url: session.url } }
-  } catch (err) {
-    throw err
+  if (!isEqual(productsIds.sort(), itemsIds.sort())) {
+    return { action: ActionStatus.BadRequest }
   }
+
+  const line_items = items.map((item) => {
+    if (item.id === undefined || item.quantity === undefined) {
+      return { action: ActionStatus.BadRequest, payload: null }
+    }
+    const product = products.find((p) => p.id === item.id)
+    if (!product) {
+      return { action: ActionStatus.BadRequest, payload: null }
+    }
+    return {
+      price_data: {
+        currency: 'usd',
+        product_data: {
+          name: product.title ?? 'Unknown Product',
+          metadata: {
+            productId: item.id,
+          },
+        },
+        unit_amount: product.price * 100,
+      },
+      quantity: item.quantity,
+    }
+  })
+
+  // TODO: Configure shipping options properly
+  const shippingAddressCollection: Stripe.Checkout.SessionCreateParams.ShippingAddressCollection =
+    {
+      allowed_countries: ['US', 'BR'],
+    }
+  const shippingOptions = [
+    {
+      shipping_rate_data: {
+        type: 'fixed_amount' as const,
+        fixed_amount: { amount: 0, currency: 'usd' },
+        display_name: 'Free shipping',
+        delivery_estimate: {
+          minimum: { unit: 'business_day' as const, value: 5 },
+          maximum: { unit: 'business_day' as const, value: 7 },
+        },
+      },
+    },
+  ]
+
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ['card'],
+    mode: 'payment',
+    customer: customer.id,
+    shipping_address_collection: shippingAddressCollection,
+    shipping_options: shippingOptions,
+    line_items,
+    success_url: `http://${CLIENT_URL}/success?id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `http://${CLIENT_URL}/cart?id={CHECKOUT_SESSION_ID}`,
+  })
+
+  return { action: ActionStatus.Ok, payload: { url: session.url } }
 }
 
 const get = async (id: string) => {
-  try {
-    const session = await stripe.checkout.sessions.retrieve(id, {
-      expand: ['line_items'],
-    })
-    return { action: ActionStatus.Ok, payload: session }
-  } catch (err) {
-    throw err
-  }
+  const session = await stripe.checkout.sessions.retrieve(id, {
+    expand: ['line_items'],
+  })
+  return { action: ActionStatus.Ok, payload: session }
 }
 
 const StripeCheckoutController = {
