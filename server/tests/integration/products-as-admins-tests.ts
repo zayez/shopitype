@@ -38,7 +38,7 @@ test('setup', async (t) => {
 
 test('As admin I should:', (t) => {
   let token: string
-  let admin = admins[0]
+  const admin = admins[0]
 
   t.test('setup', async (assert) => {
     await knex.migrate.latest()
@@ -270,7 +270,7 @@ test('As admin I should:', (t) => {
       token,
       status: STATUS.Created,
     })
-    let resProd = resCreate.body
+    const resProd = resCreate.body
     const res = await update(resProd.id, productUpdate, {
       token,
       status: STATUS.Ok,

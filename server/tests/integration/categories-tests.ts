@@ -25,7 +25,7 @@ test('setup', async (t) => {
 
 test('[clean db] As admin I should:', (t) => {
   let token: string
-  let admin = admins[0]
+  const admin = admins[0]
 
   t.test('setup', async (assert) => {
     await knex.migrate.latest()
@@ -83,7 +83,7 @@ test('[clean db] As admin I should:', (t) => {
   )
 
   t.test('be able to delete a category', async (assert) => {
-    let catTitle = 'Beverages'
+    const catTitle = 'Beverages'
     const category = { title: catTitle }
     const resCreate = await create(category, { token, status: STATUS.Created })
     const catCreated = resCreate.body
@@ -138,7 +138,7 @@ test('[clean db] As admin I should:', (t) => {
 
 test('[seeded db] As admin I should', (t) => {
   let token: string
-  let admin = admins[0]
+  const admin = admins[0]
 
   t.test('setup', async (assert) => {
     await knex.migrate.latest()

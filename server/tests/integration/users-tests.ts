@@ -29,7 +29,7 @@ test('setup', async (t) => {
 
 test('As an admin I should:', (t) => {
   let token: string
-  let admin = admins[0]
+  const admin = admins[0]
 
   t.test('setup', async (assert) => {
     token = await login(admin.email, admin.password)
