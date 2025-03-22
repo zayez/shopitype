@@ -2,28 +2,33 @@ import ActionStatus from '../../types/action-status'
 import OrdersController from '../../controllers/orders-controller'
 import { setResponse } from '../../helpers/middleware-helpers'
 import mapper from '../../helpers/props-mapper-input'
+import Koa from 'koa'
 
-const get = async (ctx) => {
+const get = async (ctx: Koa.Context) => {
   try {
     const { id } = ctx.params
     const { action, payload } = await OrdersController.getOne(id)
     setResponse(ctx, { action, payload })
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
 
-const getAll = async (ctx) => {
+const getAll = async (ctx: Koa.Context) => {
   try {
-    const { page } = ctx.request.query
-    const { action, payload } = await OrdersController.getAll({ page })
+    const page = ctx.request.query.page
+      ? Number(ctx.request.query.page)
+      : undefined
+    const { action, payload } = await OrdersController.getAll({
+      page,
+    })
     setResponse(ctx, { action, payload })
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
 
-const placeOrder = async (ctx) => {
+const placeOrder = async (ctx: Koa.Context) => {
   try {
     const userId = ctx.state.user.id
     const order = mapper.mapOrder(ctx.request.body)
@@ -33,22 +38,22 @@ const placeOrder = async (ctx) => {
       userId,
     })
     setResponse(ctx, { action, payload })
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
 
-const getAllByUser = async (ctx) => {
+const getAllByUser = async (ctx: Koa.Context) => {
   try {
     const { userId } = ctx.params
     const { action, payload } = await OrdersController.getAllByUser(userId)
     setResponse(ctx, { action, payload })
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
 
-const getOneByUser = async (ctx) => {
+const getOneByUser = async (ctx: Koa.Context) => {
   try {
     const { orderId, userId } = ctx.params
     const { action, payload } = await OrdersController.getOneByUser({
@@ -56,12 +61,12 @@ const getOneByUser = async (ctx) => {
       userId,
     })
     setResponse(ctx, { action, payload })
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
 
-const markShippingStatus = async (ctx) => {
+const markShippingStatus = async (ctx: Koa.Context) => {
   try {
     const { status } = ctx.request.body
     const { id } = ctx.params
@@ -72,7 +77,7 @@ const markShippingStatus = async (ctx) => {
     )
 
     setResponse(ctx, { action, payload })
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }

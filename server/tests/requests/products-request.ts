@@ -1,8 +1,9 @@
 import path from 'path'
-import requestBuilder from '../helpers/request-builder'
+import requestBuilder, { RequestParams } from '../helpers/request-builder'
 import { POST_PRODUCT, PRODUCTS } from '../../src/api/endpoint-urls'
 import { debugStatus } from '../helpers/request-helpers'
 import { StatusCodeType } from '../../src/types/status-code'
+import { Product } from '../../src/models/product'
 const {
   agent,
   server,
@@ -15,25 +16,32 @@ const {
   getAll,
 } = requestBuilder(PRODUCTS)
 
+interface UploadedImage {
+  path: string
+}
+
 /**
  *
  * Submits a POST with the product and upload image.
- * @param {Product} product the product
- * @param {string} image image path
- * @param {RequestOptions} opts options
- * @returns {Response} response
  */
 const createUpload = async (
-  { title, description, price, inventory, categoryId, statusId },
-  image,
-  { token, status },
+  {
+    title,
+    description,
+    price,
+    inventory,
+    categoryId,
+    statusId,
+  }: Partial<Product>,
+  image: UploadedImage,
+  { token, status }: RequestParams,
 ) => {
   const imagepath = path.join(__dirname, `../${image.path}`)
 
   let post = agent
     .post(POST_PRODUCT)
     .set('Content-Type', 'multipart/form-data')
-    .set('Authorization', token)
+    .set('Authorization', token ?? '')
     .set('Accept', 'multipart/form-data')
     .expect('Content-Type', /json/)
     .expect((res) => debugStatus(res, status))
@@ -69,7 +77,7 @@ const updateUpload = async ({
   inventory?: number
   categoryId?: number
   statusId?: number
-  image: any
+  image: UploadedImage
   token: string
   status: StatusCodeType
 }) => {

@@ -5,13 +5,13 @@ import config from '../config/config'
 
 const { isProd, isDev } = config
 
-const existsFile = async (file) =>
-  await new Promise((resolve, reject) => {
-    const fileExists = fsSync.existsSync(file)
+const existsFile = async (filepath: string) =>
+  await new Promise((resolve) => {
+    const fileExists = fsSync.existsSync(filepath)
     resolve(fileExists)
   })
 
-const deleteFile = async (filepath) => {
+const deleteFile = async (filepath: string) => {
   const filedir = isDev || isProd ? 'public' : 'tests/data'
   const file = path.join(filedir, filepath)
   try {

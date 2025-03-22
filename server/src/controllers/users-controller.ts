@@ -2,44 +2,38 @@ import ActionStatus from '../types/action-status'
 import controllerHelper from '../helpers/controller-helper'
 import mapper from '../helpers/props-mapper-output'
 import UserRepository from '../repositories/user-repository'
+import { User } from '../models/user'
+import { RoleType } from '../types/role-type'
 
 const controllerName = 'users'
 
 const { update, destroy, getOne, getAll } = controllerHelper(controllerName)
 
-const create = async (user, roles) => {
-  try {
-    const savedUser = await UserRepository.create({ user, roles })
+const create = async (user: Partial<User>, roles: string[]) => {
+  const savedUser = await UserRepository.create({ user, roles })
 
-    if (savedUser) {
-      return {
-        action: ActionStatus.Created,
-        payload: mapper.mapUser(savedUser),
-      }
-    }
+  if (savedUser) {
     return {
-      action: ActionStatus.CreateError,
+      action: ActionStatus.Created,
+      payload: mapper.mapUser(savedUser),
     }
-  } catch (err) {
-    throw err
+  }
+  return {
+    action: ActionStatus.CreateError,
   }
 }
 
-const getAllByRoles = async (role) => {
-  try {
-    const users = await UserRepository.findAllByRoles(role)
-    if (users) {
-      return {
-        action: ActionStatus.Ok,
-        payload: users.map(mapper.mapUser),
-      }
-    }
-
+const getAllByRoles = async (roles: RoleType[]) => {
+  const users = await UserRepository.findAllByRoles(roles)
+  if (users) {
     return {
-      action: ActionStatus.Error,
+      action: ActionStatus.Ok,
+      payload: users.map(mapper.mapUser),
     }
-  } catch (err) {
-    throw err
+  }
+
+  return {
+    action: ActionStatus.Error,
   }
 }
 

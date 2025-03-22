@@ -1,12 +1,12 @@
-import { Role } from './role'
+import { RoleType } from '../types/role-type'
 
 export interface User {
-  id?: number
-  email?: string
+  id: number
+  email: string
   firstName?: string
   lastName?: string
-  password?: string
-  roles?: Role[]
-  createdAt?: any
-  updatedAt?: any
+  password: string
+  roles: RoleType[]
+  createdAt: Date
+  updatedAt: Date
 }

@@ -6,10 +6,13 @@ import {
   POST_SIGN_IN,
   POST_SIGN_UP,
 } from '../../src/api/endpoint-urls'
+import { StatusCodeType } from '../../src/types/status-code'
+import { RequestParams } from '../helpers/request-builder'
+import { User } from '../../src/models/user'
 
 const agent = request.agent(server)
 
-const getRoot = async (status) => {
+const getRoot = async (status: StatusCodeType) => {
   const headers = setHeaders()
   return await agent
     .get(GET_ROOT)
@@ -20,7 +23,11 @@ const getRoot = async (status) => {
     .then((res) => res)
 }
 
-const signIn = async (email, password, { status }) => {
+const signIn = async (
+  email: string,
+  password: string,
+  { status }: RequestParams,
+) => {
   const headers = setHeaders()
   return await agent
     .post(POST_SIGN_IN)
@@ -32,7 +39,7 @@ const signIn = async (email, password, { status }) => {
     .then((res) => res)
 }
 
-const signUp = async (user, { status }) => {
+const signUp = async (user: User, { status }: RequestParams) => {
   const headers = setHeaders()
   return await agent
     .post(POST_SIGN_UP)
@@ -44,7 +51,7 @@ const signUp = async (user, { status }) => {
     .then((res) => res)
 }
 
-const getUser = async ({ token, status }) => {
+const getUser = async ({ token, status }: RequestParams) => {
   const headers = setHeaders(token)
   return await agent
     .get(`/user`)

@@ -16,6 +16,8 @@ import {
   getByUser,
   getOneByUser,
 } from '../requests/orders-request'
+import { Order } from '../../src/models/order'
+import { PaymentStatusEnum } from '../../src/types/payment-status'
 
 test('setup', async (t) => {
   await knex.migrate.latest()
@@ -25,8 +27,8 @@ test('setup', async (t) => {
 
 test('As a customer I should:', (t) => {
   const customer = customers[0]
-  let token
-  let customerId = ''
+  let token: string
+  let customerId: number
 
   t.test('setup', async (assert) => {
     token = await login(customer.email, customer.password)
@@ -42,19 +44,18 @@ test('As a customer I should:', (t) => {
 
   t.test('be able to place an order', async (assert) => {
     const product = await knex('products').first()
-    const addr = { ...shippingAddresses[0] }
-    delete addr.id
+    const { id: _id, ...addrWithoutId } = shippingAddresses[0]
 
     const order = {
       paymentStatus: 'paid',
-      shippingAddress: addr,
+      shippingAddress: addrWithoutId,
       items: [
         {
           productId: product.id,
           quantity: 1,
         },
       ],
-    }
+    } as Partial<Order>
 
     const res = await placeOrder(order, { token, status: STATUS.Created })
     const createdOrder = res.body
@@ -71,12 +72,11 @@ test('As a customer I should:', (t) => {
   t.test(
     'NOT be able to place order with nonexistent products',
     async (assert) => {
-      const addr = { ...shippingAddresses[1] }
-      delete addr.id
+      const { id: _id, ...addrWithoutId } = shippingAddresses[1]
 
       const order = {
-        paymentStatus: 'paid',
-        shippingAddress: addr,
+        paymentStatus: PaymentStatusEnum.PAID,
+        shippingAddress: addrWithoutId,
         items: [
           { productId: 9992, quantity: 1 },
           { productId: 9999, quantity: 1 },
@@ -94,12 +94,11 @@ test('As a customer I should:', (t) => {
   )
 
   t.test('NOT be able to place order without items', async (assert) => {
-    const addr = { ...shippingAddresses[0] }
-    delete addr.id
+    const { id: _id, ...addrWithoutId } = shippingAddresses[0]
 
     const order = {
-      paymentStatus: 'paid',
-      shippingAddress: addr,
+      paymentStatus: PaymentStatusEnum.PAID,
+      shippingAddress: addrWithoutId,
       items: [],
     }
 
@@ -118,12 +117,11 @@ test('As a customer I should:', (t) => {
       const product = await knex('products').first()
       const quantity = product.inventory + 10
 
-      const addr = { ...shippingAddresses[2] }
-      delete addr.id
+      const { id: _id, ...addrWithoutId } = shippingAddresses[2]
 
       const order = {
-        paymentStatus: 'paid',
-        shippingAddress: addr,
+        paymentStatus: PaymentStatusEnum.PAID,
+        shippingAddress: addrWithoutId,
         items: [{ productId: product.id, quantity }],
       }
 
@@ -139,33 +137,31 @@ test('As a customer I should:', (t) => {
 
   t.test('be able to get my orders', async (assert) => {
     const products = await knex('products')
-    const addr1 = { ...shippingAddresses[0] }
-    delete addr1.id
-    const addr2 = { ...shippingAddresses[1] }
-    delete addr2.id
+    const { id: _id1, ...addr1WithoutId } = shippingAddresses[0]
+    const { id: _id2, ...addr2WithoutId } = shippingAddresses[1]
 
     const order1 = {
-      paymentStatus: 'paid',
-      shippingAddress: addr1,
+      paymentStatus: PaymentStatusEnum.PAID,
+      shippingAddress: addr1WithoutId,
       items: [
         {
           productId: products[1].id,
           quantity: 1,
         },
       ],
-      dateOrder: new Date().toISOString(),
+      dateOrder: new Date(),
     }
 
     const order2 = {
-      paymentStatus: 'paid',
-      shippingAddress: addr2,
+      paymentStatus: PaymentStatusEnum.PAID,
+      shippingAddress: addr2WithoutId,
       items: [
         {
           productId: products[2].id,
           quantity: 1,
         },
       ],
-      dateOrder: new Date().toISOString(),
+      dateOrder: new Date(),
     }
 
     await placeOrder(order1, { token, status: STATUS.Created })
@@ -176,7 +172,7 @@ test('As a customer I should:', (t) => {
     )
 
     const res = await getByUser(customerId, { token, status: STATUS.Ok })
-    const retrievedOrders = res.body.map((o) => o.id)
+    const retrievedOrders = res.body.map((o: { id: number }) => o.id)
 
     assert.equal(res.status, STATUS.Ok)
     assert.deepEqual(retrievedOrders, userOrders, 'retrieved orders match')

@@ -14,7 +14,9 @@ import {
 } from '../middlewares/validations/application-validation'
 import { authenticate, authenticateLocal } from '../middlewares/authentication'
 import { userExists } from '../middlewares/resource-checks-middleware'
-const router = new Router()
+import Koa from 'koa'
+
+const router = new Router<Koa.DefaultState, Koa.DefaultContext>()
 
 const getRoot = compose([ApplicationMiddleware.getRoot])
 

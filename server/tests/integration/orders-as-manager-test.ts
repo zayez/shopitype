@@ -21,8 +21,8 @@ test('setup', async (t) => {
 
 test('As a manager(admin/editor) I should:', (t) => {
   const manager = editors[0]
-  let token
-  let managerId = ''
+  let token: string
+  let managerId: number
 
   t.test('setup', async (assert) => {
     token = await login(manager.email, manager.password)
@@ -69,7 +69,7 @@ test('As a manager(admin/editor) I should:', (t) => {
     const ordersIds = orders.map((o) => o.id)
 
     const res = await getByUser(order.userId, { token, status: STATUS.Ok })
-    const retrievedOrdersIds = res.body.map((o) => o.id)
+    const retrievedOrdersIds = res.body.map((o: { id: number }) => o.id)
 
     assert.equal(res.status, STATUS.Ok, 'correct status code')
     assert.deepEqual(retrievedOrdersIds, ordersIds, 'orders retrieved match')
@@ -81,7 +81,7 @@ test('As a manager(admin/editor) I should:', (t) => {
     const ordersIds = orders.map((o) => o.id)
 
     const res = await getAll({ token, status: STATUS.Ok })
-    const resRetrievedOrdersIds = res.body.map((o) => o.id)
+    const resRetrievedOrdersIds = res.body.map((o: { id: number }) => o.id)
 
     assert.equal(res.status, STATUS.Ok, 'status is correct')
     assert.deepEqual(resRetrievedOrdersIds, ordersIds, 'correct orders')

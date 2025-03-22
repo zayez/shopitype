@@ -3,6 +3,8 @@ import bcrypt from 'bcrypt'
 import { Repository } from '../repositories/repository'
 import { User } from '../models/user'
 import queryBuilder from '../lib/query-builder/query-builder'
+import { RoleType } from '../types/role-type'
+import { Role } from '../models/role'
 
 const TABLE_NAME = 'users'
 const SELECTABLE_FIELDS = [
@@ -18,58 +20,51 @@ const SELECTABLE_FIELDS = [
 const tableName = TABLE_NAME
 const fields = SELECTABLE_FIELDS
 
-const { find, findAll, destroy, destroyAll, includesAny } = queryBuilder(
-  TABLE_NAME,
-  SELECTABLE_FIELDS,
-)
+const { find, findAll, destroy, destroyAll, includesAny } = queryBuilder<
+  Partial<User>
+>(TABLE_NAME, SELECTABLE_FIELDS)
 
-const hashPassword = async (password, saltRounds = 10) => {
-  try {
-    const salt = await bcrypt.genSalt(saltRounds)
-    return await bcrypt.hash(password, salt)
-  } catch (err) {
-    throw err
-  }
+const hashPassword = async (password: string, saltRounds = 10) => {
+  const salt = await bcrypt.genSalt(saltRounds)
+  return await bcrypt.hash(password, salt)
 }
 
-const getUserRoles = async (id) => {
-  return await knex('roles').whereIn(
+const getUserRoles = async (id: number) => {
+  return (await knex('roles').whereIn(
     'id',
     knex('userRoles').select('roleId').where('userId', id),
-  )
+  )) as Role[]
 }
 
-async function hasRole(user, roles: string[]) {
+async function hasRole(user: User, roles: string[]) {
+  if (!user.id) {
+    throw new Error('User has no id')
+  }
   const userRoles = await getUserRoles(user.id)
   return userRoles.some((r) => roles.includes(r.name))
 }
 
-async function matchPassword(email, password) {
+async function matchPassword(email: string, password: string) {
   const user = await knex('users').select('*').where('email', email).first()
 
-  try {
-    return await bcrypt.compare(password, user.password)
-  } catch (err) {
-    throw err
-  }
+  return await bcrypt.compare(password, user.password)
 }
 
-async function comparePassword(password, encryptedPassword) {
-  try {
-    return await bcrypt.compare(password, encryptedPassword)
-  } catch (err) {
-    throw err
-  }
+async function comparePassword(password: string, encryptedPassword: string) {
+  return await bcrypt.compare(password, encryptedPassword)
 }
 
 export interface UserCreateParams {
-  user: any
+  user: Partial<User>
   roles?: string[]
 }
 
 async function create(userData: UserCreateParams) {
   const { user, roles = ['customer'] } = userData
 
+  if (!user.password) {
+    throw new Error('Did not provide a password for the user')
+  }
   const hashedPassword = await hashPassword(user.password)
   const newUser = {
     email: user.email,
@@ -95,7 +90,7 @@ async function create(userData: UserCreateParams) {
   return createdUser
 }
 
-const update = async (id, props: User) => {
+const update = async (id: number, props: Partial<User>) => {
   if (props.password) {
     const hashedPassword = await hashPassword(props.password)
     props.password = hashedPassword
@@ -104,8 +99,10 @@ const update = async (id, props: User) => {
   return await findById(id)
 }
 
-const findOne = async (filters) => {
-  const user = await knex(TABLE_NAME).first(SELECTABLE_FIELDS).where(filters)
+const findOne = async (filters?: Partial<User>): Promise<User | null> => {
+  const user = filters
+    ? await knex(TABLE_NAME).first(SELECTABLE_FIELDS).where(filters)
+    : await knex(TABLE_NAME).first(SELECTABLE_FIELDS)
   if (!user) return null
 
   const roles = await getUserRoles(user.id)
@@ -113,7 +110,7 @@ const findOne = async (filters) => {
   return user
 }
 
-const findById = async (id) => {
+const findById = async (id: number) => {
   const user = await knex(TABLE_NAME).first(SELECTABLE_FIELDS).where({ id })
   if (!user) return null
 
@@ -122,7 +119,7 @@ const findById = async (id) => {
   return user
 }
 
-const findAllByRoles = async (roles) => {
+const findAllByRoles = async (roles: RoleType[]) => {
   const selectedRoles = await knex('roles').select('id').whereIn('name', roles)
   if (!selectedRoles) return []
 
@@ -137,7 +134,18 @@ const findAllByRoles = async (roles) => {
   return users
 }
 
-const UserRepository: Repository<User, UserCreateParams> = {
+export interface UserRepositoryBase
+  extends Repository<Partial<User>, UserCreateParams> {
+  hasRole: (user: User, roles: string[]) => Promise<boolean>
+  matchPassword: (email: string, password: string) => Promise<boolean>
+  comparePassword: (
+    password: string,
+    encryptedPassword: string,
+  ) => Promise<boolean>
+  findAllByRoles: (roles: RoleType[]) => Promise<User[]>
+}
+
+const UserRepository: UserRepositoryBase = {
   tableName,
   fields,
   find,

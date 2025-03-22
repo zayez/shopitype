@@ -23,8 +23,9 @@ import {
 } from '../middlewares/validations/orders-validation'
 import OrdersMiddleware from '../middlewares/domains/orders-middleware'
 import { isValidId } from '../middlewares/validations/application-validation'
+import Koa from 'koa'
 
-const router = new Router()
+const router = new Router<Koa.DefaultState, Koa.DefaultContext>()
 
 const placeOrder = compose([
   authorizeCustomer,

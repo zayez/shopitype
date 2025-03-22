@@ -8,7 +8,7 @@ test('setup', async (t) => {
 test('should be able to override headers', (t) => {
   const token = 'tokens'
   const format = 'image/jpg'
-  const initHeaders = {}
+  const initHeaders: Record<string, unknown> = {}
   initHeaders['Image-Format'] = format
   const newHeaders = setHeaders(token, initHeaders)
 
@@ -21,7 +21,7 @@ test('should not be able to override headers', (t) => {
   const token = 'token'
   const accept = 'application/json'
   const format = 'music/mp3'
-  const initHeaders = {}
+  const initHeaders: Record<string, unknown> = {}
   initHeaders['Music-Format'] = format
   const newHeaders = setHeaders(token)
 

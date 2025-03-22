@@ -3,82 +3,80 @@ import { ORDER_APP, ORDER_STRIPE } from '../types/order-type'
 import controllerHelper from '../helpers/controller-helper'
 import mapper from '../helpers/props-mapper-output'
 import OrderRepository from '../repositories/order-repository'
+import { Order } from '../models/order'
+import { ShippingStatusType } from '../types/shipping-status'
 
 const controllerName = 'orders'
 const { getAll, getOne } = controllerHelper(controllerName)
 
-const placeOrder = async ({ order, userId }, orderType = ORDER_APP) => {
-  try {
-    const savedOrder =
-      orderType === ORDER_STRIPE
-        ? await OrderRepository.createForStripe({
-            order,
-            userId,
-          })
-        : await OrderRepository.create({ order, userId })
+const placeOrder = async (
+  { order, userId }: { order: Partial<Order>; userId: number },
+  orderType = ORDER_APP,
+) => {
+  const savedOrder =
+    orderType === ORDER_STRIPE
+      ? await OrderRepository.createForStripe({
+          order,
+          userId,
+        })
+      : await OrderRepository.create({ order, userId })
 
-    if (savedOrder) {
-      return {
-        action: ActionStatus.Created,
-        payload: mapper.mapOrder(savedOrder),
-      }
-    }
+  if (savedOrder) {
     return {
-      action: ActionStatus.CreateError,
+      action: ActionStatus.Created,
+      payload: mapper.mapOrder(savedOrder),
     }
-  } catch (err) {
-    throw err
+  }
+  return {
+    action: ActionStatus.CreateError,
   }
 }
 
-const getAllByUser = async (id) => {
-  try {
-    const orders = await OrderRepository.find({ userId: id })
-    if (orders) {
-      return {
-        action: ActionStatus.Ok,
-        payload: orders.map(mapper.mapOrder),
-      }
-    }
+const getAllByUser = async (id: number) => {
+  const orders = await OrderRepository.find({ userId: id })
+  if (orders) {
     return {
-      action: ActionStatus.Error,
+      action: ActionStatus.Ok,
+      payload: orders.map(mapper.mapOrder),
     }
-  } catch (err) {
-    throw err
+  }
+  return {
+    action: ActionStatus.Error,
   }
 }
 
-const getOneByUser = async ({ orderId, userId }) => {
-  try {
-    const order = await OrderRepository.findOneByUser({ orderId, userId })
-    if (order) {
-      return {
-        action: ActionStatus.Ok,
-        payload: mapper.mapOrder(order),
-      }
-    }
+const getOneByUser = async ({
+  orderId,
+  userId,
+}: {
+  orderId: number
+  userId: number
+}) => {
+  const order = await OrderRepository.findOneByUser({ orderId, userId })
+  if (order) {
     return {
-      action: ActionStatus.Error,
+      action: ActionStatus.Ok,
+      payload: mapper.mapOrder(order),
     }
-  } catch (err) {
-    throw err
+  }
+  return {
+    action: ActionStatus.Error,
   }
 }
 
-const markShippingStatus = async (orderId, status) => {
-  try {
-    const order = await OrderRepository.markShippingStatus(orderId, status)
-    if (order) {
-      return {
-        action: ActionStatus.Ok,
-        payload: mapper.mapOrder(order),
-      }
-    }
+const markShippingStatus = async (
+  orderId: number,
+  status: ShippingStatusType,
+) => {
+  const order = await OrderRepository.markShippingStatus(orderId, status)
+  if (order) {
     return {
-      action: ActionStatus.Error,
+      action: ActionStatus.Ok,
+      payload: mapper.mapOrder(order),
     }
-  } catch (err) {
-    throw err
+  }
+  return {
+    action: ActionStatus.Error,
   }
 }
 

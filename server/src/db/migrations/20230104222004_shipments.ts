@@ -13,7 +13,7 @@ export async function up(knex: Knex): Promise<void> {
   })
 }
 
-export async function down(knex: Knex): Promise<void> {
+export async function down(): Promise<void> {
   // Implement rollback logic if needed. For example:
   // await knex.schema.dropTable("shippingAddresses");
 }

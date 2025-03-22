@@ -7,7 +7,7 @@ const productStatuses = productStatusesJson.productStatuses
 import paymentStatusJson from '../../src/db/seeds/data/payment-status.json' with { type: "json" };
 
 import  shippingAddressesJson from '../fixtures/shipping-addresses.json' with {type: 'json'}
-const shippingAddresses = shippingAddressesJson
+const shippingAddresses = shippingAddressesJson as ShippingAddress[]
 
 import usersJson from '../fixtures/users.json' with {type: 'json'}
 
@@ -25,7 +25,7 @@ const products = productsJson.products
 import ordersJson from '../fixtures/orders.json' with {type: 'json'}
 import { type Knex } from 'knex'
 import { PAYMENT_PAID } from '../../src/types/payment-status'
-import { Order } from '../../src/models/order';
+import { Order, ShippingAddress } from '../../src/models/order';
 import UserRepository from '../../src/repositories/user-repository';
 import CategoryRepository from '../../src/repositories/category-repository';
 import ProductRepository from '../../src/repositories/product-repository';
@@ -68,8 +68,14 @@ export async function seed(knex: Knex): Promise<void> {
   for (const order of orders) {
 
     const addr = shippingAddresses.find((i) => i.id === order.shippingAddressId)
+    if (!addr) {
+      return
+    }
     order.shippingAddress = mapShippingAddress(addr)
     order.paymentStatus = PAYMENT_PAID
+    if (!order.userId) {
+      throw new Error("Order does not have a user")
+    }
     await OrderRepository.create({
       order,
       userId: order.userId,
@@ -77,7 +83,7 @@ export async function seed(knex: Knex): Promise<void> {
   }
 }
 
-function mapShippingAddress(item) {
+function mapShippingAddress(item: ShippingAddress) {
   return {
     addressLine1: item.addressLine1,
     addressLine2: item.addressLine2,

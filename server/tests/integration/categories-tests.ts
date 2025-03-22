@@ -24,8 +24,8 @@ test('setup', async (t) => {
 })
 
 test('[clean db] As admin I should:', (t) => {
-  let token
-  let admin = admins[0]
+  let token: string
+  const admin = admins[0]
 
   t.test('setup', async (assert) => {
     await knex.migrate.latest()
@@ -83,7 +83,7 @@ test('[clean db] As admin I should:', (t) => {
   )
 
   t.test('be able to delete a category', async (assert) => {
-    let catTitle = 'Beverages'
+    const catTitle = 'Beverages'
     const category = { title: catTitle }
     const resCreate = await create(category, { token, status: STATUS.Created })
     const catCreated = resCreate.body
@@ -101,11 +101,10 @@ test('[clean db] As admin I should:', (t) => {
     'NOT be able to retrieve category with id as string',
     async (assert) => {
       const category = { title: 'Clothes' }
-      const resCreate = await create(category, {
+      await create(category, {
         token,
         status: STATUS.Created,
       })
-      const resCat = resCreate.body
       const res = await getOne('clothes', {
         token,
         status: STATUS.Unprocessable,
@@ -137,8 +136,8 @@ test('[clean db] As admin I should:', (t) => {
 })
 
 test('[seeded db] As admin I should', (t) => {
-  let token
-  let admin = admins[0]
+  let token: string
+  const admin = admins[0]
 
   t.test('setup', async (assert) => {
     await knex.migrate.latest()
@@ -149,9 +148,8 @@ test('[seeded db] As admin I should', (t) => {
   })
 
   t.test('NOT be able to create a category that exists', async (assert) => {
-    const category = { ...categories[0] }
-    delete category.id
-    const res = await create(category, { token, status: STATUS.Conflict })
+    const {id: _id, ...categoryWithoutId} = categories[0]
+    const res = await create(categoryWithoutId, { token, status: STATUS.Conflict })
 
     assert.equal(res.status, STATUS.Conflict)
     assert.end()

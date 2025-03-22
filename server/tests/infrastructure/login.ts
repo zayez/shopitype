@@ -6,7 +6,7 @@ import config from '../../src/config/config'
 const { SECRET } = config.jwt
 const agent = request.agent(server)
 
-async function login(email, password) {
+async function login(email: string, password: string) {
   const res = await agent
     .post('/signin')
     .send({ email: email, password: password })
@@ -15,9 +15,9 @@ async function login(email, password) {
   return newToken
 }
 
-function decodeToken(token) {
+function decodeToken(token: string) {
   const decodedToken = jwt.verify(token, SECRET)
-  return decodedToken.sub
+  return Number(decodedToken.sub)
 }
 
 export { login, decodeToken }

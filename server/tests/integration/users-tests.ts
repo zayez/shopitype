@@ -28,8 +28,8 @@ test('setup', async (t) => {
 })
 
 test('As an admin I should:', (t) => {
-  let token
-  let admin = admins[0]
+  let token: string
+  const admin = admins[0]
 
   t.test('setup', async (assert) => {
     token = await login(admin.email, admin.password)
@@ -37,8 +37,7 @@ test('As an admin I should:', (t) => {
   })
 
   t.test('be able to create a new user', async (assert) => {
-    const user = { ...customers[0] }
-    delete user.id
+    const { id: _id, ...user } = customers[0]
     const res = await create(user, { token, status: STATUS.Created })
     const newUser = res.body
 
@@ -57,15 +56,15 @@ test('As an admin I should:', (t) => {
 })
 
 test('As a customer I should:', (t) => {
-  let token
-  let userId
+  let token: string
+  let userId: number
   const customer = customers[0]
 
   t.test('setup', async (assert) => {
     await knex.seed.run({ directory: 'tests/seeds' })
     token = await login(customer.email, customer.password)
     const decodedToken = jwt.verify(token, SECRET)
-    userId = decodedToken.sub
+    userId = Number(decodedToken.sub)
 
     assert.end()
   })
@@ -94,8 +93,12 @@ test('As a customer I should:', (t) => {
   t.test('NOT be able to update another user', async (assert) => {
     const name = 'Bean'
     const users = await UserRepository.find({ lastName: 'Doe' })
+    const user = users[0]
+    if (!user.id) {
+      throw new Error('User has no id')
+    }
     const res = await update(
-      users[0].id,
+      user.id,
       { firstName: name },
       { token, status: STATUS.NotFound },
     )
@@ -112,6 +115,15 @@ test('As a customer I should:', (t) => {
       { token, status: STATUS.Ok },
     )
     const updatedUser = await UserRepository.findById(userId)
+
+    if (!updatedUser) {
+      throw new Error('Did not find user')
+    }
+
+    if (!updatedUser.password) {
+      throw new Error('Updated user did not have a password')
+    }
+
     const isMatch = await UserRepository.comparePassword(
       newPassword,
       updatedUser.password,
@@ -125,6 +137,10 @@ test('As a customer I should:', (t) => {
     const persistedUser = await UserRepository.findById(userId)
     const res = await getOne(userId, { token, status: STATUS.Ok })
     const retrievedUser = res.body
+
+    if (!persistedUser) {
+      throw new Error('Did not find user')
+    }
 
     assert.equal(retrievedUser.firstName, persistedUser.firstName)
     assert.equal(retrievedUser.email, persistedUser.email)
@@ -149,15 +165,15 @@ test('As a customer I should:', (t) => {
 })
 
 test('As an editor I should:', (t) => {
-  let token
-  let editorId = null
+  let token: string
+  let editorId: number
   const editor = editors[0]
 
   t.test('setup', async (assert) => {
     await knex.seed.run({ directory: 'tests/seeds' })
     token = await login(editor.email, editor.password)
     const decodedToken = jwt.verify(token, SECRET)
-    editorId = decodedToken.sub
+    editorId = Number(decodedToken.sub)
 
     assert.end()
   })
@@ -182,6 +198,11 @@ test('As an editor I should:', (t) => {
     const customer = await UserRepository.findOne({
       firstName: customers[1].firstName,
     })
+
+    if (!customer || !customer.id) {
+      throw new Error('Did not find user')
+    }
+
     const res = await getOne(customer.id, { token, status: STATUS.Ok })
     const retrievedUser = res.body
 

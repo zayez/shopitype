@@ -6,7 +6,7 @@
     "city": "Laguna",
     "state": "SC",
     "country": "BR",
-    "postalCode": 8433284
+    "postalCode": "8433284"
   },
   {
     "id": 2,
@@ -15,7 +15,7 @@
     "city": "Porto Alegre",
     "state": "RS",
     "country": "BR",
-    "postalCode": 93384834
+    "postalCode": "93384834"
   },
   {
     "id": 3,
@@ -24,6 +24,6 @@
     "city": "Curitiba",
     "state": "PR",
     "country": "BR",
-    "postalCode": 348548234
+    "postalCode": "348548234"
   }
 ]

@@ -2,6 +2,7 @@ import { Category } from '../models/category'
 import { OrderItem, Order, ShippingAddress } from '../models/order'
 import { Product } from '../models/product'
 import { User } from '../models/user'
+import { PaymentStatusType } from '../types/payment-status'
 
 const mapCategory = ({ title }: { title?: string }) => {
   const category: Category = {}
@@ -27,7 +28,7 @@ const mapProduct = ({
   statusId?: number
   categoryId?: number
 }) => {
-  const product: Product = {}
+  const product: Partial<Product> = {}
   if (title) product.title = title
   if (description) product.description = description
   if (image) product.image = image
@@ -50,7 +51,7 @@ const mapUser = ({
   email?: string
   password?: string
 }) => {
-  const user: User = {}
+  const user: Partial<User> = {}
   if (firstName) user.firstName = firstName
   if (lastName) user.lastName = lastName
   if (email) user.email = email
@@ -59,7 +60,19 @@ const mapUser = ({
   return user
 }
 
-const mapOrderItem = ({ productId, price, total, subtotal, quantity }) => {
+const mapOrderItem = ({
+  productId,
+  price,
+  total,
+  subtotal,
+  quantity,
+}: {
+  productId?: number
+  price?: number
+  total?: number
+  subtotal?: number
+  quantity?: number
+}) => {
   const item: OrderItem = {}
   item.productId = productId
   if (price) item.price = price
@@ -77,8 +90,16 @@ const mapOrder = ({
   paymentStatusId,
   shippingAddress,
   dateOrder,
+}: {
+  items?: OrderItem[]
+  total?: number
+  subtotal?: number
+  paymentStatus?: PaymentStatusType
+  paymentStatusId?: number
+  shippingAddress?: ShippingAddress
+  dateOrder?: Date
 }) => {
-  const order: Order = {}
+  const order: Partial<Order> = {}
   if (items) order.items = items.map(mapOrderItem)
   if (total) order.total = total
   if (subtotal) order.subtotal = subtotal
@@ -96,6 +117,13 @@ const mapShippingAddress = ({
   country,
   state,
   postalCode,
+}: {
+  addressLine1?: string
+  addressLine2?: string
+  city?: string
+  country?: string
+  state?: string
+  postalCode?: number
 }) => {
   const addr: ShippingAddress = {}
   if (addressLine1) addr.addressLine1 = addressLine1

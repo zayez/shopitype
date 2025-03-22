@@ -13,8 +13,8 @@ test('setup', async (t) => {
 })
 
 test('As editor I should:', (t) => {
-  let token
-  let editor = editors[0]
+  let token: string
+  const editor = editors[0]
 
   t.test('setup', async (assert) => {
     await knex.migrate.latest()

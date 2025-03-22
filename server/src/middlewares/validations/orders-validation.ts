@@ -15,19 +15,20 @@ import {
   PlaceOrder,
   ShippingStatus,
 } from '../schemas/orders-schema'
+import Koa from 'koa'
 
-const validateGetAll = async (ctx, next) =>
+const validateGetAll = async (ctx: Koa.Context, next: Koa.Next) =>
   await validateQuery({ ctx, next }, GetAll)
 
-const validateOrder = async (ctx, next) => {
+const validateOrder = async (ctx: Koa.Context, next: Koa.Next) => {
   await validateBody({ ctx, next }, PlaceOrder)
 }
 
-const validateGetAllByUser = async (ctx, next) => {
+const validateGetAllByUser = async (ctx: Koa.Context, next: Koa.Next) => {
   await validateParams({ ctx, next }, GetAllByUser)
 }
 
-const validateAuthorization = async (ctx, next) => {
+const validateAuthorization = async (ctx: Koa.Context, next: Koa.Next) => {
   if (isManager(ctx.state.user)) {
     await next()
     return
@@ -35,11 +36,11 @@ const validateAuthorization = async (ctx, next) => {
   await matchUserId('userId')(ctx, next)
 }
 
-const validateGetOneByUser = async (ctx, next) => {
+const validateGetOneByUser = async (ctx: Koa.Context, next: Koa.Next) => {
   await validateParams({ ctx, next }, GetOneByUser)
 }
 
-const validateItems = async (ctx, next) => {
+const validateItems = async (ctx: Koa.Context, next: Koa.Next) => {
   try {
     const items = ctx.request.body.items
     const { action, payload } = await ProductsController.validateItems(items)
@@ -48,12 +49,12 @@ const validateItems = async (ctx, next) => {
       return
     }
     await next()
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
 
-const validateShippingStatus = async (ctx, next) =>
+const validateShippingStatus = async (ctx: Koa.Context, next: Koa.Next) =>
   await validateBody({ ctx, next }, ShippingStatus)
 
 export {

@@ -7,7 +7,11 @@ import {
   POST_USER,
 } from '../api/endpoint-urls'
 import compose from 'koa-compose'
-import { authorizeAdmin, authorizeManagers } from '../middlewares/authorization'
+import {
+  authorizeAdmin,
+  authorizeManagers,
+  authorizeUserAndManagers,
+} from '../middlewares/authorization'
 import {
   isValidCreate,
   isValidUpdate,
@@ -17,9 +21,9 @@ import UsersMiddleware from '../middlewares/domains/users-middleware'
 import { authenticate } from '../middlewares/authentication'
 import { matchUserId } from '../middlewares/request-validators'
 import { isValidId } from '../middlewares/validations/application-validation'
-import { isCustomer, isManager } from '../helpers/user-helpers'
+import Koa from 'koa'
 
-const router = new Router()
+const router = new Router<Koa.DefaultState, Koa.DefaultContext>()
 
 const create = compose([
   authorizeAdmin,
@@ -41,16 +45,6 @@ const destroy = compose([
   matchUserId(),
   UsersMiddleware.destroy,
 ])
-
-const authorizeUserAndManagers = async (ctx, next) => {
-  const user = ctx.state.user
-  if (isCustomer(user)) {
-    await matchUserId()(ctx, next)
-  }
-  if (isManager(user)) {
-    await next()
-  }
-}
 
 const get = compose([
   authenticate,

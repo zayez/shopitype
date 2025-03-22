@@ -1,9 +1,13 @@
 import { setResponse } from '../helpers/middleware-helpers'
 import UserRepository from '../repositories/user-repository'
 import ActionStatus from '../types/action-status'
+import Koa from 'koa'
+import { RoleType } from '../types/role-type'
+import { isCustomer, isManager } from '../helpers/user-helpers'
+import { matchUserId } from './request-validators'
 
-const authorizeRoles = (roles = []) => {
-  return async (ctx, next) => {
+const authorizeRoles = (roles: RoleType[] = []) => {
+  return async (ctx: Koa.Context, next: Koa.Next) => {
     try {
       const user = ctx.state.user
       if (!user) {
@@ -16,9 +20,19 @@ const authorizeRoles = (roles = []) => {
         setResponse(ctx, { action: ActionStatus.Forbidden })
       }
       await next()
-    } catch (err) {
+    } catch {
       setResponse(ctx, { action: ActionStatus.Error })
     }
+  }
+}
+
+const authorizeUserAndManagers = async (ctx: Koa.Context, next: Koa.Next) => {
+  const user = ctx.state.user
+  if (isCustomer(user)) {
+    await matchUserId()(ctx, next)
+  }
+  if (isManager(user)) {
+    await next()
   }
 }
 
@@ -33,4 +47,5 @@ export {
   authorizeEditor,
   authorizeCustomer,
   authorizeManagers,
+  authorizeUserAndManagers,
 }

@@ -3,8 +3,9 @@ import { GET_STRIPE_CHECKOUT, POST_STRIPE_CHECKOUT } from '../api/endpoint-urls'
 import compose from 'koa-compose'
 import { authorizeCustomer } from '../middlewares/authorization'
 import StripeCheckoutMiddleware from '../middlewares/domains/stripe-checkout-middleware'
+import Koa from 'koa'
 
-const router = new Router()
+const router = new Router<Koa.DefaultState, Koa.DefaultContext>()
 
 //TODO: Add proper validations in the middleware (userId & items)
 const create = compose([authorizeCustomer, StripeCheckoutMiddleware.create])

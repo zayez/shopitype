@@ -74,7 +74,7 @@ test('As a customer I should:', (t) => {
   })
 
   t.test('be able to get my user', async (assert) => {
-    let token = await login(customer.email, customer.password)
+    const token = await login(customer.email, customer.password)
     const userId = decodeToken(token)
     const res = await getUser({ token, status: STATUS.Ok })
     const id = res.body.id
