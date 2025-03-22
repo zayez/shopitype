@@ -6,7 +6,6 @@ https://github.com/robmclarty/cred-server/blob/main/server/helpers/query_helper.
 
 import knex from '../../db/db'
 import { app } from '../../config/config'
-import { Entity } from '../../models/entity'
 
 const { ITEMS_PER_PAGE } = app
 
@@ -27,7 +26,7 @@ export interface QueryBuilder<T> {
   includesAny: (field: keyof T, values: string[]) => Promise<boolean>
 }
 
-export default function queryBuilder<T extends Entity>(
+export default function queryBuilder<T extends object>(
   tableName: string,
   selectableFields: string | string[] = '*',
 ): QueryBuilder<T> {

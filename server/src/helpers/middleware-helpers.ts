@@ -1,6 +1,7 @@
 import { GetRootPayload } from '../controllers/application-controller'
 import { ProductCollectionPayload } from '../controllers/products-controller'
 import { StripeCheckoutCreatePayload } from '../middlewares/domains/stripe-checkout-middleware'
+import { ReferenceExistsPayload } from '../middlewares/resource-checks-middleware'
 import { Category } from '../models/category'
 import { Product } from '../models/product'
 import { ProductStatus } from '../models/product-status'
@@ -32,6 +33,7 @@ interface ResponseOptions {
     | UserPayload
     | ProductCollectionPayload
     | StripeCheckoutCreatePayload
+    | ReferenceExistsPayload
     | number
     | null
     | undefined

@@ -19,7 +19,7 @@ import {
 } from '../schemas/products-schemas'
 import Koa from 'koa'
 
-const isValidCreate = async (ctx: Koa.Context, next: Koa.Next) =>
+const isValidCreate = async (ctx: Koa.Context, _next: Koa.Next) =>
   isValidBody({ ctx }, Create)
 const isValidUpdate = async (ctx: Koa.Context, _: Koa.Next) =>
   isValidBody({ ctx }, Update)
@@ -46,7 +46,7 @@ const validateCreate = async (ctx: Koa.Context, next: Koa.Next) => {
       }
     }
     await next()
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
@@ -75,7 +75,7 @@ const validateUpdate = async (ctx: Koa.Context, next: Koa.Next) => {
       }
     }
     await next()
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }

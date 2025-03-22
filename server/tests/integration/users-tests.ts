@@ -37,7 +37,7 @@ test('As an admin I should:', (t) => {
   })
 
   t.test('be able to create a new user', async (assert) => {
-    const { id, ...user } = customers[0]
+    const { id: _id, ...user } = customers[0]
     const res = await create(user, { token, status: STATUS.Created })
     const newUser = res.body
 
@@ -119,6 +119,11 @@ test('As a customer I should:', (t) => {
     if (!updatedUser) {
       throw new Error('Did not find user')
     }
+
+    if (!updatedUser.password) {
+      throw new Error('Updated user did not have a password')
+    }
+
     const isMatch = await UserRepository.comparePassword(
       newPassword,
       updatedUser.password,

@@ -169,7 +169,7 @@ function isValidReference(column: string, tableName: ModelType) {
       return {
         type: ActionStatus.Ok,
       }
-    } catch (err) {
+    } catch {
       setResponse(ctx, { action: ActionStatus.Error })
     }
   }
@@ -194,7 +194,7 @@ function isUnique(attr: string, entity: ModelType) {
         type: ActionStatus.Ok,
         payload: undefined,
       }
-    } catch (err) {
+    } catch {
       setResponse(ctx, { action: ActionStatus.Error })
     }
   }
@@ -211,7 +211,7 @@ function itExists(entity: ModelType) {
         return { type: ActionStatus.Ok, payload: foundEntity }
       }
       return { type: ActionStatus.NotFound }
-    } catch (err) {
+    } catch {
       setResponse(ctx, { action: ActionStatus.Error })
     }
   }

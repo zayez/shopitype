@@ -101,11 +101,10 @@ test('[clean db] As admin I should:', (t) => {
     'NOT be able to retrieve category with id as string',
     async (assert) => {
       const category = { title: 'Clothes' }
-      const resCreate = await create(category, {
+      await create(category, {
         token,
         status: STATUS.Created,
       })
-      const resCat = resCreate.body
       const res = await getOne('clothes', {
         token,
         status: STATUS.Unprocessable,
@@ -149,7 +148,7 @@ test('[seeded db] As admin I should', (t) => {
   })
 
   t.test('NOT be able to create a category that exists', async (assert) => {
-    const {id, ...categoryWithoutId} = categories[0]
+    const {id: _id, ...categoryWithoutId} = categories[0]
     const res = await create(categoryWithoutId, { token, status: STATUS.Conflict })
 
     assert.equal(res.status, STATUS.Conflict)

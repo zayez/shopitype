@@ -16,6 +16,10 @@ const {
   getAll,
 } = requestBuilder(PRODUCTS)
 
+interface UploadedImage {
+  path: string
+}
+
 /**
  *
  * Submits a POST with the product and upload image.
@@ -29,7 +33,7 @@ const createUpload = async (
     categoryId,
     statusId,
   }: Partial<Product>,
-  image: any,
+  image: UploadedImage,
   { token, status }: RequestParams,
 ) => {
   const imagepath = path.join(__dirname, `../${image.path}`)
@@ -73,7 +77,7 @@ const updateUpload = async ({
   inventory?: number
   categoryId?: number
   statusId?: number
-  image: any
+  image: UploadedImage
   token: string
   status: StatusCodeType
 }) => {

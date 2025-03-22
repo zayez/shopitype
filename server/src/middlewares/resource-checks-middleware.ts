@@ -22,7 +22,7 @@ async function userExists(ctx: Koa.Context, next: Koa.Next) {
     }
 
     await next()
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
@@ -40,10 +40,14 @@ function entityExists(entity: ModelType) {
       }
 
       await next()
-    } catch (err) {
+    } catch {
       setResponse(ctx, { action: ActionStatus.Error })
     }
   }
+}
+
+export interface ReferenceExistsPayload {
+  error: string
 }
 
 function referenceExists(column: string, tableName: ModelType) {
@@ -66,7 +70,7 @@ function referenceExists(column: string, tableName: ModelType) {
       }
 
       await next()
-    } catch (err) {
+    } catch {
       setResponse(ctx, { action: ActionStatus.Error })
     }
   }
@@ -90,7 +94,7 @@ function disallowDuplicate(entity: ModelType, attr: string) {
       }
 
       await next()
-    } catch (err) {
+    } catch {
       setResponse(ctx, { action: ActionStatus.Error })
     }
   }
@@ -98,8 +102,6 @@ function disallowDuplicate(entity: ModelType, attr: string) {
 /**
  * Check if any item in the collection already exists.
  * In the case there is one, it will set the status code to conflict.
- * @param {string} entity Name of the collection
- * @param {string} attr Name of the attribute
  */
 function disallowDuplicates(entity: ModelType, attr: string) {
   const Model = modelMap[entity]
@@ -109,8 +111,9 @@ function disallowDuplicates(entity: ModelType, attr: string) {
         throw new Error(`Search operation is not supported for ${entity}`)
       }
       const payload = ctx.request.body[pluralize.plural(entity)] as Array<
-        Record<string, any>
+        Record<string, string>
       >
+
       const values = payload.map((p) => p[attr])
       const searchableModel = Model as Repository<Category | Product | User>
 
@@ -120,7 +123,7 @@ function disallowDuplicates(entity: ModelType, attr: string) {
       }
 
       await next()
-    } catch (err) {
+    } catch {
       setResponse(ctx, { action: ActionStatus.Error })
     }
   }

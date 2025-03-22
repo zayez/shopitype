@@ -1,23 +1,19 @@
-import request from 'supertest'
+import request, { Response } from 'supertest'
 import server from '../../src/server'
 import { StatusCodeType } from '../../src/types/status-code'
 import TestAgent from 'supertest/lib/agent'
 import { debugStatus, setHeaders } from './request-helpers'
-
-// You can replace these with your actual types
-type Entity = any
-type Response = any
 
 export interface RequestParams {
   token?: string
   status: StatusCodeType
 }
 
-export interface RequestBuilder {
+export interface RequestBuilder<T> {
   server: typeof server
   agent: TestAgent
-  create: (entity: Entity, opts: RequestParams) => Promise<Response>
-  createAll(entities: any, opts: RequestParams): Promise<Response>
+  create: (entity: T, opts: RequestParams) => Promise<Response>
+  createAll(entities: T[], opts: RequestParams): Promise<Response>
   update: (id: number, entity: object, opts: RequestParams) => Promise<Response>
   destroy: (id: number, opts: RequestParams) => Promise<Response>
   getOne: (id: number | string, opts: RequestParams) => Promise<Response>
@@ -27,11 +23,13 @@ export interface RequestBuilder {
 
 const agent = request.agent(server)
 
-const requestBuilder = (endpoint: string): RequestBuilder => {
+const requestBuilder = <T extends object>(
+  endpoint: string,
+): RequestBuilder<T> => {
   const url = `${endpoint}`
 
   const create = async (
-    entity: Entity,
+    entity: T,
     { token, status }: RequestParams,
   ): Promise<Response> => {
     const headers = setHeaders(token)
@@ -40,13 +38,13 @@ const requestBuilder = (endpoint: string): RequestBuilder => {
       .send(entity)
       .set(headers)
       .expect('Content-Type', /json/)
-      .expect((res: any) => debugStatus(res, status))
+      .expect((res: Response) => debugStatus(res, status))
       .expect(status)
       .then((res) => res)
   }
 
   const createAll = async <T>(
-    entities: any,
+    entities: T[],
     { token, status }: RequestParams,
   ): Promise<Response> => {
     const headers = setHeaders(token)
@@ -55,7 +53,7 @@ const requestBuilder = (endpoint: string): RequestBuilder => {
       .send(entities)
       .set(headers)
       .expect('Content-Type', /json/)
-      .expect((res: any) => debugStatus(res, status))
+      .expect((res: Response) => debugStatus(res, status))
       .expect(status)
       .then((res) => res)
   }
@@ -72,7 +70,7 @@ const requestBuilder = (endpoint: string): RequestBuilder => {
       .set(headers)
       .set('Authorization', token ?? '')
       .expect('Content-Type', /json/)
-      .expect((res: any) => debugStatus(res, status))
+      .expect((res: Response) => debugStatus(res, status))
       .expect(status)
       .then((res) => res)
   }
@@ -86,7 +84,7 @@ const requestBuilder = (endpoint: string): RequestBuilder => {
       .delete(`${url}/${id}`)
       .set(headers)
       .expect('Content-Type', /json/)
-      .expect((res: any) => debugStatus(res, status))
+      .expect((res: Response) => debugStatus(res, status))
       .expect(status)
       .then((res) => res)
   }
@@ -100,7 +98,7 @@ const requestBuilder = (endpoint: string): RequestBuilder => {
       .get(`${url}/${id}`)
       .set(headers)
       .expect('Content-Type', /json/)
-      .expect((res: any) => debugStatus(res, status))
+      .expect((res: Response) => debugStatus(res, status))
       .expect(status)
       .then((res) => res)
   }
@@ -114,7 +112,7 @@ const requestBuilder = (endpoint: string): RequestBuilder => {
       .get(`${url}${query}`)
       .set(headers)
       .expect('Content-Type', /json/)
-      .expect((res: any) => debugStatus(res, status))
+      .expect((res: Response) => debugStatus(res, status))
       .expect(status)
       .then((res) => res)
   }

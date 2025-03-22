@@ -49,7 +49,7 @@ const validateItems = async (ctx: Koa.Context, next: Koa.Next) => {
       return
     }
     await next()
-  } catch (err) {
+  } catch {
     setResponse(ctx, { action: ActionStatus.Error })
   }
 }
