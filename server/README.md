@@ -1,6 +1,6 @@
-# Storefly server API
+# Shopitype server API
 
-![Build Status](https://github.com/zayez/storefly/workflows/Test/badge.svg)
+![Build Status](https://github.com/zayez/shopitype/workflows/Test/badge.svg)
 
 ## Installing
 

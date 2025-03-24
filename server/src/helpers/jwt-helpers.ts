@@ -9,7 +9,7 @@ const signToken = (sub: number) => {
   }
   return jwt.sign(
     {
-      iss: 'storefly',
+      iss: 'shopitype',
       sub,
     },
     SECRET as Secret,

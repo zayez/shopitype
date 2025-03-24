@@ -70,13 +70,13 @@ const app = {
 const db = {
   host: DB_HOST || 'localhost',
   port: parseInt(DB_PORT as string) || 22222,
-  name: DB_NAME || 'storefly-db',
+  name: DB_NAME || 'shopitype-db',
   user: DB_USER || 'root',
   password: DB_PASS || 'root',
 }
 
 const jwt = {
-  SECRET: JWT_SECRET || 'storefly-secret',
+  SECRET: JWT_SECRET || 'shopitype-secret',
   TOKEN_EXPIRES_IN: JWT_EXPIRES_IN || '10min',
 }
 
