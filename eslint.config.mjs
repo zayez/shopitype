@@ -23,5 +23,15 @@ export default defineConfig([
     },
   },
   tseslint.configs.recommended,
-  pluginReact.configs.flat.recommended,
+  {
+    ...pluginReact.configs.flat.recommended,
+    settings: {
+      react: {
+        version: 'detect', // Tells eslint-plugin-react to automatically detect the version of React to use
+      },
+    },
+    rules: {
+      'react/react-in-jsx-scope': 'off', // disable rule that requires React in scope
+    },
+  },
 ])

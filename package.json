@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "lint:server": "eslint . --ignore-pattern 'client/**' --fix"
+    "lint:server": "eslint . --ignore-pattern 'client/**' --fix",
+    "lint:client": "eslint . --ignore-pattern 'server/**' --fix"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
