@@ -11,7 +11,7 @@ const getType = (type) => {
   }
 }
 
-const Callout = ({ message, type = 'info', show }) => {
+export const Callout = ({ message, type = 'info', show }) => {
   const calloutVisibility = show ? 'show' : 'hide'
   const style = getType(type)
   return (
@@ -22,7 +22,7 @@ const Callout = ({ message, type = 'info', show }) => {
 }
 
 const ErrorItem = ({ error }) => {
-  return <li>{error} </li>
+  return <li>{error}</li>
 }
 const ErrorsList = ({ errors }) => {
   return (
