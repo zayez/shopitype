@@ -10,7 +10,7 @@
     "start:dev": "TZ=utc NODE_ENV=development tsx watch src/server.ts",
     "start:test": "TZ=utc NODE_ENV=test tsx src/server.ts",
     "start:prod": "TZ=utc NODE_ENV=production tsx src/server.ts",
-    "create:db:dev": "NODE_ENV=development knex migrate:latest && NODE_ENV=development NODE_OPTIONS='--import tsx' knex seed:run",
+    "create:db:dev": "NODE_ENV=development NODE_OPTIONS='--import tsx' knex --knexfile ./src/knexfile.ts migrate:latest && NODE_ENV=development NODE_OPTIONS='--import tsx' knex --knexfile ./src/knexfile.ts seed:run",
     "create:db:test": "NODE_ENV=test knex migrate:latest && NODE_ENV=test knex seed:run",
     "test": "TZ=utc NODE_ENV=test NODE_ENV=test NODE_OPTIONS='--import=tsx' tape 'tests/**/*.ts'",
     "test:min": "NODE_ENV=test NODE_ENV=test NODE_OPTIONS='--import=tsx' tape 'tests/**/*.ts' | tap-min",
