@@ -10,7 +10,8 @@
     "dev": "next dev",
     "deliver:pack": "webpack",
     "start:server": "(cd ../server && npm run start:dev)",
-    "start:dev": "npm run start:server & npm run dev"
+    "start:dev": "npm run start:server & npm run dev",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -31,5 +32,14 @@
     "redux-persist": "^6.0.0",
     "sass": "^1.54.8",
     "upper-case-first": "^2.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.26.10",
+    "@babel/preset-env": "^7.26.9",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
+    "babel-jest": "^29.7.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
   }
 }
