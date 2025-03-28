@@ -3,37 +3,13 @@ import { createServer } from '../test/msw-server'
 import ProductsView from './ProductsView'
 import { store } from '../store'
 import { Provider } from 'react-redux'
+import products from '../test/fixtures/products.json' with { type: 'json' }
 
 let dollarUS = Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
 })
 
-const products = [
-  {
-    id: 1,
-    title: 'Demons Souls',
-    image:
-      'uploads/2025-03-27-11-57-30_demons-souls-packshot-standard-edition-straight-ps5-es-12nov20.jpg',
-    price: 39.9,
-    inventory: 25,
-    statusId: 2,
-    categoryId: 1,
-    createdAt: '2025-03-27 23:57:30',
-    updatedAt: '2025-03-27 23:57:30',
-  },
-  {
-    id: 2,
-    title: 'Ghost of Tsushima',
-    image: 'uploads/2025-03-27-11-57-50_image_1__84121_zoom.jpg',
-    price: 25,
-    inventory: 12,
-    statusId: 2,
-    categoryId: 1,
-    createdAt: '2025-03-27 23:57:50',
-    updatedAt: '2025-03-27 23:57:50',
-  },
-]
 
 createServer([
   {

@@ -14,7 +14,7 @@ const Product = ({ product }) => {
       </div>
 
       <div className="product-card-details">
-        <h1>{product.title}</h1>
+        <h1 aria-label={product.title}>{product.title}</h1>
         <h2>{dollarUS.format(product.price)}</h2>
         <p>{product.description}</p>
         <button>Add to cart</button>

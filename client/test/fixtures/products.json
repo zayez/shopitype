@@ -1,0 +1,57 @@
+[
+  {
+    "id": 1,
+    "title": "Demons Souls",
+    "image": "uploads/2025-03-27-11-57-30_demons-souls-packshot-standard-edition-straight-ps5-es-12nov20.jpg",
+    "price": 39.9,
+    "inventory": 25,
+    "statusId": 2,
+    "categoryId": 1,
+    "createdAt": "2025-03-27 23:57:30",
+    "updatedAt": "2025-03-27 23:57:30"
+  },
+  {
+    "id": 2,
+    "title": "Ghost of Tsushima",
+    "image": "uploads/2025-03-27-11-57-50_image_1__84121_zoom.jpg",
+    "price": 25,
+    "inventory": 12,
+    "statusId": 2,
+    "categoryId": 1,
+    "createdAt": "2025-03-27 23:57:50",
+    "updatedAt": "2025-03-27 23:57:50"
+  },
+  {
+    "id": 3,
+    "title": "The Witcher 3: Wild Hunt",
+    "image": "uploads/2025-03-27-12-00-00_the-witcher-3-wild-hunt.jpg",
+    "price": 29.9,
+    "inventory": 15,
+    "statusId": 2,
+    "categoryId": 1,
+    "createdAt": "2025-03-27 12:00:00",
+    "updatedAt": "2025-03-27 12:00:00"
+  },
+  {
+    "id": 4,
+    "title": "Cyberpunk 2077",
+    "image": "uploads/2025-03-27-12-05-00_cyberpunk-2077.jpg",
+    "price": 59.9,
+    "inventory": 30,
+    "statusId": 2,
+    "categoryId": 1,
+    "createdAt": "2025-03-27 12:05:00",
+    "updatedAt": "2025-03-27 12:05:00"
+  },
+  {
+    "id": 5,
+    "title": "God of War",
+    "image": "uploads/2025-03-27-12-10-00_god-of-war.jpg",
+    "price": 49.9,
+    "inventory": 20,
+    "statusId": 2,
+    "categoryId": 1,
+    "createdAt": "2025-03-27 12:10:00",
+    "updatedAt": "2025-03-27 12:10:00"
+  }
+]
