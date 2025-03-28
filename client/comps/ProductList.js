@@ -19,14 +19,14 @@ const ProductItem = ({ product }) => {
     <div className="product-item" key={product.id}>
       <div className="product-image">
         <Link href={`/products/${product.id}`}>
-          <a>
+          <a aria-label={product.title}>
             <img src={`${baseUrl}/${product.image}`} />
           </a>
         </Link>
       </div>
       <div className="product-description">
         <Link href={`/products/${product.id}`}>
-          <a>{product.title} </a>
+          <a aria-label={product.title}>{product.title} </a>
         </Link>
         <div className="price">{dollarUS.format(product.price)}</div>
         <button onClick={handleAddItem}>Add to cart</button>
