@@ -27,7 +27,7 @@ it('should diplay all items', () => {
   ]
   render(
     <>
-      <Provider store={store}>
+      <Provider store={store()}>
         <CartList items={items} />
       </Provider>
     </>,

@@ -13,7 +13,7 @@ const MyApp = ({ Component, pageProps, router }) => {
   const getLayout = Component.getLayout ?? storeLayout
   return (
     <React.StrictMode>
-      <Provider store={store}>
+      <Provider store={store()}>
         <PersistGate loading={null} persistor={persistor}>
           {getLayout(
             <SwitchTransition mode="out-in">

@@ -22,7 +22,7 @@ createServer([
 
 test('should render two links, and an image and the price for each product', async () => {
   render(
-    <Provider store={store}>
+    <Provider store={store()}>
       <ProductsView />
     </Provider>,
   )

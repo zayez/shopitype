@@ -17,7 +17,8 @@ const Profile = () => {
   return (
     <Link href="/profile">
       <a className="toolbar-item" title="Profile">
-        <IUser />
+        <IUser role="img" aria-label="profile" />
+        Profile
       </a>
     </Link>
   )
@@ -27,7 +28,8 @@ const SignIn = () => {
   return (
     <Link href="/signin">
       <a className="toolbar-item" title="Login">
-        <ILogIn />
+        <ILogIn role="img" aria-label="sign in" />
+        Sign in
       </a>
     </Link>
   )
@@ -37,14 +39,17 @@ const SignUp = () => {
   return (
     <Link href="/signup">
       <a className="toolbar-item" title="Sign Up">
-        <ISignUp />
+        <ISignUp role="img" aria-label="sign up" />
+        Sign up
       </a>
     </Link>
   )
 }
 
 const Account = ({ user }) => {
-  if (user) return <Profile />
+  if (user) {
+    return <Profile />
+  }
   return <SignIn />
 }
 
@@ -59,10 +64,18 @@ const SignOut = () => {
     dispatch(signOut())
     router.push('/signin')
   }
+
   return (
     <li>
-      <a className="toolbar-item" title="Logout" onClick={handleSignOut}>
-        <ILogOut />
+      <a
+        href="#"
+        data-testid="logout-link"
+        className="toolbar-item"
+        title="Logout"
+        onClick={handleSignOut}
+      >
+        <ILogOut role="img" aria-label="sign out" />
+        Sign out
       </a>
     </li>
   )
@@ -71,32 +84,33 @@ const SignOut = () => {
 const Toolbar = () => {
   const auth = useSelector(selectAuth)
   const cart = useSelector(selectCart)
-  const totalItems = cart.items.reduce((acc, cur) => acc + cur.quantity, 0)
+  const totalItems = cart?.items?.reduce((acc, cur) => acc + cur.quantity, 0)
 
-  useEffect(() => {}, [auth.user])
   return (
     <nav className="navbar toolbar">
       <ul>
         <li>
           <Link href="/search">
             <a className="toolbar-item" title="Search">
-              <ISearch />
+              <ISearch role="img" aria-label="search" />
+              Search
             </a>
           </Link>
         </li>
         <li>
           <Account user={auth.user} />
         </li>
-        {!auth.user ? (
+        {!auth.user && (
           <li>
             <SignUp />
           </li>
-        ) : null}
-        {auth.user ? <SignOut /> : null}
+        )}
+        {auth.user && <SignOut />}
         <li className="toolbar-cart-container">
           <Link href="/cart">
             <a className="toolbar-item" title="Cart">
-              <ICart />
+              <ICart role="img" aria-label="cart icon" />
+              Cart
             </a>
           </Link>
           <div className="cart-total-container">

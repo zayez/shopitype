@@ -40,15 +40,18 @@ const rootReducer = combineReducers({
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
-export const store = configureStore({
-  reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoreActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }),
-  devTools: process.env.NODE_ENV !== 'production',
-})
+export const store = (preloadedState) => {
+  return configureStore({
+    reducer: persistedReducer,
+    preloadedState,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: {
+          ignoreActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        },
+      }),
+    devTools: process.env.NODE_ENV !== 'production',
+  })
+}
 
-export const persistor = persistStore(store)
+export const persistor = persistStore(store())

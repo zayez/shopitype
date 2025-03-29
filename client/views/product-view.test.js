@@ -23,7 +23,7 @@ describe('renders a product', () => {
   ])
   test('should render a title, image and a price', async () => {
     render(
-      <Provider store={store}>
+      <Provider store={store()}>
         <ProductView id={product.id} />
       </Provider>,
     )
