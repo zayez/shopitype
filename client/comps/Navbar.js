@@ -6,7 +6,6 @@ import { selectAuth } from '../store/slices/authSlice'
 const Navbar = () => {
   const auth = useSelector(selectAuth)
 
-  useEffect(() => {}, [])
   return (
     <nav className="navbar nav nav-left">
       <ul>
