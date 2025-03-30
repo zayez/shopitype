@@ -2,7 +2,7 @@ import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import Toolbar from './toolbar'
-import { createAppStore, store } from '../../store'
+import { createAppStore } from '../../store/store'
 
 jest.mock('../../store/slices/authSlice', () => {
   const originalModule = jest.requireActual('../../store/slices/authSlice')

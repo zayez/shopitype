@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useDispatch, useSelector } from 'react-redux'
 import { Grid as ICategories } from 'react-feather'
-import { adminLayout } from '../../../comps/layout'
+import { adminLayout } from '../../../comps/layout/layout'
 import {
   destroy,
   fetchCategories,

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import ProductView from './product-view'
-import { createAppStore, store } from '../../store'
+import { createAppStore } from '../../store/store'
 import { createServer } from '../../test/msw-server'
 import { Provider } from 'react-redux'
 import products from '../../test/fixtures/products.json' with { type: 'json' }

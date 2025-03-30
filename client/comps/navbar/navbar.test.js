@@ -1,5 +1,5 @@
 import { screen, render } from '@testing-library/react'
-import { createAppStore, store } from '../../store'
+import { createAppStore } from '../../store/store'
 import { Provider } from 'react-redux'
 import Navbar from './navbar'
 
