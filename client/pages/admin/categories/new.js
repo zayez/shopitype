@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { adminLayout } from '../../../comps/layout/layout'
-import { selectCategories } from '../../../store/slices/categoriesSlice'
+import { selectCategories } from '../../../store/slices/categories-slice'
 import Loader from '../../../comps/loader/loader'
 import { SPINNER_TYPE } from '../../../types/loader-type'
 import CategoryForm from '../../../comps/admin/CategoryForm'

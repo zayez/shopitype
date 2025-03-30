@@ -2,8 +2,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectAuth, signOut } from '../../store/slices/authSlice'
-import { selectCart } from '../../store/slices/cartSlice'
+import { selectAuth, signOut } from '../../store/slices/auth-slice'
+import { selectCart } from '../../store/slices/cart-slice'
 import {
   ShoppingCart as ICart,
   User as IUser,

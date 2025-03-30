@@ -2,15 +2,15 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { create, resetProduct, update } from '../../store/slices/productsSlice'
+import { create, resetProduct, update } from '../../store/slices/products-slice'
 import {
   fetchCategories,
   selectCategories,
-} from '../../store/slices/categoriesSlice'
+} from '../../store/slices/categories-slice'
 import {
   fetchProductStatuses,
   selectProductStatuses,
-} from '../../store/slices/productStatusesSlice'
+} from '../../store/slices/product-statuses-slice'
 import { useRef } from 'react'
 import { IMaskInput } from 'react-imask'
 import { toast } from 'react-toastify'

@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux'
-import { clearCart } from '../store/slices/cartSlice'
+import { clearCart } from '../store/slices/cart-slice'
 
 const Success = () => {
   const dispatch = useDispatch()

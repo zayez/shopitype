@@ -4,8 +4,8 @@ import { Provider } from 'react-redux'
 import Toolbar from './toolbar'
 import { createAppStore } from '../../store/store'
 
-jest.mock('../../store/slices/authSlice', () => {
-  const originalModule = jest.requireActual('../../store/slices/authSlice')
+jest.mock('../../store/slices/auth-slice', () => {
+  const originalModule = jest.requireActual('../../store/slices/auth-slice')
   return {
     __esModule: true,
     ...originalModule,

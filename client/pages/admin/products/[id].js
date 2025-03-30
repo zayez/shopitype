@@ -10,7 +10,7 @@ import {
   fetchProduct,
   resetProduct,
   selectProducts,
-} from '../../../store/slices/productsSlice'
+} from '../../../store/slices/products-slice'
 import { SPINNER_TYPE } from '../../../types/loader-type'
 
 const ProductEdit = ({}) => {

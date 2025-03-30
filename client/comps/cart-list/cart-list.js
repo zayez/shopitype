@@ -6,7 +6,7 @@ import {
   increaseItem,
   decreaseItem,
   removeItem,
-} from '../../store/slices/cartSlice'
+} from '../../store/slices/cart-slice'
 
 const baseUrl = `http://localhost:2222`
 

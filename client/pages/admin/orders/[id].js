@@ -5,12 +5,12 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { adminLayout } from '../../../comps/layout/layout'
 import Loader from '../../../comps/loader/loader'
-import { calculateSubtotal } from '../../../store/slices/cartSlice'
+import { calculateSubtotal } from '../../../store/slices/cart-slice'
 import {
   fetchOrder,
   markShippingStatus,
   selectOrders,
-} from '../../../store/slices/ordersSlice'
+} from '../../../store/slices/orders-slice'
 import { SPINNER_TYPE } from '../../../types/loader-type'
 
 import { Octagon, Circle } from 'react-feather'

@@ -15,13 +15,13 @@ import {
   REGISTER,
 } from 'redux-persist'
 
-import auth from './slices/authSlice'
-import categories from './slices/categoriesSlice'
-import products from './slices/productsSlice'
-import productStatuses from './slices/productStatusesSlice'
-import users from './slices/usersSlice'
-import cart from './slices/cartSlice'
-import orders from './slices/ordersSlice'
+import auth from './slices/auth-slice'
+import categories from './slices/categories-slice'
+import products from './slices/products-slice'
+import productStatuses from './slices/product-statuses-slice'
+import users from './slices/users-slice'
+import cart from './slices/cart-slice'
+import orders from './slices/orders-slice'
 
 const persistConfig = {
   key: 'root',

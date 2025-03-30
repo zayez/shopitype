@@ -8,7 +8,7 @@ import {
   destroy,
   fetchProducts,
   selectProducts,
-} from '../../../store/slices/productsSlice'
+} from '../../../store/slices/products-slice'
 
 import Loader from '../../../comps/loader/loader'
 import { SPINNER_TYPE } from '../../../types/loader-type'

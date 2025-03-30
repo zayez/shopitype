@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectAuth, signUser } from '../store/slices/authSlice'
+import { selectAuth, signUser } from '../store/slices/auth-slice'
 import ProductsView from '../views/products-view/products-view'
 
 const Index = () => {

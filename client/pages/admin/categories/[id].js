@@ -9,7 +9,7 @@ import Loader from '../../../comps/loader/loader'
 import {
   fetchCategory,
   selectCategories,
-} from '../../../store/slices/categoriesSlice'
+} from '../../../store/slices/categories-slice'
 import { SPINNER_TYPE } from '../../../types/loader-type'
 
 const CategoryEdit = () => {

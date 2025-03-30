@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Profile from '../comps/profile/profile'
-import { selectAuth, signUser } from '../store/slices/authSlice'
+import { selectAuth, signUser } from '../store/slices/auth-slice'
 
 const ProfileView = () => {
   const dispatch = useDispatch()

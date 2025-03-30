@@ -7,7 +7,7 @@ import {
   resetCategory,
   selectCategories,
   update,
-} from '../../store/slices/categoriesSlice'
+} from '../../store/slices/categories-slice'
 
 const CategoryForm = ({ id, category }) => {
   const dispatch = useDispatch()

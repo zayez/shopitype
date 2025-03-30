@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import CustomerForm from '../../../comps/admin/CustomerForm'
 import { adminLayout } from '../../../comps/layout/layout'
-import { fetchUser, selectUsers } from '../../../store/slices/usersSlice'
+import { fetchUser, selectUsers } from '../../../store/slices/users-slice'
 
 const User = ({}) => {
   const router = useRouter()

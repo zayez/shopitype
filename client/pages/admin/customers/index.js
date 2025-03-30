@@ -7,7 +7,7 @@ import UserList from '../../../comps/admin/UserList'
 import {
   fetchUsersByRoles,
   selectUsers,
-} from '../../../store/slices/usersSlice'
+} from '../../../store/slices/users-slice'
 import { CUSTOMER_ROLE } from '../../../types/roles'
 
 const Users = ({}) => {

@@ -11,8 +11,8 @@ import {
   createStripeCheckout,
   selectCart,
   resetCheckout,
-} from '../store/slices/cartSlice'
-import { selectAuth } from '../store/slices/authSlice'
+} from '../store/slices/cart-slice.js'
+import { selectAuth } from '../store/slices/auth-slice'
 
 let dollarUS = Intl.NumberFormat('en-US', {
   style: 'currency',
