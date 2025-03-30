@@ -2,7 +2,7 @@ import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import Toolbar from './toolbar'
-import { store } from '../../store'
+import { createAppStore, store } from '../../store'
 
 jest.mock('../../store/slices/authSlice', () => {
   const originalModule = jest.requireActual('../../store/slices/authSlice')
@@ -35,15 +35,17 @@ const renderComponent = (isSignedIn = false) => {
       items: [{ id: 'item1', quantity: 2 }],
     },
   }
-  const storeState = isSignedIn ? store(signedInState) : store(defaultState)
-  storeState.dispatch = jest.fn(storeState.dispatch)
+  const { store } = isSignedIn
+    ? createAppStore(signedInState)
+    : createAppStore(defaultState)
+  store.dispatch = jest.fn(store.dispatch)
 
   render(
-    <Provider store={storeState}>
+    <Provider store={store}>
       <Toolbar />
     </Provider>,
   )
-  return { storeState }
+  return { store }
 }
 
 describe('when the user is not signed in', () => {
@@ -106,12 +108,12 @@ describe('when user is signed in', () => {
   })
 
   test('and sign out, sign out and redirects to /signin', async () => {
-    const { storeState } = renderComponent(true)
+    const { store } = renderComponent(true)
 
     const logoutLink = screen.getByTestId('logout-link')
     await userEvent.click(logoutLink)
     expect(mockPush).toHaveBeenCalledWith('/signin')
-    expect(storeState.dispatch).toHaveBeenCalled()
-    expect(storeState.dispatch).toHaveBeenCalledWith({ type: 'auth/signOut' })
+    expect(store.dispatch).toHaveBeenCalled()
+    expect(store.dispatch).toHaveBeenCalledWith({ type: 'auth/signOut' })
   })
 })

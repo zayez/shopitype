@@ -1,7 +1,7 @@
 import { render, screen, within } from '@testing-library/react'
 import { createServer } from '../../test/msw-server'
 import ProductsView from './products-view'
-import { store } from '../../store'
+import { createAppStore, store } from '../../store'
 import { Provider } from 'react-redux'
 import products from '../../test/fixtures/products.json' with { type: 'json' }
 
@@ -21,8 +21,9 @@ createServer([
 ])
 
 test('should render two links, and an image and the price for each product', async () => {
+  const {store} = createAppStore()
   render(
-    <Provider store={store()}>
+    <Provider store={store}>
       <ProductsView />
     </Provider>,
   )

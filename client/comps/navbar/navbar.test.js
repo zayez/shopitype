@@ -1,5 +1,5 @@
 import { screen, render } from '@testing-library/react'
-import { store } from '../../store'
+import { createAppStore, store } from '../../store'
 import { Provider } from 'react-redux'
 import Navbar from './navbar'
 
@@ -23,15 +23,15 @@ const renderComponent = (role) => {
       : role === 'client'
       ? 'client'
       : 'default'
-  const storeState = store(stateMap[key])
-  storeState.dispatch = jest.fn(storeState.dispatch)
+  const { store } = createAppStore(stateMap[key])
+  store.dispatch = jest.fn(store.dispatch)
 
   render(
-    <Provider store={storeState}>
+    <Provider store={store}>
       <Navbar />
     </Provider>,
   )
-  return { storeState }
+  return { store }
 }
 
 const checkHomeAndAboutLinksAreShown = () => {
