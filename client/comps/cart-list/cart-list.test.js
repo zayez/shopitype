@@ -1,6 +1,6 @@
 import { screen, render } from '@testing-library/react'
-import CartList from './CartList'
-import { store } from '../store'
+import CartList from './cart-list'
+import { store } from '../../store'
 import { Provider } from 'react-redux'
 
 let dollarUS = Intl.NumberFormat('en-US', {

@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { Callout, CalloutError } from './Callout'
+import { Callout, CalloutError } from './callout'
 
 describe('Callout', () => {
   it('should display a message', () => {

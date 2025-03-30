@@ -3,8 +3,8 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { adminLayout } from '../../../comps/Layout'
-import Loader from '../../../comps/Loader'
+import { adminLayout } from '../../../comps/layout/layout'
+import Loader from '../../../comps/loader/loader'
 import { calculateSubtotal } from '../../../store/slices/cartSlice'
 import {
   fetchOrder,

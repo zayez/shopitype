@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useState, useRef, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Callout from '../comps/Callout'
+import Callout from '../comps/callout/callout'
 import { selectAuth, signUp } from '../store/slices/authSlice'
 
 const SignUp = () => {

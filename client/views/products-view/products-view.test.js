@@ -1,9 +1,9 @@
 import { render, screen, within } from '@testing-library/react'
-import { createServer } from '../test/msw-server'
-import ProductsView from './ProductsView'
-import { store } from '../store'
+import { createServer } from '../../test/msw-server'
+import ProductsView from './products-view'
+import { store } from '../../store'
 import { Provider } from 'react-redux'
-import products from '../test/fixtures/products.json' with { type: 'json' }
+import products from '../../test/fixtures/products.json' with { type: 'json' }
 
 let dollarUS = Intl.NumberFormat('en-US', {
   style: 'currency',

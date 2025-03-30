@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import Modal from './Modal'
+import Modal from './modal'
 
 describe('Modal testing', () => {
   it('should display a title and a message', () => {

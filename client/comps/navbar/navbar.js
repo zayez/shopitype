@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { selectAuth } from '../store/slices/authSlice'
+import { selectAuth } from '../../store/slices/authSlice'
 
 const Navbar = () => {
   const auth = useSelector(selectAuth)

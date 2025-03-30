@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useDispatch, useSelector } from 'react-redux'
 import { Grid as ICategories } from 'react-feather'
-import { adminLayout } from '../../../comps/Layout'
+import { adminLayout } from '../../../comps/layout'
 import {
   destroy,
   fetchCategories,
@@ -10,7 +10,7 @@ import {
 import CategoryList from '../../../comps/admin/CategoryList'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import Modal from '../../../comps/Modal'
+import Modal from '../../../comps/modal/modal'
 
 const Categories = () => {
   const router = useRouter()

@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import ProductList from '../comps/ProductList'
+import ProductList from '../../comps/product/product-list'
 import {
   fetchProducts,
   selectProduct,
   selectProducts,
-} from '../store/slices/productsSlice'
+} from '../../store/slices/productsSlice'
 const ProductsView = ({}) => {
   const products = useSelector(selectProducts)
   const dispatch = useDispatch()

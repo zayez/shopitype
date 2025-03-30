@@ -1,7 +1,7 @@
 import { screen, render } from '@testing-library/react'
-import { store } from '../store'
+import { store } from '../../store'
 import { Provider } from 'react-redux'
-import Navbar from './Navbar'
+import Navbar from './navbar'
 
 const userData = {
   id: 1,

@@ -1,12 +1,12 @@
 import Head from 'next/head'
-import { adminLayout } from '../../../comps/Layout'
+import { adminLayout } from '../../../comps/layout/layout'
 
 import { Layers as IOrders } from 'react-feather'
 import OrderList from '../../../comps/admin/OrderList'
 import { fetchOrders, selectOrders } from '../../../store/slices/ordersSlice'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Loader from '../../../comps/Loader'
+import Loader from '../../../comps/loader/loader'
 import { SPINNER_TYPE } from '../../../types/LoaderType'
 
 const Orders = () => {

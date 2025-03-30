@@ -49,8 +49,10 @@ export const signUser = createAsyncThunk(
     return fetch(url, requestOptions).then((res) => {
       switch (res.status) {
         case 200:
+          console.log('SUCESS')
           return res.json()
         default:
+          console.log('FAILED')
           return rejectWithValue(ActionStatus.Error)
       }
     })

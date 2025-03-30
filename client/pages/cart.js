@@ -2,8 +2,9 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import CartList from '../comps/CartList'
-import IArrowLeft from '../node_modules/react-feather/dist/icons/arrow-left.js'
+import CartList from '../comps/cart-list/cart-list.js'
+
+import { ArrowLeft as IArrowLeft } from 'react-feather'
 import {
   calculateSubtotal,
   clearCart,
@@ -20,6 +21,13 @@ let dollarUS = Intl.NumberFormat('en-US', {
 
 const Cart = () => {
   const cart = useSelector(selectCart)
+  const auth = useSelector(selectAuth)
+  const user = auth.user
+  const userId = auth.user ? auth.user.id : null
+
+  useEffect(() => {
+    console.log('user: ', user)
+  })
 
   return (
     <>

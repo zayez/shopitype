@@ -4,8 +4,8 @@ import {
   fetchProduct,
   selectCurrentProduct,
   selectProducts,
-} from '../store/slices/productsSlice'
-import Product from '../comps/Product'
+} from '../../store/slices/productsSlice'
+import Product from '../../comps/product/product'
 
 const ProductView = ({ id }) => {
   const dispatch = useDispatch()

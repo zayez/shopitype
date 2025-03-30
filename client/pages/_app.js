@@ -1,6 +1,6 @@
 // index.html
 import React from 'react'
-import { storeLayout } from '../comps/Layout'
+import { storeLayout } from '../comps/layout/layout'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { store, persistor } from '../store'

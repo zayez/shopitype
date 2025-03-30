@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react'
-import ProductView from './ProductView'
-import { store } from '../store'
-import { createServer } from '../test/msw-server'
+import ProductView from './product-view'
+import { store } from '../../store'
+import { createServer } from '../../test/msw-server'
 import { Provider } from 'react-redux'
-import products from '../test/fixtures/products.json' with { type: 'json' }
+import products from '../../test/fixtures/products.json' with { type: 'json' }
 
 const product = products[2]
 

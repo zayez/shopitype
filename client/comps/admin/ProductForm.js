@@ -14,7 +14,7 @@ import {
 import { useRef } from 'react'
 import { IMaskInput } from 'react-imask'
 import { toast } from 'react-toastify'
-import Upload from '../Upload'
+import Upload from '../upload'
 const capitalize = require('upper-case-first').upperCaseFirst
 
 const ProductForm = ({

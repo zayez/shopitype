@@ -3,9 +3,9 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ProductForm from '../../../comps/admin/ProductForm'
-import { CalloutError } from '../../../comps/Callout'
-import { adminLayout } from '../../../comps/Layout'
-import Loader from '../../../comps/Loader'
+import { CalloutError } from '../../../comps/callout/callout'
+import { adminLayout } from '../../../comps/layout/layout'
+import Loader from '../../../comps/loader/loader'
 import {
   fetchProduct,
   resetProduct,

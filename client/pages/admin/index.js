@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { adminLayout } from '../../comps/Layout'
+import { adminLayout } from '../../comps/layout/layout'
 import { Home as IHome } from 'react-feather'
 
 const Index = () => {

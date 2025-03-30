@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import ProductView from '../../views/ProductView'
+import ProductView from '../../views/product-view/product-view'
 import { useRouter } from 'next/router'
 // export const getStaticPaths = async () => {
 //   return {

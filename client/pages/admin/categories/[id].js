@@ -3,9 +3,9 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import CategoryForm from '../../../comps/admin/CategoryForm'
-import { CalloutError } from '../../../comps/Callout'
-import { adminLayout } from '../../../comps/Layout'
-import Loader from '../../../comps/Loader'
+import { CalloutError } from '../../../comps/callout/callout'
+import { adminLayout } from '../../../comps/layout'
+import Loader from '../../../comps/loader/loader'
 import {
   fetchCategory,
   selectCategories,

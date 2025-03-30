@@ -1,11 +1,11 @@
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
-import Toolbar from './Toolbar'
-import { store } from '../store'
+import Toolbar from './toolbar'
+import { store } from '../../store'
 
-jest.mock('../store/slices/authSlice', () => {
-  const originalModule = jest.requireActual('../store/slices/authSlice')
+jest.mock('../../store/slices/authSlice', () => {
+  const originalModule = jest.requireActual('../../store/slices/authSlice')
   return {
     __esModule: true,
     ...originalModule,

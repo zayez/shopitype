@@ -1,11 +1,11 @@
 import Head from 'next/head'
 import { useSelector } from 'react-redux'
 import ProductForm from '../../../comps/admin/ProductForm'
-import { adminLayout } from '../../../comps/Layout'
-import Loader from '../../../comps/Loader'
+import { adminLayout } from '../../../comps/layout/layout'
+import Loader from '../../../comps/loader'
 import { selectProducts } from '../../../store/slices/productsSlice'
 import { SPINNER_TYPE } from '../../../types/LoaderType'
-import { CalloutError } from '../../../comps/Callout'
+import { CalloutError } from '../../../comps/callout/callout'
 import { useState } from 'react'
 
 const ProductNew = ({}) => {

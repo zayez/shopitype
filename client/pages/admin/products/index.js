@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { adminLayout } from '../../../comps/Layout'
+import { adminLayout } from '../../../comps/layout/layout'
 import { Package as IProducts } from 'react-feather'
 import {
   destroy,
@@ -10,10 +10,10 @@ import {
   selectProducts,
 } from '../../../store/slices/productsSlice'
 
-import Loader from '../../../comps/Loader'
+import Loader from '../../../comps/loader/loader'
 import { SPINNER_TYPE } from '../../../types/LoaderType'
 import ProductList from '../../../comps/admin/ProductList'
-import Modal from '../../../comps/Modal'
+import Modal from '../../../comps/modal/modal'
 
 const Products = () => {
   const router = useRouter()

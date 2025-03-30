@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectAuth, signIn } from '../store/slices/authSlice'
-import Callout from '../comps/Callout'
+import Callout from '../comps/callout/callout'
 const SignIn = () => {
   const router = useRouter()
   const baseUrl = `/api`

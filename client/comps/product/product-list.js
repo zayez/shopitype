@@ -1,7 +1,7 @@
 const baseUrl = `http://localhost:2222`
 import Link from 'next/link'
 import { useDispatch } from 'react-redux'
-import { addItem } from '../store/slices/cartSlice'
+import { addItem } from '../../store/slices/cartSlice'
 
 let dollarUS = Intl.NumberFormat('en-US', {
   style: 'currency',

@@ -1,11 +1,11 @@
 import Head from 'next/head'
-import { adminLayout } from '../../../comps/Layout'
+import { adminLayout } from '../../../comps/layout/layout'
 import { selectCategories } from '../../../store/slices/categoriesSlice'
-import Loader from '../../../comps/Loader'
+import Loader from '../../../comps/loader/loader'
 import { SPINNER_TYPE } from '../../../types/LoaderType'
 import CategoryForm from '../../../comps/admin/CategoryForm'
 import { useSelector } from 'react-redux'
-import { CalloutError } from '../../../comps/Callout'
+import { CalloutError } from '../../../comps/callout/callout'
 
 const CategoryNew = () => {
   const categories = useSelector(selectCategories)
