@@ -56,12 +56,18 @@ const isManager = (user) => {
 const AdminLayout = ({ children }) => {
   const router = useRouter()
   const auth = useSelector(selectAuth)
+  const user = auth.user
 
   useEffect(() => {
-    if (!auth.user) {
+    if (!user) {
+      return
+    }
+
+    if (!isManager(user)) {
       router.push('/signin')
     }
   }, [auth])
+
   return (
     <>
       <div className="container-fluid">

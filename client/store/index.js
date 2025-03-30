@@ -40,8 +40,8 @@ const rootReducer = combineReducers({
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
-export const store = (preloadedState) => {
-  return configureStore({
+export const createAppStore = (preloadedState) => {
+  const store = configureStore({
     reducer: persistedReducer,
     preloadedState,
     middleware: (getDefaultMiddleware) =>
@@ -52,6 +52,11 @@ export const store = (preloadedState) => {
       }),
     devTools: process.env.NODE_ENV !== 'production',
   })
-}
 
-export const persistor = persistStore(store())
+  const persistor = persistStore(store)
+
+  return {
+    store,
+    persistor,
+  }
+}

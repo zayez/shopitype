@@ -12,10 +12,6 @@ const Index = () => {
     dispatch(signUser())
   }, [])
 
-  useEffect(() => {
-    console.log('user: ', user)
-  })
-
   return (
     <>
       <Head>
