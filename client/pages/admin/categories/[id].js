@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import CategoryForm from '../../../comps/admin/CategoryForm'
 import { CalloutError } from '../../../comps/callout/callout'
-import { adminLayout } from '../../../comps/layout'
+import { adminLayout } from '../../../comps/layout/layout'
 import Loader from '../../../comps/loader/loader'
 import {
   fetchCategory,

@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchUser, selectAuth } from '../../store/slices/-auth-slice'
+import { fetchUser, selectAuth } from '../../store/slices/auth-slice'
 import { update } from '../../store/slices/users-slice'
 
 const Profile = ({ firstName, lastName, email }) => {
