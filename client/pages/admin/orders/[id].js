@@ -11,7 +11,7 @@ import {
   markShippingStatus,
   selectOrders,
 } from '../../../store/slices/ordersSlice'
-import { SPINNER_TYPE } from '../../../types/LoaderType'
+import { SPINNER_TYPE } from '../../../types/loader-type'
 
 import { Octagon, Circle } from 'react-feather'
 

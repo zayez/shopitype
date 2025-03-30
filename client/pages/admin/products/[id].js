@@ -11,7 +11,7 @@ import {
   resetProduct,
   selectProducts,
 } from '../../../store/slices/productsSlice'
-import { SPINNER_TYPE } from '../../../types/LoaderType'
+import { SPINNER_TYPE } from '../../../types/loader-type'
 
 const ProductEdit = ({}) => {
   const router = useRouter()

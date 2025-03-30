@@ -8,7 +8,7 @@ import {
   fetchUsersByRoles,
   selectUsers,
 } from '../../../store/slices/usersSlice'
-import { ADMIN_ROLE, EDITOR_ROLE } from '../../../types/Roles'
+import { ADMIN_ROLE, EDITOR_ROLE } from '../../../types/roles'
 
 const Users = ({}) => {
   const users = useSelector(selectUsers)

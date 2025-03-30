@@ -7,7 +7,7 @@ import { fetchOrders, selectOrders } from '../../../store/slices/ordersSlice'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../../../comps/loader/loader'
-import { SPINNER_TYPE } from '../../../types/LoaderType'
+import { SPINNER_TYPE } from '../../../types/loader-type'
 
 const Orders = () => {
   const dispatch = useDispatch()

@@ -4,7 +4,7 @@ import ProductForm from '../../../comps/admin/ProductForm'
 import { adminLayout } from '../../../comps/layout/layout'
 import Loader from '../../../comps/loader'
 import { selectProducts } from '../../../store/slices/productsSlice'
-import { SPINNER_TYPE } from '../../../types/LoaderType'
+import { SPINNER_TYPE } from '../../../types/loader-type'
 import { CalloutError } from '../../../comps/callout/callout'
 import { useState } from 'react'
 

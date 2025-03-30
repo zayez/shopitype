@@ -10,7 +10,7 @@ import {
   fetchCategory,
   selectCategories,
 } from '../../../store/slices/categoriesSlice'
-import { SPINNER_TYPE } from '../../../types/LoaderType'
+import { SPINNER_TYPE } from '../../../types/loader-type'
 
 const CategoryEdit = () => {
   const router = useRouter()

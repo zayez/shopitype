@@ -11,7 +11,7 @@ import {
 } from '../../../store/slices/productsSlice'
 
 import Loader from '../../../comps/loader/loader'
-import { SPINNER_TYPE } from '../../../types/LoaderType'
+import { SPINNER_TYPE } from '../../../types/loader-type'
 import ProductList from '../../../comps/admin/ProductList'
 import Modal from '../../../comps/modal/modal'
 

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { ActionStatus } from '../../types/ActionStatus'
+import { ActionStatus } from '../../types/action-status'
 import { toast } from 'react-toastify'
 
 const initialState = {

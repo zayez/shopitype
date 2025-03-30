@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { CUSTOMER_ROLE } from '../../types/Roles'
+import { CUSTOMER_ROLE } from '../../types/roles'
 
 const UserItem = ({ user, role }) => {
   const router = useRouter()
