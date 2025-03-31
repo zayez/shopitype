@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import CustomerForm from '../../../comps/admin/CustomerForm'
+import CustomerForm from '../../../comps/admin/customer-form'
 import { adminLayout } from '../../../comps/layout/layout'
 import { fetchUser, selectUsers } from '../../../store/slices/users-slice'
 

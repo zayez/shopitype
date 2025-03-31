@@ -7,7 +7,7 @@ import {
   fetchCategories,
   selectCategories,
 } from '../../../store/slices/categories-slice'
-import CategoryList from '../../../comps/admin/CategoryList'
+import CategoryList from '../../../comps/admin/category-list'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Modal from '../../../comps/modal/modal'

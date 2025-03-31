@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { adminLayout } from '../../../comps/layout/layout'
 
 import { Layers as IOrders } from 'react-feather'
-import OrderList from '../../../comps/admin/OrderList'
+import OrderList from '../../../comps/admin/order-list'
 import { fetchOrders, selectOrders } from '../../../store/slices/orders-slice'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'

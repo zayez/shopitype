@@ -12,7 +12,7 @@ import {
 
 import Loader from '../../../comps/loader/loader'
 import { SPINNER_TYPE } from '../../../types/loader-type'
-import ProductList from '../../../comps/admin/ProductList'
+import ProductList from '../../../comps/admin/product-list'
 import Modal from '../../../comps/modal/modal'
 
 const Products = () => {

@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Users as IUsers } from 'react-feather'
 import { adminLayout } from '../../../comps/layout/layout'
-import UserList from '../../../comps/admin/UserList'
+import UserList from '../../../comps/admin/user-list'
 import {
   fetchUsersByRoles,
   selectUsers,

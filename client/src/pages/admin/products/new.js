@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { useSelector } from 'react-redux'
-import ProductForm from '../../../comps/admin/ProductForm'
+import ProductForm from '../../../comps/admin/product-form'
 import { adminLayout } from '../../../comps/layout/layout'
 import Loader from '../../../comps/loader'
 import { selectProducts } from '../../../store/slices/products-slice'

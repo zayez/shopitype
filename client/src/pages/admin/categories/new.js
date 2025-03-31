@@ -3,7 +3,7 @@ import { adminLayout } from '../../../comps/layout/layout'
 import { selectCategories } from '../../../store/slices/categories-slice'
 import Loader from '../../../comps/loader/loader'
 import { SPINNER_TYPE } from '../../../types/loader-type'
-import CategoryForm from '../../../comps/admin/CategoryForm'
+import CategoryForm from '../../../comps/admin/category-form'
 import { useSelector } from 'react-redux'
 import { CalloutError } from '../../../comps/callout/callout'
 
