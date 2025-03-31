@@ -4,7 +4,7 @@ import Toolbar from '../toolbar/toolbar'
 const Header = () => {
   return (
     <header className="header">
-      <h1>Storefly</h1>
+      <h1>Shopitype</h1>
       <Navbar />
       <Toolbar />
     </header>
