@@ -1,7 +1,6 @@
 import { screen, render } from '@testing-library/react'
-import { createAppStore } from '../../store/store'
-import { Provider } from 'react-redux'
 import Navbar from './navbar'
+import { useAuthStore } from '../../stores/auth-store'
 
 const userData = {
   id: 1,
@@ -10,10 +9,10 @@ const userData = {
 }
 
 const stateMap = {
-  default: { auth: {} },
-  client: { auth: { user: { ...userData, roles: ['client'] } } },
-  admin: { auth: { user: { ...userData, roles: ['admin'] } } },
-  editor: { auth: { user: { ...userData, roles: ['editor'] } } },
+  default: {},
+  client: { user: { ...userData, roles: ['client'] } },
+  admin: { user: { ...userData, roles: ['admin'] } },
+  editor: { user: { ...userData, roles: ['editor'] } },
 }
 
 const renderComponent = (role) => {
@@ -23,15 +22,9 @@ const renderComponent = (role) => {
       : role === 'client'
       ? 'client'
       : 'default'
-  const { store } = createAppStore(stateMap[key])
-  store.dispatch = jest.fn(store.dispatch)
 
-  render(
-    <Provider store={store}>
-      <Navbar />
-    </Provider>,
-  )
-  return { store }
+  useAuthStore.setState(stateMap[key])
+  render(<Navbar />)
 }
 
 const checkHomeAndAboutLinksAreShown = () => {

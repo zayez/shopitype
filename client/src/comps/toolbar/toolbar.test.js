@@ -1,17 +1,7 @@
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Provider } from 'react-redux'
 import Toolbar from './toolbar'
-import { createAppStore } from '../../store/store'
-
-jest.mock('../../store/slices/auth-slice', () => {
-  const originalModule = jest.requireActual('../../store/slices/auth-slice')
-  return {
-    __esModule: true,
-    ...originalModule,
-    signOut: jest.fn(() => ({ type: 'auth/signOut' })),
-  }
-})
+import { useAuthStore } from '../../stores/auth-store'
 
 const mockPush = jest.fn()
 
@@ -20,32 +10,21 @@ jest.mock('next/router', () => ({
 }))
 
 const renderComponent = (isSignedIn = false) => {
-  const defaultState = {
-    auth: {},
-    cart: {},
-  }
+  const defaultState = {}
   const signedInState = {
-    auth: {
-      user: { id: 1, name: 'John Doe', email: 'john@example.com' },
-      loading: false,
-      error: '',
-      success: true,
-    },
-    cart: {
-      items: [{ id: 'item1', quantity: 2 }],
-    },
+    user: { id: 1, name: 'John Doe', email: 'john@example.com' },
+    loading: false,
+    error: '',
+    success: true,
   }
-  const { store } = isSignedIn
-    ? createAppStore(signedInState)
-    : createAppStore(defaultState)
-  store.dispatch = jest.fn(store.dispatch)
 
-  render(
-    <Provider store={store}>
-      <Toolbar />
-    </Provider>,
-  )
-  return { store }
+  const state = isSignedIn ? signedInState : defaultState
+  useAuthStore.setState(state)
+  useAuthStore.setState({
+    signOut: jest.fn(async () => {}),
+  })
+
+  render(<Toolbar />)
 }
 
 describe('when the user is not signed in', () => {
@@ -108,12 +87,12 @@ describe('when user is signed in', () => {
   })
 
   test('and sign out, sign out and redirects to /signin', async () => {
-    const { store } = renderComponent(true)
+    renderComponent(true)
 
     const logoutLink = screen.getByTestId('logout-link')
     await userEvent.click(logoutLink)
     expect(mockPush).toHaveBeenCalledWith('/signin')
-    expect(store.dispatch).toHaveBeenCalled()
-    expect(store.dispatch).toHaveBeenCalledWith({ type: 'auth/signOut' })
+    const { signOut } = useAuthStore.getState()
+    expect(signOut).toHaveBeenCalled()
   })
 })

@@ -1,7 +1,5 @@
 import { screen, render } from '@testing-library/react'
 import CartList from './cart-list'
-import { createAppStore } from '../../store/store'
-import { Provider } from 'react-redux'
 
 let dollarUS = Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -9,7 +7,6 @@ let dollarUS = Intl.NumberFormat('en-US', {
 })
 
 it('should diplay all items', () => {
-  const { store } = createAppStore()
   const items = [
     {
       id: 1,
@@ -28,9 +25,7 @@ it('should diplay all items', () => {
   ]
   render(
     <>
-      <Provider store={store}>
-        <CartList items={items} />
-      </Provider>
+      <CartList items={items} />
     </>,
   )
 
