@@ -21,7 +21,7 @@ const renderComponent = (isSignedIn = false) => {
   const state = isSignedIn ? signedInState : defaultState
   useAuthStore.setState(state)
   useAuthStore.setState({
-    signOut: jest.fn(async () => {}),
+    signOut: jest.fn(),
   })
 
   render(<Toolbar />)
