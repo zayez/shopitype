@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useShallow } from 'zustand/shallow'
-import ProductList from '../../comps/product/product-list'
+import ProductList from '../../comps/product-list/product-list'
 import { useProductsStore } from '../../stores/products-store'
 
 const ProductsView = () => {
