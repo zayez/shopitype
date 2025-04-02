@@ -6,36 +6,42 @@ import CategoryForm from '../../../comps/admin/category-form'
 import { CalloutError } from '../../../comps/callout/callout'
 import { adminLayout } from '../../../comps/layout/layout'
 import Loader from '../../../comps/loader/loader'
-import {
-  fetchCategory,
-  selectCategories,
-} from '../../../store/slices/categories-slice'
 import { SPINNER_TYPE } from '../../../types/loader-type'
+import { useCategoriesStore } from '../../../stores/categories-store'
+import { useShallow } from 'zustand/shallow'
 
 const CategoryEdit = () => {
   const router = useRouter()
-  const dispatch = useDispatch()
-  const categories = useSelector(selectCategories)
+  const { category, loading, error, errors, fetchCategory } =
+    useCategoriesStore(
+      useShallow((state) => ({
+        category: state.category,
+        loading: state.loading,
+        error: state.error,
+        errors: state.errors,
+        fetchCategory: state.fetchCategory,
+      })),
+    )
   const { id } = router.query
 
   useEffect(() => {
     if (id) {
-      dispatch(fetchCategory(id))
+      fetchCategory(id)
     }
   }, [])
+
+  if (loading) {
+    return <Loader type={SPINNER_TYPE} size="small" />
+  }
+
   return (
     <>
       <Head>
-        <title>Storefly dashboard | Category </title>
+        <title>Shopitype dashboard | Category </title>
       </Head>
       <div className="category-edit">
-        {categories.loading && <Loader type={SPINNER_TYPE} size="small" />}
-        {!categories.loading && categories.error ? (
-          <CalloutError error={categories.error} errors={categories.errors} />
-        ) : null}
-        {!categories.loading ? (
-          <CategoryForm id={id} category={categories.category} />
-        ) : null}
+        {error && <CalloutError error={error} errors={errors} />}
+        {category && <CategoryForm id={id} category={category} />}
       </div>
     </>
   )

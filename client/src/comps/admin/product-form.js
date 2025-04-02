@@ -1,20 +1,14 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 
-import { create, resetProduct, update } from '../../store/slices/products-slice'
-import {
-  fetchCategories,
-  selectCategories,
-} from '../../store/slices/categories-slice'
-import {
-  fetchProductStatuses,
-  selectProductStatuses,
-} from '../../store/slices/product-statuses-slice'
 import { useRef } from 'react'
 import { IMaskInput } from 'react-imask'
 import { toast } from 'react-toastify'
 import Upload from '../upload/upload'
+import { useCategoriesStore } from '../../stores/categories-store'
+import { useShallow } from 'zustand/shallow'
+import { useProductsStore } from '../../stores/products-store'
+import { useProductStatusesStore } from '../../stores/product-statuses-store'
 const capitalize = require('upper-case-first').upperCaseFirst
 
 const ProductForm = ({
@@ -34,10 +28,29 @@ const ProductForm = ({
   image,
   setImage,
 }) => {
-  const dispatch = useDispatch()
   const router = useRouter()
-  const categories = useSelector(selectCategories)
-  const productStatuses = useSelector(selectProductStatuses)
+
+  const { resetProduct, createProduct, updateProduct } = useProductsStore(
+    useShallow((state) => ({
+      resetProduct: state.resetProduct,
+      createProduct: state.createProduct,
+      updateProduct: state.updateProduct,
+    })),
+  )
+  const { categories, fetchCategories } = useCategoriesStore(
+    useShallow((state) => ({
+      categories: state.categories,
+      fetchCategories: state.fetchCategories,
+    })),
+  )
+
+  const { productStatuses, fetchProductStatuses } = useProductStatusesStore(
+    useShallow((state) => ({
+      productStatuses: state.productStatuses,
+      fetchProductStatuses: state.fetchProductStatuses,
+    })),
+  )
+
   const [imageSource, setImageSource] = useState(null)
   const [imageData, setImageData] = useState(null)
   const [imageRemove, setImageRemove] = useState(false)
@@ -51,15 +64,17 @@ const ProductForm = ({
   const inventoryInputRef = useRef(null)
 
   useEffect(() => {
-    dispatch(fetchCategories())
-    dispatch(fetchProductStatuses())
+    fetchCategories()
+    fetchProductStatuses()
 
     if (!id) {
-      dispatch(resetProduct())
+      resetProduct()
     }
   }, [])
 
   const handleSubmit = (e) => {
+    e.preventDefault()
+
     const formData = new FormData()
     if (title) formData.append('title', title)
     if (description) formData.append('description', description)
@@ -72,22 +87,22 @@ const ProductForm = ({
     }
     if (imageData) formData.append('image', imageData)
 
-    e.preventDefault()
     if (id) {
-      dispatch(update({ id, formData })).then((res) => {
+      updateProduct({ id, formData }).then((res) => {
         if (!res.error) {
           router.push('/admin/products')
           toast.success('Product successfully updated!', {})
         }
       })
-    } else {
-      dispatch(create(formData)).then((res) => {
-        if (!res.error) {
-          router.push('/admin/products')
-          toast.success('Product successfully created!', {})
-        }
-      })
+      return
     }
+
+    createProduct(formData).then((res) => {
+      if (!res.error) {
+        router.push('/admin/products')
+        toast.success('Product successfully created!', {})
+      }
+    })
   }
 
   const handleRemoveImage = (e) => {
@@ -101,7 +116,7 @@ const ProductForm = ({
     e.preventDefault()
     router.push('/admin/products')
     setTimeout(() => {
-      dispatch(resetProduct())
+      resetProduct()
     }, 1000)
   }
 
@@ -209,8 +224,8 @@ const ProductForm = ({
                     onChange={({ target }) => setCategory(target?.value)}
                   >
                     <option key="0" value=""></option>
-                    {categories && categories.categories.length > 0
-                      ? categories.categories.map((category) => (
+                    {categories && categories.length
+                      ? categories.map((category) => (
                           <option value={category.id} key={category.id}>
                             {category.title}
                           </option>
@@ -230,9 +245,8 @@ const ProductForm = ({
                     onChange={({ target }) => setStatus(target?.value)}
                   >
                     <option key="0" value=""></option>
-                    {productStatuses &&
-                    productStatuses.productStatuses.length > 0
-                      ? productStatuses.productStatuses.map((status) => (
+                    {productStatuses && productStatuses.length
+                      ? productStatuses.map((status) => (
                           <option value={status.id} key={status.id}>
                             {capitalize(status.name)}
                           </option>

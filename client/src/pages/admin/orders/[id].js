@@ -5,12 +5,6 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { adminLayout } from '../../../comps/layout/layout'
 import Loader from '../../../comps/loader/loader'
-import { calculateSubtotal } from '../../../store/slices/cart-slice'
-import {
-  fetchOrder,
-  markShippingStatus,
-  selectOrders,
-} from '../../../store/slices/orders-slice'
 import { SPINNER_TYPE } from '../../../types/loader-type'
 
 import { Octagon, Circle } from 'react-feather'
@@ -25,29 +19,41 @@ import {
   PAYMENT_PAID,
   PAYMENT_UNPAID,
 } from '../../../../server/types/PaymentStatus'
+import { useOrdersStore } from '../../../stores/orders-store'
+import { useShallow } from 'zustand/shallow'
 
 const Order = () => {
   const router = useRouter()
-  const dispatch = useDispatch()
-  const orders = useSelector(selectOrders)
+  const { curOrder, loading, fetchOrder } = useOrdersStore(
+    useShallow((state) => ({
+      curOrder: state.curOrder,
+      loading: state.loading,
+      fetchOrder: state.fetchOrder,
+    })),
+  )
   const { id } = router.query
-  const curOrder = orders.curOrder
 
   useEffect(() => {
-    if (id) dispatch(fetchOrder(id))
+    if (!id) {
+      return
+    }
+
+    fetchOrder(id)
   }, [])
+
+  if (loading) {
+    return <Loader type={SPINNER_TYPE} size="small" />
+  }
 
   return (
     <>
       <Head>
-        <title>Storefly dashboard - Order</title>
+        <title>Shopitype dashboard - Order</title>
       </Head>
       <div className="container">
         <h1>Order</h1>
-        {orders.loading && <Loader type={SPINNER_TYPE} size="small" />}
-        {!orders.loading && orders.curOrder ? (
-          <ViewOrder {...curOrder} />
-        ) : null}
+
+        {curOrder && <ViewOrder {...curOrder} />}
       </div>
     </>
   )
@@ -58,7 +64,12 @@ Order.getLayout = adminLayout
 export default Order
 
 const ViewOrder = (order) => {
-  const dispatch = useDispatch()
+  const { order, markShippingStatus } = useOrdersStore(
+    useShallow((state) => ({
+      order: state.order,
+      markShippingStatus: state.markShippingStatus,
+    })),
+  )
   const { id, dateOrder, items, customer, total, subtotal, shippingStatus } =
     order
   const addr = order.shippingAddress
@@ -69,9 +80,7 @@ const ViewOrder = (order) => {
   const [paymentCss, paymentText] = getPayment(order.paymentStatus)
 
   const handleMarkAsShipped = (e) => {
-    dispatch(
-      markShippingStatus({ orderId: order.id, status: SHIPPING_SHIPPED }),
-    )
+    markShippingStatus({ orderId: order.id, status: SHIPPING_SHIPPED })
   }
 
   return (

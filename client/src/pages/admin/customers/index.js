@@ -1,25 +1,30 @@
 import Head from 'next/head'
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { Users as IUsers } from 'react-feather'
 import { adminLayout } from '../../../comps/layout/layout'
 import UserList from '../../../comps/admin/user-list'
-import {
-  fetchUsersByRoles,
-  selectUsers,
-} from '../../../store/slices/users-slice'
 import { CUSTOMER_ROLE } from '../../../types/roles'
+import { useUsersStore } from '../../../stores/users-store'
+import { useShallow } from 'zustand/shallow'
 
-const Users = ({}) => {
-  const users = useSelector(selectUsers)
-  const dispatch = useDispatch()
+const Users = () => {
+  const { users, loading, error, fetchUsersByRoles } = useUsersStore(
+    useShallow((state) => ({
+      users: state.users,
+      loading: state.loading,
+      error: state.error,
+      fetchUsersByRoles: state.fetchUsersByRoles,
+    })),
+  )
+
   useEffect(() => {
-    dispatch(fetchUsersByRoles([CUSTOMER_ROLE]))
+    fetchUsersByRoles([CUSTOMER_ROLE])
   }, [])
+
   return (
     <>
       <Head>
-        <title>Storefly dashboard | Users </title>
+        <title>Shopitype dashboard | Users </title>
       </Head>
       <div>
         <h1 className="heading">
@@ -27,11 +32,9 @@ const Users = ({}) => {
         </h1>
         <hr />
 
-        {users.loading && <div>Loading...</div>}
-        {!users.loading && users.error ? <div>Error: {users.error}</div> : null}
-        {!users.loading && users?.users.length ? (
-          <UserList users={users.users} role={`customer`} />
-        ) : null}
+        {loading && <div>Loading...</div>}
+        {error && <div>Error: {error}</div>}
+        {users.length && <UserList users={users} role={`customer`} />}
       </div>
     </>
   )

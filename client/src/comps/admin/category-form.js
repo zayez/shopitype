@@ -1,50 +1,59 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
-import {
-  create,
-  resetCategory,
-  selectCategories,
-  update,
-} from '../../store/slices/categories-slice'
+import { useCategoriesStore } from '../../stores/categories-store'
+import { useShallow } from 'zustand/shallow'
 
 const CategoryForm = ({ id, category }) => {
-  const dispatch = useDispatch()
   const router = useRouter()
+  const {
+    category: internalCategory,
+    error,
+    updateCategory,
+    createCategory,
+    resetCategory,
+  } = useCategoriesStore(
+    useShallow((state) => ({
+      category: state.category,
+      loading: state.loading,
+      error: state.error,
+      updateCategory: state.updateCategory,
+      createCategory: state.createCategory,
+      resetCategory: state.resetCategory,
+    })),
+  )
+
   const [title, setTitle] = useState('')
-  const categories = useSelector(selectCategories)
   const submitText = id ? 'Save' : 'Create'
 
   useEffect(() => {
     if (category) {
-      if (!categories.error) {
+      if (!error) {
         setTitle(category.title)
       }
     } else {
-      dispatch(resetCategory())
+      resetCategory()
     }
   }, [])
-
-  useEffect(() => {}, [categories.category])
 
   const handleSubmit = (e) => {
     e.preventDefault()
     if (id) {
-      dispatch(update({ id, title })).then((res) => {
+      updateCategory({ id, title }).then((res) => {
         if (!res.error) {
           router.push('/admin/categories')
           toast.success('Category successfully updated!')
         }
       })
-    } else {
-      dispatch(create({ title })).then((res) => {
-        if (!res.error) {
-          router.push('/admin/categories')
-          toast.success('Category successfully created!')
-        }
-      })
+      return
     }
+    createCategory({ title }).then((res) => {
+      console.log('res: ', res)
+      if (!res.error) {
+        router.push('/admin/categories')
+        toast.success('Category successfully created!')
+      }
+    })
   }
 
   const handleBackClick = (e) => {

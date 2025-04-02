@@ -1,11 +1,11 @@
 import Header from '../header/header'
 import Footer from '../footer/footer'
 import Sidebar from '../sidebar/sidebar'
-import { useSelector } from 'react-redux'
-import { selectAuth } from '../../store/slices/auth-slice'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { ToastContainer } from 'react-toastify'
+import { useAuthStore } from '../../stores/auth-store'
+import { useShallow } from 'zustand/shallow'
 
 const Toast = ({}) => {
   return (
@@ -55,8 +55,11 @@ const isManager = (user) => {
 
 const AdminLayout = ({ children }) => {
   const router = useRouter()
-  const auth = useSelector(selectAuth)
-  const user = auth.user
+  const { user } = useAuthStore(
+    useShallow((state) => ({
+      user: state.user,
+    })),
+  )
 
   useEffect(() => {
     if (!user) {
@@ -66,7 +69,7 @@ const AdminLayout = ({ children }) => {
     if (!isManager(user)) {
       router.push('/signin')
     }
-  }, [auth])
+  }, [])
 
   return (
     <>

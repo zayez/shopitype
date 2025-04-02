@@ -1,6 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { ActionStatus } from '../../types/action-status'
-import { toast } from 'react-toastify'
 
 const initialState = {
   loading: false,

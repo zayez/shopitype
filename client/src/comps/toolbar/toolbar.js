@@ -1,9 +1,6 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectAuth, signOut } from '../../store/slices/auth-slice'
-import { selectCart } from '../../store/slices/cart-slice'
 import {
   ShoppingCart as ICart,
   User as IUser,
@@ -12,6 +9,9 @@ import {
   Search as ISearch,
   UserPlus as ISignUp,
 } from 'react-feather'
+import { useAuthStore } from '../../stores/auth-store'
+import { useShallow } from 'zustand/shallow'
+import { useCartStore } from '../../stores/cart-store'
 
 const Profile = () => {
   return (
@@ -55,13 +55,13 @@ const Account = ({ user }) => {
 
 const SignOut = () => {
   const router = useRouter()
-  const dispatch = useDispatch()
-  const auth = useSelector(selectAuth)
-  useEffect(() => {}, [auth])
+  const { signOut } = useAuthStore(
+    useShallow((state) => ({ signOut: state.signOut })),
+  )
 
   const handleSignOut = (event) => {
     event.preventDefault()
-    dispatch(signOut())
+    signOut()
     router.push('/signin')
   }
 
@@ -82,9 +82,18 @@ const SignOut = () => {
 }
 
 const Toolbar = () => {
-  const auth = useSelector(selectAuth)
-  const cart = useSelector(selectCart)
-  const totalItems = cart?.items?.reduce((acc, cur) => acc + cur.quantity, 0)
+  const { user } = useAuthStore(
+    useShallow((state) => ({
+      user: state.user,
+    })),
+  )
+
+  const { items } = useCartStore(
+    useShallow((state) => ({
+      items: state.items,
+    })),
+  )
+  const totalItems = items?.reduce((acc, cur) => acc + cur.quantity, 0)
 
   return (
     <nav className="navbar toolbar">
@@ -98,14 +107,14 @@ const Toolbar = () => {
           </Link>
         </li>
         <li>
-          <Account user={auth.user} />
+          <Account user={user} />
         </li>
-        {!auth.user && (
+        {!user && (
           <li>
             <SignUp />
           </li>
         )}
-        {auth.user && <SignOut />}
+        {user && <SignOut />}
         <li className="toolbar-cart-container">
           <Link href="/cart">
             <a className="toolbar-item" title="Cart">

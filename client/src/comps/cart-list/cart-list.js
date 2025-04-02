@@ -1,12 +1,7 @@
 import Link from 'next/link'
-import { useDispatch } from 'react-redux'
 import { Plus as IPlus, Minus as IMinus } from 'react-feather'
-
-import {
-  increaseItem,
-  decreaseItem,
-  removeItem,
-} from '../../store/slices/cart-slice'
+import { useCartStore } from '../../stores/cart-store'
+import { useShallow } from 'zustand/shallow'
 
 const baseUrl = `http://localhost:2222`
 
@@ -50,18 +45,24 @@ const CartList = ({ items }) => {
 }
 
 const CartItem = ({ id, title, image, price, quantity }) => {
-  const dispatch = useDispatch()
+  const { increaseItem, decreaseItem, removeItem } = useCartStore(
+    useShallow((state) => ({
+      increaseItem: state.increaseItem,
+      decreaseItem: state.decreaseItem,
+      removeItem: state.removeItem,
+    })),
+  )
 
   const handleIncreaseItem = (e) => {
-    dispatch(increaseItem(id))
+    increaseItem(id)
   }
 
   const handleDecreaseItem = (e) => {
-    dispatch(decreaseItem(id))
+    decreaseItem(id)
   }
 
   const handleRemoveItem = (e) => {
-    dispatch(removeItem(id))
+    removeItem(id)
   }
 
   const total = price * quantity

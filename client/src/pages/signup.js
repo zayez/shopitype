@@ -1,31 +1,38 @@
 import { useRouter } from 'next/router'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Callout from '../comps/callout/callout'
-import { selectAuth, signUp } from '../store/slices/auth-slice'
+import { useAuthStore } from '../store/auth-store'
+import { useShallow } from 'zustand/shallow'
 
 const SignUp = () => {
   const router = useRouter()
+  const { success, error, signUp } = useAuthStore(
+    useShallow((state) => ({
+      success: state.success,
+      error: state.error,
+      signUp: state.signUp,
+    })),
+  )
+
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const dispatch = useDispatch()
-  const auth = useSelector(selectAuth)
 
   useEffect(() => {
-    if (auth.success) {
+    if (success) {
       router.push('/')
     }
-  }, [auth.success, auth.user, auth.error])
+  }, [success])
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    dispatch(signUp({ firstName, lastName, email, password }))
+    signUp({ firstName, lastName, email, password })
   }
   return (
     <div className="container">
-      <Callout message={auth.error} />
+      <Callout message={error} />
       <form onSubmit={handleSubmit} className="form">
         <div className="field">
           <label htmlFor="E-mail">First name</label>

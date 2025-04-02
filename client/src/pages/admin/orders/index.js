@@ -3,24 +3,34 @@ import { adminLayout } from '../../../comps/layout/layout'
 
 import { Layers as IOrders } from 'react-feather'
 import OrderList from '../../../comps/admin/order-list'
-import { fetchOrders, selectOrders } from '../../../store/slices/orders-slice'
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../../../comps/loader/loader'
 import { SPINNER_TYPE } from '../../../types/loader-type'
+import { useOrdersStore } from '../../../stores/orders-store'
+import { useShallow } from 'zustand/shallow'
 
 const Orders = () => {
-  const dispatch = useDispatch()
-  const orders = useSelector(selectOrders)
+  const { orders, loading, error, fetchOrders } = useOrdersStore(
+    useShallow((state) => ({
+      orders: state.orders,
+      loading: state.loading,
+      error: state.error,
+      fetchOrders: state.fetchOrders,
+    })),
+  )
 
   useEffect(() => {
-    dispatch(fetchOrders())
+    fetchOrders()
   }, [])
+
+  if (loading) {
+    return <Loader type={SPINNER_TYPE} />
+  }
 
   return (
     <>
       <Head>
-        <title>Storefly dashboard - Orders</title>
+        <title>Shopitype dashboard - Orders</title>
       </Head>
       <div className="container">
         <div className="heading">
@@ -28,13 +38,9 @@ const Orders = () => {
           <h1>Orders</h1>
         </div>
         <hr />
-        {orders.loading ? <Loader type={SPINNER_TYPE} /> : null}
-        {!orders.loading && orders.error ? (
-          <div>Error: {orders.error}</div>
-        ) : null}
-        {!orders.loading && orders.orders?.length ? (
-          <OrderList orders={orders.orders} />
-        ) : null}
+
+        {error && <div>Error: {error}</div>}
+        {!!orders?.length && <OrderList orders={orders} />}
       </div>
     </>
   )

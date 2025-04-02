@@ -1,26 +1,30 @@
 import Head from 'next/head'
-import { useDispatch, useSelector } from 'react-redux'
 import { Grid as ICategories } from 'react-feather'
 import { adminLayout } from '../../../comps/layout/layout'
-import {
-  destroy,
-  fetchCategories,
-  selectCategories,
-} from '../../../store/slices/categories-slice'
 import CategoryList from '../../../comps/admin/category-list'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Modal from '../../../comps/modal/modal'
+import { useCategoriesStore } from '../../../stores/categories-store'
+import { useShallow } from 'zustand/shallow'
 
 const Categories = () => {
   const router = useRouter()
-  const dispatch = useDispatch()
+  const { categories, loading, fetchCategories, destroyCategory } =
+    useCategoriesStore(
+      useShallow((state) => ({
+        categories: state.categories,
+        loading: state.loading,
+        fetchCategories: state.fetchCategories,
+        destroyCategory: state.destroyCategory,
+      })),
+    )
+
   const [showModal, setShowModal] = useState(null)
   const [selectedId, setSelectedId] = useState(0)
-  const categories = useSelector(selectCategories)
 
   useEffect(() => {
-    dispatch(fetchCategories())
+    fetchCategories()
   }, [])
 
   const handleAddCategory = (e) => {
@@ -29,7 +33,7 @@ const Categories = () => {
   }
 
   const handleDelete = async () => {
-    dispatch(destroy(selectedId))
+    destroyCategory(selectedId)
   }
 
   const handleModalEnter = (id) => {
@@ -41,10 +45,14 @@ const Categories = () => {
     setShowModal(false)
   }
 
+  if (loading) {
+    return <div>Loading...</div>
+  }
+
   return (
     <>
       <Head>
-        <title>Storefly dashboard | Categories </title>
+        <title>Shopitype dashboard | Categories </title>
       </Head>
       <div className="container">
         <div className="heading-spaced">
@@ -56,13 +64,9 @@ const Categories = () => {
           </button>
         </div>
         <hr />
-        {categories.loading && <div>Loading...</div>}
-        {!categories.loading && categories.categories.length ? (
-          <CategoryList
-            categories={categories.categories}
-            onDelete={handleModalEnter}
-          />
-        ) : null}
+        {categories.length && (
+          <CategoryList categories={categories} onDelete={handleModalEnter} />
+        )}
         <Modal
           title={`Delete category`}
           message={`This can't be undone.`}

@@ -1,7 +1,7 @@
 const baseUrl = `http://localhost:2222`
 import Link from 'next/link'
-import { useDispatch } from 'react-redux'
-import { addItem } from '../../store/slices/cart-slice'
+import { useCartStore } from '../../stores/cart-store'
+import { useShallow } from 'zustand/shallow'
 
 let dollarUS = Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -9,10 +9,12 @@ let dollarUS = Intl.NumberFormat('en-US', {
 })
 
 const ProductItem = ({ product }) => {
-  const dispatch = useDispatch()
+  const { addItem } = useCartStore(
+    useShallow((state) => ({ addItem: state.addItem })),
+  )
 
   const handleAddItem = (e) => {
-    dispatch(addItem(product))
+    addItem(product)
   }
 
   return (
@@ -37,7 +39,7 @@ const ProductItem = ({ product }) => {
 const Products = ({ products }) => {
   return (
     <div className="products-list">
-      {products.map((product) => (
+      {products?.map((product) => (
         <ProductItem product={product} key={product.id} />
       ))}
     </div>

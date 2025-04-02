@@ -1,34 +1,41 @@
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchUser, selectAuth } from '../../store/slices/auth-slice'
-import { update } from '../../store/slices/users-slice'
+import { useAuthStore } from '../../stores/auth-store'
+import { useShallow } from 'zustand/shallow'
 
 const Profile = ({ firstName, lastName, email }) => {
-  const auth = useSelector(selectAuth)
   const router = useRouter()
-  const dispatch = useDispatch()
+  const { user, fetchUser } = useAuthStore(
+    useShallow((state) => ({
+      user: state.user,
+      fetchUser: state.fetchUser,
+    })),
+  )
+
   const [txtFirstName, setFirstName] = useState(firstName)
   const [txtLastName, setLastName] = useState(lastName)
   const [txtEmail, setEmail] = useState(email)
+
   useEffect(() => {
-    if (auth.user) {
-      dispatch(fetchUser({ id: auth.user.id }))
+    if (!user) {
+      return
     }
-  }, [])
+    fetchUser({ id: user.id })
+  }, [user])
 
   const handleSubmit = async (event) => {
-    if (!auth.user) router.push('/signin')
     event.preventDefault()
-    dispatch(
-      update({
-        id: auth.user.id,
-        firstName: txtFirstName,
-        lastName: txtLastName,
-        email: txtEmail,
-      }),
-    )
+
+    if (!user) {
+      router.push('/signin')
+    }
+    updateUser({
+      id: auth.user.id,
+      firstName: txtFirstName,
+      lastName: txtLastName,
+      email: txtEmail,
+    })
   }
   return (
     <div className="container">

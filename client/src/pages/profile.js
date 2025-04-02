@@ -1,22 +1,22 @@
-import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import Profile from '../comps/profile/profile'
-import { selectAuth, signUser } from '../store/slices/auth-slice'
+import { useAuthStore } from '../stores/auth-store'
+import { useShallow } from 'zustand/shallow'
 
 const ProfileView = () => {
-  const dispatch = useDispatch()
-  const auth = useSelector(selectAuth)
-  // const router = useRouter()
+  const { user, signUser } = useAuthStore(
+    useShallow((state) => ({ user: state.user, signUser: state.signUser })),
+  )
 
   useEffect(() => {
-    if (!auth.user) {
-      dispatch(signUser())
+    if (!user) {
+      signUser()
     }
   }, [])
 
-  if (!auth.user) return
-  const { firstName, lastName, email } = auth.user
+  if (!user) return
+
+  const { firstName, lastName, email } = user
   return <Profile firstName={firstName} lastName={lastName} email={email} />
 }
 

@@ -1,30 +1,36 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectAuth, signIn } from '../store/slices/auth-slice'
 import Callout from '../comps/callout/callout'
+import { useAuthStore } from '../stores/auth-store'
+import { useShallow } from 'zustand/shallow'
+
 const SignIn = () => {
   const router = useRouter()
-  const baseUrl = `/api`
+  const { success, error, signIn } = useAuthStore(
+    useShallow((state) => ({
+      success: state.success,
+      signIn: state.signIn,
+      error: state.error,
+    })),
+  )
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const dispatch = useDispatch()
-  const auth = useSelector(selectAuth)
 
   useEffect(() => {
-    if (auth.success) {
+    if (success) {
       router.push('/')
     }
-  }, [auth.success, auth.user, auth.error])
+  }, [success])
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    dispatch(signIn({ email, password }))
+    signIn({ email, password })
   }
 
   return (
     <div className="container">
-      <Callout message={auth.error} />
+      <Callout message={error} />
       <div className="login">
         <h1>Sign in</h1>
         <form onSubmit={handleSubmit} className="form">

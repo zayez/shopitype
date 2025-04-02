@@ -1,10 +1,13 @@
 import Link from 'next/link'
-import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { selectAuth } from '../../store/slices/auth-slice'
+import { useAuthStore } from '../../stores/auth-store'
+import { useShallow } from 'zustand/shallow'
 
 const Navbar = () => {
-  const auth = useSelector(selectAuth)
+  const { user } = useAuthStore(
+    useShallow((state) => ({
+      user: state.user,
+    })),
+  )
 
   return (
     <nav className="navbar nav nav-left">
@@ -23,7 +26,7 @@ const Navbar = () => {
             </a>
           </Link>
         </li>
-        {isManager(auth.user) ? (
+        {isManager(user) ? (
           <li>
             <Link href="/admin">
               <a className="navbar-item" title="Admin">

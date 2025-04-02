@@ -6,17 +6,24 @@ import ProductForm from '../../../comps/admin/product-form'
 import { CalloutError } from '../../../comps/callout/callout'
 import { adminLayout } from '../../../comps/layout/layout'
 import Loader from '../../../comps/loader/loader'
-import {
-  fetchProduct,
-  resetProduct,
-  selectProducts,
-} from '../../../store/slices/products-slice'
 import { SPINNER_TYPE } from '../../../types/loader-type'
+import { useProductsStore } from '../../../stores/products-store'
+import { useShallow } from 'zustand/shallow'
 
-const ProductEdit = ({}) => {
+const ProductEdit = () => {
   const router = useRouter()
-  const dispatch = useDispatch()
-  const products = useSelector(selectProducts)
+
+  const { currentProduct, loading, error, errors, fetchProduct } =
+    useProductsStore(
+      useShallow((state) => ({
+        currentProduct: state.currentProduct,
+        loading: state.loading,
+        error: state.error,
+        errors: state.errors,
+        fetchProduct: state.fetchProduct,
+      })),
+    )
+
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [inventory, setInventory] = useState('')
@@ -25,15 +32,16 @@ const ProductEdit = ({}) => {
   const [statusId, setStatus] = useState('')
   const [image, setImage] = useState('')
   const { id } = router.query
-  const product = products.currentProduct
+  const product = currentProduct
+
   useEffect(() => {
     if (id) {
-      dispatch(fetchProduct(id))
+      fetchProduct(id)
     }
   }, [])
 
   useEffect(() => {
-    if (products.currentProduct) {
+    if (currentProduct) {
       setTitle(product.title)
       setDescription(product.description)
       setInventory(product.inventory)
@@ -42,19 +50,20 @@ const ProductEdit = ({}) => {
       setStatus(product.statusId)
       setImage(product.image)
     }
-  }, [products.currentProduct])
+  }, [currentProduct])
+
+  if (loading) {
+    return <Loader type={SPINNER_TYPE} size="small" />
+  }
 
   return (
     <>
       <Head>
-        <title>Storefly dashboard | Product edit </title>
+        <title>Shopitype dashboard | Product edit </title>
       </Head>
       <div className="product-edit">
-        {products.loading && <Loader type={SPINNER_TYPE} size="small" />}
-        {!products.loading && products.error ? (
-          <CalloutError error={products.error} errors={products.errors} />
-        ) : null}
-        {!products.loading && products.currentProduct ? (
+        {error && <CalloutError error={error} errors={errors} />}
+        {currentProduct && (
           <ProductForm
             id={id}
             title={title}
@@ -72,7 +81,7 @@ const ProductEdit = ({}) => {
             image={image}
             setImage={setImage}
           />
-        ) : null}
+        )}
       </div>
     </>
   )

@@ -1,15 +1,17 @@
 import Head from 'next/head'
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectAuth, signUser } from '../store/slices/auth-slice'
 import ProductsView from '../views/products-view/products-view'
+import { useAuthStore } from '../stores/auth-store'
+import { useShallow } from 'zustand/shallow'
 
 const Index = () => {
-  const dispatch = useDispatch()
-  const auth = useSelector(selectAuth)
-  const user = auth.user
+  const { signUser } = useAuthStore(
+    useShallow((state) => ({
+      signUser: state.signUser,
+    })),
+  )
   useEffect(() => {
-    dispatch(signUser())
+    signUser()
   }, [])
 
   return (

@@ -1,18 +1,12 @@
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import CartList from '../comps/cart-list/cart-list.js'
 
 import { ArrowLeft as IArrowLeft } from 'react-feather'
-import {
-  calculateSubtotal,
-  clearCart,
-  createStripeCheckout,
-  selectCart,
-  resetCheckout,
-} from '../store/slices/cart-slice.js'
-import { selectAuth } from '../store/slices/auth-slice'
+import { useShallow } from 'zustand/shallow'
+import { useCartStore } from '../stores/cart-store.js'
+import { useAuthStore } from '../stores/auth-store.js'
 
 let dollarUS = Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -20,14 +14,13 @@ let dollarUS = Intl.NumberFormat('en-US', {
 })
 
 const Cart = () => {
-  const cart = useSelector(selectCart)
-  const auth = useSelector(selectAuth)
-  const user = auth.user
-  const userId = auth.user ? auth.user.id : null
+  const { items, loading } = useCartStore(
+    useShallow((state) => ({ items: state.items })),
+  )
 
-  useEffect(() => {
-    console.log('user: ', user)
-  })
+  if (loading) {
+    return <div>Loading...</div>
+  }
 
   return (
     <>
@@ -36,7 +29,12 @@ const Cart = () => {
       </Head>
       <div>
         <h1>Shopping Cart</h1>
-        {cart.items.length === 0 ? (
+        {items.length ? (
+          <>
+            <CartList items={items} />
+            <CartFooter />
+          </>
+        ) : (
           <div>
             <p>Your cart is currently empty.</p>
             <h2>
@@ -44,60 +42,76 @@ const Cart = () => {
               <a href="/">Start shopping</a>
             </h2>
           </div>
-        ) : null}
-        {cart.loading && <div>Loading...</div>}
-        {!cart.loading && cart.items.length ? (
-          <>
-            <CartList items={cart.items} />
-            <CartFooter />
-          </>
-        ) : null}
+        )}
       </div>
     </>
   )
 }
 
 const CartFooter = () => {
-  const cart = useSelector(selectCart)
-  const auth = useSelector(selectAuth)
-  const userId = auth.user ? auth.user.id : null
   const router = useRouter()
-  const dispatch = useDispatch()
+  const { user } = useAuthStore(
+    useShallow((state) => ({
+      user: state.user,
+    })),
+  )
+  const {
+    items,
+    subtotal,
+    isCheckoutComplete,
+    calculateSubtotal,
+    createStripeCheckout,
+    clearCart,
+    resetCheckout,
+  } = useCartStore(
+    useShallow((state) => ({
+      items: state.items,
+      subtotal: state.subtotal,
+      isCheckoutComplete: state.isCheckoutComplete,
+      calculateSubtotal: state.calculateSubtotal,
+      clearCart: state.clearCart,
+      resetCheckout: state.resetCheckout,
+    })),
+  )
+  const userId = user?.id ?? null
+
   const handleContinueShopping = (e) => {
     e.preventDefault()
     router.push('/')
   }
 
   const handleClearCart = (e) => {
-    dispatch(clearCart())
+    clearCart()
   }
 
   const handleCheckout = () => {
-    if (!auth.user) router.push('signin')
+    if (!user) {
+      router.push('signin')
+    }
 
-    const items = cart.items.map((i) => {
+    const _items = items.map((i) => {
       return {
         id: i.id,
         quantity: i.quantity,
       }
     })
-    dispatch(createStripeCheckout({ items, userId }))
+    createStripeCheckout({ items: _items, userId })
   }
 
   useEffect(() => {
-    dispatch(calculateSubtotal())
-  }, [cart.items])
+    calculateSubtotal()
+  }, [items])
 
   useEffect(() => {
-    dispatch(resetCheckout())
-  }, [])
+    resetCheckout()
+  }, [resetCheckout])
 
   useEffect(() => {
-    if (cart.isCheckoutComplete) {
-      const url = cart.targetUrl
+    if (isCheckoutComplete) {
+      const url = targetUrl
       window.location = url
     }
-  }, [cart.isCheckoutComplete])
+  }, [isCheckoutComplete])
 
   return (
     <>
@@ -109,7 +123,7 @@ const CartFooter = () => {
         </div>
         <div className="cart-footer-checkout">
           <h3 className="cart-subtotal">
-            Subtotal: {dollarUS.format(cart.subtotal)}
+            Subtotal: {dollarUS.format(subtotal)}
           </h3>
           <p>Taxes and shipping calculated at checkout</p>
           <div className="shop-group">

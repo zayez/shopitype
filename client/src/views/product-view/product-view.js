@@ -1,30 +1,34 @@
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-  fetchProduct,
-  selectCurrentProduct,
-  selectProducts,
-} from '../../store/slices/products-slice'
 import Product from '../../comps/product/product'
+import { useProductsStore } from '../../stores/products-store'
+import { useShallow } from 'zustand/shallow'
 
 const ProductView = ({ id }) => {
-  const dispatch = useDispatch()
-  const products = useSelector(selectProducts)
-  const currentProduct = useSelector(selectCurrentProduct)
+  const { currentProduct, loading, error } = useProductsStore(
+    useShallow((state) => ({
+      currentProduct: state.currentProduct,
+      loading: state.loading,
+      error: state.error,
+    })),
+  )
+
   useEffect(() => {
-    if (id) dispatch(fetchProduct(id))
+    if (!id) {
+      return
+    }
+
+    dispatch(fetchProduct(id))
   }, [id])
+
+  if (loading) {
+    return <div>Loading...</div>
+  }
 
   return (
     <>
       <h2>Product</h2>
-      {products.loading && <div>Loading...</div>}
-      {!products.loading && products.error ? (
-        <div>Error: {products.error}</div>
-      ) : null}
-      {!products.loading && currentProduct ? (
-        <Product product={currentProduct} />
-      ) : null}
+      {error && <div>Error: {products.error}</div>}
+      {currentProduct && <Product product={currentProduct} />}
     </>
   )
 }

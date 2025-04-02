@@ -1,9 +1,16 @@
-import { useDispatch } from 'react-redux'
-import { clearCart } from '../store/slices/cart-slice'
+import { useEffect } from 'react'
+import { useCartStore } from '../stores/cart-store'
+import { useShallow } from 'zustand/shallow'
 
 const Success = () => {
-  const dispatch = useDispatch()
-  dispatch(clearCart())
+  const { clearCart } = useCartStore(
+    useShallow((state) => ({ clearCart: state.clearCart })),
+  )
+
+  useEffect(() => {
+    clearCart()
+  }, [])
+
   return (
     <div>
       <h1>Success</h1>
