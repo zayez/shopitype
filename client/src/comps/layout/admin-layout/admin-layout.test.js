@@ -1,7 +1,7 @@
 import { screen, render } from '@testing-library/react'
 import { useRouter } from 'next/router'
 import { useAuthStore } from '../../../stores/auth-store'
-import AdminLayout from './admin-layout'
+import AdminLayout, { adminLayout } from './admin-layout'
 
 const mockPush = jest.fn()
 
@@ -22,6 +22,9 @@ const renderComponent = () => {
 }
 
 describe('AdminLayout component', () => {
+  beforeEach(() => {
+    mockPush.mockClear()
+  })
   test('AdminLayout redirects non-manager user to /signin', async () => {
     useAuthStore.mockReturnValue({
       user: { roles: ['user'] },
@@ -51,5 +54,17 @@ describe('AdminLayout component', () => {
     renderComponent()
 
     expect(screen.getByText('Admin Content')).toBeInTheDocument()
+  })
+})
+
+describe('adminLayout helper', () => {
+  test('adminLayout wraps content in AdminLayout and BaseLayout', () => {
+    const TestComponent = () => <div>Admin Page</div>
+    const Wrapped = adminLayout(<TestComponent />)
+    useAuthStore.mockReturnValue({
+      user: { roles: ['admin'] },
+    })
+    render(Wrapped)
+    expect(screen.getByText('Admin Page')).toBeInTheDocument()
   })
 })
