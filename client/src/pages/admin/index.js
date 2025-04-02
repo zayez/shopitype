@@ -6,7 +6,7 @@ const Index = () => {
   return (
     <>
       <Head>
-        <title>Storefly dashboard </title>
+        <title>Shopitype dashboard </title>
       </Head>
       <div>
         <h1 className="heading">

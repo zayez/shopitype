@@ -1,4 +1,10 @@
-# Storefly client
+# Shopitype client
+
+To start the client and server:
+
+```bash
+npm run start:dev
+```
 
 ## Image
 

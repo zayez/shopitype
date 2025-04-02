@@ -25,7 +25,7 @@ const Cart = () => {
   return (
     <>
       <Head>
-        <title>Storefly | Cart </title>
+        <title>Shopitype | Cart </title>
       </Head>
       <div>
         <h1>Shopping Cart</h1>

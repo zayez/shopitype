@@ -5,7 +5,7 @@ const User = ({}) => {
   return (
     <>
       <Head>
-        <title>Storefly dashboard - Order</title>
+        <title>Shopitype dashboard - Order</title>
       </Head>
       <div className="container">
         <h1>User</h1>

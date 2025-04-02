@@ -17,7 +17,7 @@ const Index = () => {
   return (
     <>
       <Head>
-        <title>Storefly | Home </title>
+        <title>Shopitype | Home </title>
       </Head>
       <div>
         <h1>Home</h1>

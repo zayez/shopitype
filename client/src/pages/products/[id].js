@@ -24,7 +24,7 @@ const ProductDetails = () => {
   return (
     <>
       <Head>
-        <title>Storefly | Home </title>
+        <title>Shopitype | Home </title>
       </Head>
       <div>
         <ProductView id={id} />
