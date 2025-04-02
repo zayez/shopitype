@@ -11,7 +11,8 @@
     "deliver:pack": "webpack",
     "start:server": "(cd ../server && npm run start:dev)",
     "start:dev": "npm run start:server & npm run dev",
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "keywords": [],
   "author": "",
