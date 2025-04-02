@@ -1,8 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import ProductView from './product-view'
-import { createAppStore } from '../../store/store'
 import { createServer } from '../../test/msw-server'
-import { Provider } from 'react-redux'
 import products from '../../test/fixtures/products.json' with { type: 'json' }
 
 const product = products[2]
@@ -13,7 +11,6 @@ let dollarUS = Intl.NumberFormat('en-US', {
 })
 
 describe('renders a product', () => {
-  const {store} = createAppStore()
   createServer([
     {
       path: `/api/products/:productId`,
@@ -23,11 +20,7 @@ describe('renders a product', () => {
     },
   ])
   test('should render a title, image and a price', async () => {
-    render(
-      <Provider store={store}>
-        <ProductView id={product.id} />
-      </Provider>,
-    )
+    render(<ProductView id={product.id} />)
 
     const heading = await screen.findByRole('heading', { name: product.title })
     const image = screen.getByRole('img')

@@ -4,11 +4,12 @@ import { useProductsStore } from '../../stores/products-store'
 import { useShallow } from 'zustand/shallow'
 
 const ProductView = ({ id }) => {
-  const { currentProduct, loading, error } = useProductsStore(
+  const { currentProduct, loading, error, fetchProduct } = useProductsStore(
     useShallow((state) => ({
       currentProduct: state.currentProduct,
       loading: state.loading,
       error: state.error,
+      fetchProduct: state.fetchProduct,
     })),
   )
 
@@ -17,7 +18,7 @@ const ProductView = ({ id }) => {
       return
     }
 
-    dispatch(fetchProduct(id))
+    fetchProduct(id)
   }, [id])
 
   if (loading) {
