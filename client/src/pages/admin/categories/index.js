@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { Grid as ICategories } from 'react-feather'
-import { adminLayout } from '../../../comps/layout/layout'
+import { adminLayout } from '../../../comps/layout/admin-layout/admin-layout'
 import CategoryList from '../../../comps/admin/category-list'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'

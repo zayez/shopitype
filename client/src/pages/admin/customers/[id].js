@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import CustomerForm from '../../../comps/admin/customer-form'
-import { adminLayout } from '../../../comps/layout/layout'
+import { adminLayout } from '../../../comps/layout/admin-layout/admin-layout'
 import { useUsersStore } from '../../../stores/users-store'
 import { useShallow } from 'zustand/shallow'
 

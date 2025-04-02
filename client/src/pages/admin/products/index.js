@@ -1,8 +1,7 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { adminLayout } from '../../../comps/layout/layout'
+import { adminLayout } from '../../../comps/layout/admin-layout/admin-layout'
 import { Package as IProducts } from 'react-feather'
 
 import Loader from '../../../comps/loader/loader'

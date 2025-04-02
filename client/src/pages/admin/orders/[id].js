@@ -2,19 +2,15 @@ import { format } from 'date-fns'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { adminLayout } from '../../../comps/layout/layout'
+import { adminLayout } from '../../../comps/layout/admin-layout/admin-layout'
 import Loader from '../../../comps/loader/loader'
 import { SPINNER_TYPE } from '../../../types/loader-type'
-
 import { Octagon, Circle } from 'react-feather'
-
 import {
   SHIPPING_DELIVERED,
   SHIPPING_SHIPPED,
   SHIPPING_UNSHIPPED,
 } from '../../../../server/types/ShippingStatus'
-
 import {
   PAYMENT_PAID,
   PAYMENT_UNPAID,

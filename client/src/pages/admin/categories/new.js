@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { adminLayout } from '../../../comps/layout/layout'
+import { adminLayout } from '../../../comps/layout/admin-layout/admin-layout'
 import Loader from '../../../comps/loader/loader'
 import { SPINNER_TYPE } from '../../../types/loader-type'
 import CategoryForm from '../../../comps/admin/category-form'

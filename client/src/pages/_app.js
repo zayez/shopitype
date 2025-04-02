@@ -1,6 +1,5 @@
-// index.html
 import React from 'react'
-import { storeLayout } from '../comps/layout/layout'
+import { storeLayout } from '../comps/layout/store-layout/store-layout'
 import '../styles/index.sass'
 import { SwitchTransition, CSSTransition } from 'react-transition-group'
 import 'react-toastify/dist/ReactToastify.css'

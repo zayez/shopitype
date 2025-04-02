@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { adminLayout } from '../../../comps/layout/layout'
+import { adminLayout } from '../../../comps/layout/admin-layout/admin-layout'
 
 const User = ({}) => {
   return (

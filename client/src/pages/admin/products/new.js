@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import ProductForm from '../../../comps/admin/product-form'
-import { adminLayout } from '../../../comps/layout/layout'
+import { adminLayout } from '../../../comps/layout/admin-layout/admin-layout'
 import Loader from '../../../comps/loader/loader'
 import { SPINNER_TYPE } from '../../../types/loader-type'
 import { CalloutError } from '../../../comps/callout/callout'

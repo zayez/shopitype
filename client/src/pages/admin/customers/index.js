@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import React, { useEffect } from 'react'
 import { Users as IUsers } from 'react-feather'
-import { adminLayout } from '../../../comps/layout/layout'
+import { adminLayout } from '../../../comps/layout/admin-layout/admin-layout'
 import UserList from '../../../comps/admin/user-list'
 import { CUSTOMER_ROLE } from '../../../types/roles'
 import { useUsersStore } from '../../../stores/users-store'

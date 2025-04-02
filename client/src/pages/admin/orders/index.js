@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { adminLayout } from '../../../comps/layout/layout'
+import { adminLayout } from '../../../comps/layout/admin-layout/admin-layout'
 
 import { Layers as IOrders } from 'react-feather'
 import OrderList from '../../../comps/admin/order-list'
