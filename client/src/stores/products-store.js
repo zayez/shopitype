@@ -9,7 +9,6 @@ export const useProductsStore = create((set, get) => ({
   errors: [],
 
   fetchProducts: async () => {
-    console.log('pending')
     set({ loading: true, currentProduct: null, products: [] })
     try {
       const response = await fetch(`/api/products`)

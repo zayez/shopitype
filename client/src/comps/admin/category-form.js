@@ -48,7 +48,6 @@ const CategoryForm = ({ id, category }) => {
       return
     }
     createCategory({ title }).then((res) => {
-      console.log('res: ', res)
       if (!res.error) {
         router.push('/admin/categories')
         toast.success('Category successfully created!')
