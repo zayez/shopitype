@@ -1,6 +1,6 @@
 // import React from "react"
 import { SPINNER_TYPE } from '../../types/loader-type'
-import Spinner from './spinner'
+import Spinner from '../spinner/spinner'
 
 const Loader = ({ type = SPINNER_TYPE, size = 'medium' }) => {
   switch (type) {

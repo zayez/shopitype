@@ -1,5 +1,3 @@
-// import React from "react"
-
 const Spinner = ({ size = 'medium' }) => {
   const spinnerSize = size === 'small' ? 'sm' : size === 'medium' ? 'md' : 'lg'
   return (
