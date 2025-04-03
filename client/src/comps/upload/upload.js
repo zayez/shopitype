@@ -17,12 +17,15 @@ const Upload = ({ setImageSource, setImageData }) => {
         toast.error('This images is not allowed. Size is too large.')
         return false
       }
+      if (fileType !== 'image/jpeg' && fileType !== 'image/png') {
+        toast.error('Invalid file type.')
+        return false
+      }
       return true
     }
   }
 
   const processImage = (file) => {
-    console.log(file)
     setImageData(file)
     const reader = new FileReader()
     reader.addEventListener(
@@ -40,8 +43,6 @@ const Upload = ({ setImageSource, setImageData }) => {
     const isVerified = verifyFile(file)
     if (isVerified) {
       processImage(file)
-    } else {
-      toast.error('There was an error in processing the image.')
     }
   }
 
@@ -68,7 +69,11 @@ const Upload = ({ setImageSource, setImageData }) => {
       </div>
       <div className="field-body">
         <div className="upload-container" {...getRootProps()}>
-          <input {...getInputProps()} onChange={handleFile} />
+          <input
+            {...getInputProps()}
+            onChange={handleFile}
+            data-testid="dropzone"
+          />
           {isDragActive ? (
             <p>Drop the file here...</p>
           ) : (
