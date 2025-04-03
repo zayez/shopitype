@@ -1,15 +1,20 @@
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { useEffect } from 'react'
 import { useAuthStore } from '../../stores/auth-store'
 import { useShallow } from 'zustand/shallow'
+import { useUsersStore } from '../../stores/users-store'
 
 const Profile = ({ firstName, lastName, email }) => {
   const router = useRouter()
-  const { user, fetchUser } = useAuthStore(
+  const { user } = useAuthStore(
     useShallow((state) => ({
       user: state.user,
-      fetchUser: state.fetchUser,
+    })),
+  )
+
+  const { updateUser } = useUsersStore(
+    useShallow((state) => ({
+      updateUser: state.updateUser,
     })),
   )
 
@@ -17,26 +22,17 @@ const Profile = ({ firstName, lastName, email }) => {
   const [txtLastName, setLastName] = useState(lastName)
   const [txtEmail, setEmail] = useState(email)
 
-  useEffect(() => {
-    if (!user) {
-      return
-    }
-    fetchUser({ id: user.id })
-  }, [user])
-
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    if (!user) {
-      router.push('/signin')
-    }
     updateUser({
-      id: auth.user.id,
+      id: user.id,
       firstName: txtFirstName,
       lastName: txtLastName,
       email: txtEmail,
     })
   }
+
   return (
     <div className="container">
       <div className="profile">
@@ -44,10 +40,11 @@ const Profile = ({ firstName, lastName, email }) => {
         <form className="form" onSubmit={handleSubmit}>
           <div className="field">
             <div className="field-label">
-              <label>First name:</label>
+              <label htmlFor="first-name">First name:</label>
             </div>
             <div className="field-body">
               <input
+                id="first-name"
                 type="text"
                 value={txtFirstName}
                 onChange={({ target }) => setFirstName(target?.value)}
@@ -57,10 +54,11 @@ const Profile = ({ firstName, lastName, email }) => {
 
           <div className="field">
             <div className="field-label">
-              <label>Last name:</label>
+              <label htmlFor="last-name">Last name:</label>
             </div>
             <div className="field-body">
               <input
+                id="last-name"
                 type="text"
                 value={txtLastName}
                 onChange={({ target }) => setLastName(target?.value)}
@@ -70,10 +68,11 @@ const Profile = ({ firstName, lastName, email }) => {
 
           <div className="field">
             <div className="field-label">
-              <label>E-mail:</label>
+              <label htmlFor="email">E-mail:</label>
             </div>
             <div className="field-body">
               <input
+                id="email"
                 type="text"
                 value={txtEmail}
                 onChange={({ target }) => setEmail(target?.value)}
