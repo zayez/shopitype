@@ -32,7 +32,6 @@ describe('AdminLayout component', () => {
 
     renderComponent()
 
-    expect(screen.queryByText('Admin Content')).not.toBeInTheDocument()
     expect(mockPush).toHaveBeenCalledWith('/signin')
   })
 

@@ -15,18 +15,10 @@ const AdminLayout = ({ children }) => {
   )
 
   useEffect(() => {
-    if (!user) {
-      return
-    }
-
     if (!isManager(user)) {
       router.push('/signin')
     }
-  }, [])
-
-  if (!isManager(user)) {
-    return
-  }
+  }, [user])
 
   return (
     <>
