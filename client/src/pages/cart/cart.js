@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import CartList from '../comps/cart-list/cart-list.js'
+import CartList from '../../comps/cart-list/cart-list.js'
 
 import { ArrowLeft as IArrowLeft } from 'react-feather'
 import { useShallow } from 'zustand/shallow'
-import { useCartStore } from '../stores/cart-store.js'
-import { useAuthStore } from '../stores/auth-store.js'
+import { useCartStore } from '../../stores/cart-store.js'
+import { useAuthStore } from '../../stores/auth-store.js'
 
 let dollarUS = Intl.NumberFormat('en-US', {
   style: 'currency',

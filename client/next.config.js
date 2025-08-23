@@ -1,4 +1,5 @@
 const path = require('path')
+const { routes } = require('./routes.config')
 
 module.exports = {
   sassOptions: {
@@ -19,6 +20,7 @@ module.exports = {
         source: '/api/:path*',
         destination: 'http://localhost:2222/:path*', // Proxy to Backend
       },
+      ...routes,
     ]
   },
 }

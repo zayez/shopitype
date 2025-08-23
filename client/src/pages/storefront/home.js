@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useEffect } from 'react'
-import ProductsView from '../views/products-view/products-view'
-import { useAuthStore } from '../stores/auth-store'
+import ProductsView from '../../views/products-view/products-view'
+import { useAuthStore } from '../../stores/auth-store'
 import { useShallow } from 'zustand/shallow'
 
 const Index = () => {

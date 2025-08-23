@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useCartStore } from '../stores/cart-store'
+import { useCartStore } from '../../stores/cart-store'
 import { useShallow } from 'zustand/shallow'
 
 const Success = () => {

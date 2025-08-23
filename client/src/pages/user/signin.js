@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import Callout from '../comps/callout/callout'
-import { useAuthStore } from '../stores/auth-store'
+import Callout from '../../comps/callout/callout'
+import { useAuthStore } from '../../stores/auth-store'
 import { useShallow } from 'zustand/shallow'
 
 const SignIn = () => {

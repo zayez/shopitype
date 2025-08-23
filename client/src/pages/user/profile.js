@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
-import Profile from '../comps/profile/profile'
-import { useAuthStore } from '../stores/auth-store'
+import Profile from '../../comps/profile/profile'
+import { useAuthStore } from '../../stores/auth-store'
 import { useShallow } from 'zustand/shallow'
 import { useRouter } from 'next/router'
 

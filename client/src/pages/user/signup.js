@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Callout from '../comps/callout/callout'
+import Callout from '../../comps/callout/callout'
 import { useAuthStore } from '../store/auth-store'
 import { useShallow } from 'zustand/shallow'
 
